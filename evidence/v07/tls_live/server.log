@@ -1,0 +1,28 @@
+INFO:     Started server process [10]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on https://127.0.0.1:53623 (Press CTRL+C to quit)
+INFO:     127.0.0.1:42824 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "GET /api/emails HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:42840 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "POST /api/emails/preview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "POST /api/emails/import HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "POST /api/emails/%3Cv07-ac4e3444-69db-4d91-ab24-590420f2c470%40synthetic.invalid%3E/extract HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "GET /api/lines?email_id=%3Cv07-ac4e3444-69db-4d91-ab24-590420f2c470%40synthetic.invalid%3E HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "POST /api/extractions/EX-F86329911D11/confirm HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:42840 - "POST /api/extractions/EX-F86329911D11/confirm HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "POST /api/extractions/EX-F86329911D11/confirm HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "GET /api/lines?email_id=%3Cv07-ac4e3444-69db-4d91-ab24-590420f2c470%40synthetic.invalid%3E HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "POST /api/quote HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "PATCH /api/quotes/QP-C4E552968F39 HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:42840 - "GET /api/lines/301 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "POST /api/quote HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "PATCH /api/quotes/QP-2329022C5184 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "GET /api/quotes/QP-2329022C5184/export/csv?final=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "GET /api/quotes/QP-2329022C5184/export/xlsx?final=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "GET /api/quotes/QP-2329022C5184/export/json?final=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "POST /api/quotes/QP-2329022C5184/sync-matrixone HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [10]

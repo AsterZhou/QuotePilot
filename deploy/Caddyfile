@@ -1,0 +1,7 @@
+{$QUOTEPILOT_DOMAIN} {
+    request_body {
+        max_size 12MB
+    }
+    reverse_proxy app:8765
+    header Strict-Transport-Security "max-age=31536000"
+}

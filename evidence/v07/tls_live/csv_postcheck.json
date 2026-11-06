@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "scope": "offline check of actual downloaded CSV against actual saved JSON result",
+  "amount_cny": "66.52",
+  "json_amount_cny": "66.52"
+}

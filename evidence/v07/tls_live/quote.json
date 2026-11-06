@@ -1,0 +1,109 @@
+{
+  "asof": "2026-09-20",
+  "method": "markup",
+  "rate": "0.2",
+  "lines": [
+    {
+      "part_number": "PN-0001",
+      "quantity": 4,
+      "unit": "EA",
+      "condition": "FN",
+      "asof": "2026-09-20",
+      "status": "已人工确认",
+      "decision_state": "已人工确认",
+      "supplier": "广州白鹭航空技术服务有限公司",
+      "price_ref": "PR000067",
+      "cost_cny": "13.86",
+      "unit_quote_cny": "16.63",
+      "line_total_cny": "66.52",
+      "lead_days": "23",
+      "issues": [
+        "库存件状缺失",
+        "库存件状不符；请核对件状",
+        "库存不足：可用 0，需求 4，差额 4 EA；请补货或选择供应商",
+        "PR000068: 件状不符；请核对件状"
+      ],
+      "audit": [
+        "价格 PR000067: 13.86 CNY × 1 = CNY 13.86；有效期 2027-01-25",
+        "markup 0.2；单价 16.63 × 4 = 66.52 CNY；ROUND_HALF_UP 两位",
+        "规则版本 qp-rules-0.5.0；税费运费未计"
+      ],
+      "review_flags": [
+        "供应商价格表未提供单位；请确认与需求单位一致",
+        "请核对证书、交期、税费与运费"
+      ],
+      "candidates": [
+        {
+          "ref": "costs:PN-0001:row32",
+          "issues": [
+            "库存件状缺失",
+            "库存件状不符；请核对件状",
+            "库存不足：可用 0，需求 4，差额 4 EA；请补货或选择供应商"
+          ]
+        },
+        {
+          "ref": "PR000067",
+          "issues": []
+        },
+        {
+          "ref": "PR000068",
+          "issues": [
+            "件状不符；请核对件状"
+          ]
+        }
+      ],
+      "rule_version": "qp-rules-0.5.0",
+      "price_basis": {
+        "table": "prices",
+        "record": {
+          "resource_id": "PR000067",
+          "part_number": "PN-0001",
+          "supplier_code": "S007",
+          "supplier": "广州白鹭航空技术服务有限公司",
+          "condition": "FN",
+          "unit_price": "13.86",
+          "currency": "CNY",
+          "fx_to_cny": "1",
+          "moq": 1,
+          "lead_days": 23,
+          "in_stock": "否",
+          "certificate": "EASA Form 1",
+          "quote_date": "2026-07-29 00:00:00",
+          "valid_until": "2027-01-25 00:00:00",
+          "status": "有效",
+          "source_row": "68"
+        },
+        "currency": "CNY",
+        "fx": "1",
+        "fx_source": "价格资源表 PR000067 / 行 68 / 汇率到CNY",
+        "source_file": {
+          "id": "e900276da8e2b99cadb30784d0cce714b5defe3356927cac0f51e285f5163c8b",
+          "filename": "价格资源表_演示数据.xlsx",
+          "sha256": "e900276da8e2b99cadb30784d0cce714b5defe3356927cac0f51e285f5163c8b"
+        }
+      },
+      "line_id": 301,
+      "source_rfq_no": "SYNTH-ac4e3444",
+      "source_ref": "acceptance.eml · EX-F86329911D11 / suggestion 1",
+      "email_filename": "acceptance.eml",
+      "customer": "SYNTHETIC ACCEPTANCE",
+      "description": "",
+      "urgency": ""
+    }
+  ],
+  "total_cny": "66.52",
+  "quoted_count": 1,
+  "pending_count": 0,
+  "review_count": 1,
+  "rule_version": "qp-rules-0.5.0",
+  "note": "仅为建议金额小计；缺价行不计入；人工确认后生效。币种 CNY；税费与运费未计。",
+  "dataset": "原始文件及其数据集标签见来源追溯；预置为官方模拟素材，上传为用户数据",
+  "approval_blockers": [],
+  "review_required": false,
+  "currency": "CNY",
+  "quote_id": "QP-2329022C5184",
+  "version": 2,
+  "review_status": "approved",
+  "approved_by": "AUTOMATED_ACCEPTANCE_ONLY",
+  "approval_reason": "合成自动化验收"
+}

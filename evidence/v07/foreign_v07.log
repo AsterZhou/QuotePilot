@@ -1,0 +1,11 @@
+{"cases": 10, "passed": 10, "failed": 0}
+PASS 01_multi_business.eml [['QPX-517102', 4, 'EA', 'F07-A'], ['QPX-517102', 4, 'EA', 'F07-B']] []
+PASS 02_notes.eml [['QPX-517102', 5, 'EA', 'F07-N']] ['工作表 Instructions 未识别询价表头，未解析；请人工核对原附件']
+PASS 03_offset_header.eml [['QPX-517102', 8, 'PCS', 'F07-C']] []
+PASS 04_formula.eml [] ['formula.xlsx: ValueError: 公式单元格 RFQ!C2 不作为可靠询价值，请提供静态值', '没有可靠提取的需求行；请人工录入或使用提取 Provider']
+PASS 05_geometry_pdf.eml [['QPX-517102', 7, 'EA', 'RFQ-NEW-707']] []
+PASS 06_horizontal_two_rfqs.eml [['QPX-517102', 6, 'EA', 'NEW-ROW-1'], ['QPX-517102', 6, 'EA', 'NEW-ROW-2']] []
+PASS 07_invalid_pdf_qty.eml [] ['invalid.pdf: ValueError: PDF page 1 横向数量不可靠，需人工处理', '没有可靠提取的需求行；请人工录入或使用提取 Provider']
+PASS 08_scan_manual.eml [] ['scan.pdf: ValueError: 未识别可靠的 RFQ 标题；文档用途待人工确认', '没有可靠提取的需求行；请人工录入或使用提取 Provider']
+PASS 09_plain_alias.eml [['QPX-517102', 9, 'EA', 'F07-P']] []
+PASS 10_corrupt.eml [] ['ValueError: 缺少邮件头，无法识别标准 EML']

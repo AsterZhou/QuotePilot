@@ -1,0 +1,42 @@
+INFO:     Started server process [10]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:58321 (Press CTRL+C to quit)
+INFO:     127.0.0.1:57152 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /assets/fonts/noto-sans-sc.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57176 - "GET /assets/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57192 - "GET /assets/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57176 - "GET /assets/fonts/noto-sans-sc-118-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57192 - "GET /assets/fonts/noto-sans-sc-latin-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /assets/fonts/noto-sans-sc-117-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57216 - "GET /assets/fonts/noto-sans-sc-116-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57222 - "GET /assets/fonts/noto-sans-sc-90-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57208 - "GET /assets/fonts/noto-sans-sc-115-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /assets/fonts/noto-sans-sc-88-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57208 - "GET /assets/fonts/noto-sans-sc-119-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /assets/fonts/noto-sans-sc-108-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57192 - "GET /assets/fonts/noto-sans-sc-87-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57176 - "GET /assets/fonts/noto-sans-sc-113-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57222 - "GET /assets/fonts/noto-sans-sc-114-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57216 - "GET /assets/fonts/noto-sans-sc-101-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /assets/fonts/noto-sans-sc-107-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57176 - "GET /api/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57176 - "GET /assets/fonts/noto-sans-sc-112-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57216 - "GET /assets/fonts/noto-sans-sc-109-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57192 - "GET /assets/fonts/noto-sans-sc-111-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /assets/fonts/noto-sans-sc-103-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /api/quotes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /assets/fonts/noto-sans-sc-110-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /api/quotes/QP-771C05221452 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /api/rules HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /api/emails HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /api/lines?limit=500 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "POST /api/quotes/QP-771C05221452/sync-matrixone HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /api/integration HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /assets/fonts/noto-sans-sc-106-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42046 - "GET /api/integration HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [10]

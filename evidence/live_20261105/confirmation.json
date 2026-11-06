@@ -1,0 +1,16 @@
+{
+  "run_id": "EX-8E659D110B4E",
+  "line_ids": [
+    301,
+    302
+  ],
+  "new_lines": 2,
+  "actor": "LIVE_INTEGRATION_TEST_ONLY",
+  "reason": "合成数据自动验收；不代表真实客户审批",
+  "selected_indices": [
+    0,
+    1
+  ],
+  "unselected_indices": [],
+  "idempotent": false
+}

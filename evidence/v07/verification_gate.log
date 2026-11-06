@@ -1,0 +1,9 @@
+official {'tests': 37, 'failures': 0, 'errors': 0, 'skipped': 0, 'passed': 37, 'exit_code': 0}
+synthetic {'tests': 85, 'failures': 0, 'errors': 0, 'skipped': 0, 'passed': 85, 'exit_code': 0}
+UNVERIFIED: This offline command does not execute Genesis live calls; see evidence/live_20261105 for recorded real calls
+UNVERIFIED: MOI workflow / Python service not deployed
+UNVERIFIED: RFQ/cost/supplier MatrixOne primary-table migration not implemented; approved snapshot mirror is separate
+UNVERIFIED: Agent publication and judge access (not deployed)
+UNVERIFIED: General OCR remains unimplemented (targeted scan fixture failed); model extraction quality unverified
+FORMAT ACCEPTANCE: {'cases': 20, 'passed': 19, 'failed': 1}
+PUBLIC / PLATFORM: 未验证；不能判定完整参赛验收通过

@@ -1,0 +1,85 @@
+.................F.F.........F.......................................... [ 69%]
+........................F.....F                                          [100%]
+=================================== FAILURES ===================================
+________________________ test_health_and_offline_truth _________________________
+
+client = <starlette.testclient.TestClient object at 0x7f5f6ad6a3c0>
+
+    def test_health_and_offline_truth(client):
+        r=client.get('/api/health')
+        assert r.status_code==200
+        d=r.json()
+        assert d['ok'] and not d['moi_connected']
+>       assert d['stats']=={'mails':6,'mail_lines':300,'history_lines':249,'history_rfq_groups':94,'cost_records':163,'price_records':342}
+E       AssertionError: assert {'mails': 6, ...ups': 94, ...} == {'mails': 6, ...ups': 94, ...}
+E         
+E         Omitting 5 identical items, use -vv to show
+E         Differing items:
+E         {'mail_lines': 258} != {'mail_lines': 300}
+E         Use -v to get more diff
+
+tests/test_api.py:22: AssertionError
+________________________ test_inbox_and_source_details _________________________
+
+client = <starlette.testclient.TestClient object at 0x7f5f6ad6a3c0>
+
+    def test_inbox_and_source_details(client):
+        res=client.get('/api/emails').json()
+        assert len(res)==6
+>       assert sorted([x['line_count'] for x in res])==[7,7,21,21,122,122]
+E       assert [0, 0, 7, 7, 122, 122] == [7, 7, 21, 21, 122, 122]
+E         
+E         At index 0 diff: 0 != 7
+E         Use -v to get more diff
+
+tests/test_api.py:36: AssertionError
+_____________________ test_preview_and_deduplicated_import _____________________
+
+client = <starlette.testclient.TestClient object at 0x7f5f6ad6a3c0>
+
+    def test_preview_and_deduplicated_import(client):
+        f=next(SAMPLES.rglob('*.eml'))
+        data=f.read_bytes()
+        r=client.post('/api/emails/preview', files={'file':(f.name,data,'message/rfc822')})
+        assert r.status_code==200
+>       assert r.json()['count']>0
+E       assert 0 > 0
+
+tests/test_api.py:133: AssertionError
+___________________ test_official_attachment_hash_and_cells ____________________
+
+client = <starlette.testclient.TestClient object at 0x7f5f68ec7530>
+
+    def test_official_attachment_hash_and_cells(client):
+        rows=client.get('/api/lines',params={'source_kind':'EML Excel附件'}).json()['rows']
+>       d=client.get('/api/lines/'+str(rows[0]['id'])).json()
+                                       ^^^^^^^
+E       IndexError: list index out of range
+
+tests/test_rules_synthetic.py:184: IndexError
+_________________ test_cross_customer_draft_cannot_be_approved _________________
+
+client = <starlette.testclient.TestClient object at 0x7f5f68f302c0>
+
+    def test_cross_customer_draft_cannot_be_approved(client):
+        rows=client.get('/api/lines',params={'search':'PN-0001'}).json()['rows']
+        groups={r['customer']:r for r in rows if r['quantity']==8 and r['unit']=='EA' and r['part_condition']=='FN'}
+        ids=[r['id'] for r in list(groups.values())[:2]]
+>       assert len(ids)==2
+E       assert 1 == 2
+E        +  where 1 = len([9])
+
+tests/test_rules_synthetic.py:221: AssertionError
+=============================== warnings summary ===============================
+../audit_20261105/venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /workspace/scratch/71230713a709/audit_20261105/venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_api.py::test_health_and_offline_truth - AssertionError: ass...
+FAILED tests/test_api.py::test_inbox_and_source_details - assert [0, 0, 7, 7,...
+FAILED tests/test_api.py::test_preview_and_deduplicated_import - assert 0 > 0
+FAILED tests/test_rules_synthetic.py::test_official_attachment_hash_and_cells
+FAILED tests/test_rules_synthetic.py::test_cross_customer_draft_cannot_be_approved
+5 failed, 98 passed, 1 warning in 7.99s

@@ -1,0 +1,86 @@
+[
+  {
+    "path": "1/Request for Quotation - Spare Parts for Airline Project.eml",
+    "sha256": "b7eeadef11c049465ce5264e7969c87a320bd859a1535dc0e1736b7b355cc472",
+    "bytes": 18773,
+    "dataset": "official_sample"
+  },
+  {
+    "path": "1/航空询价（RFQ-20260902）.eml",
+    "sha256": "bd5508ae35ae05dd39d49e8f2835a90e4e030b3e46f25634c2c357ce8f8d9c18",
+    "bytes": 9038,
+    "dataset": "official_sample"
+  },
+  {
+    "path": "1/航空配件询价（RFQ-20260901）.eml",
+    "sha256": "3cc733e9b3d3a7c61cd0e032d277c90bdf02d1741e48f78aa4353610007f8075",
+    "bytes": 93863,
+    "dataset": "official_sample"
+  },
+  {
+    "path": "1/附件/Quote.pdf",
+    "sha256": "2d570917dc145663b68719f468179499ef3f1aa06e0e5e1b250eb695576d505b",
+    "bytes": 6312,
+    "dataset": "official_sample"
+  },
+  {
+    "path": "1/附件/询价报价清单.xlsx",
+    "sha256": "50777fc5fb6b4f6107dd7dcc63617969ac691fb25a43f9ae0d40ffde3d95793c",
+    "bytes": 5261,
+    "dataset": "official_sample"
+  },
+  {
+    "path": "2/Request for Quotation - Components for Fleet Maintenance.eml",
+    "sha256": "f9496072a98427dcdcc1a7a1ca9a27e463f28ff4ca185638a464fa3b5d858adb",
+    "bytes": 17333,
+    "dataset": "official_sample"
+  },
+  {
+    "path": "2/航空询价（RFQ-20260912）.eml",
+    "sha256": "9a1a9c6bd2eaaf67e50988f524aa3ff273e1204942bd34316ab35b3d33445b3d",
+    "bytes": 9271,
+    "dataset": "official_sample"
+  },
+  {
+    "path": "2/航空配件询价（RFQ-20260911）.eml",
+    "sha256": "02e6538bc049a19867b7514fec59387eff2647e0a0e20254369686495efda4f3",
+    "bytes": 85750,
+    "dataset": "official_sample"
+  },
+  {
+    "path": "2/附件/Quote.pdf",
+    "sha256": "bcdda12c52e4c82f7bc37b3bfb126cbf16946e23211312c9bf8df53f1c4ec891",
+    "bytes": 6328,
+    "dataset": "official_sample"
+  },
+  {
+    "path": "2/附件/询价报价清单.xlsx",
+    "sha256": "454eeeb2f74d3d1de9d810cc3b371f0ecc9d47758cc3a89ed0c97b95c6ac71dc",
+    "bytes": 5258,
+    "dataset": "official_sample"
+  },
+  {
+    "path": "价格资源表_演示数据.xlsx",
+    "sha256": "e900276da8e2b99cadb30784d0cce714b5defe3356927cac0f51e285f5163c8b",
+    "bytes": 39554,
+    "dataset": "official_sample"
+  },
+  {
+    "path": "内部物料成本表_演示数据.xlsx",
+    "sha256": "46cf7f07f6359e0249a1f493a58aec5f654410438f36c55236bb33df4047113b",
+    "bytes": 20494,
+    "dataset": "official_sample"
+  },
+  {
+    "path": "报价单样例.docx",
+    "sha256": "f9a9ac6ca86945951795c0c5ae85796f56a5f451607fb99aea9b69ed1cde3991",
+    "bytes": 13647,
+    "dataset": "official_sample"
+  },
+  {
+    "path": "询价报价清单_看板演示数据.xlsx",
+    "sha256": "fdad025e5e217b998afca966da61ca5feff28dc176d3d498f153242b4f54f12a",
+    "bytes": 35599,
+    "dataset": "official_sample"
+  }
+]

@@ -1,0 +1,58 @@
+{
+  "provider": "genesis",
+  "simulated": false,
+  "model": "qwen3.8-flash",
+  "api_style": "responses",
+  "response_id": "resp_9136ec7e-c946-9464-bfb9-e002dbb3712b",
+  "usage": {
+    "input_tokens": 439,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 634,
+    "output_tokens_details": {
+      "reasoning_tokens": 530
+    },
+    "total_tokens": 1073,
+    "x_details": [
+      {
+        "input_tokens": 439,
+        "output_tokens": 634,
+        "output_tokens_details": {
+          "reasoning_tokens": 530
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 1073,
+        "x_billing_type": "response_api"
+      }
+    ]
+  },
+  "elapsed_seconds": 15.014,
+  "review_required": true,
+  "lines": [
+    {
+      "part_number": "PN-0001",
+      "quantity": 3,
+      "unit": "EA",
+      "condition": "FN",
+      "evidence": "Please quote three EA of PN-0001 in FN condition."
+    },
+    {
+      "part_number": "GSK-001",
+      "quantity": 2,
+      "unit": "EA",
+      "condition": null,
+      "evidence": "Also quote two EA of GSK-001; condition not specified."
+    }
+  ],
+  "message": "仅为模型建议，未写入询价；必须对照证据人工确认。",
+  "source_ids": [
+    "5c402a8a44c203fa1b3f569ff94f2744abc5090f293c3d47dfb750302de0a019"
+  ],
+  "source_notes": [],
+  "run_id": "EX-F86329911D11",
+  "email_id": "<v07-ac4e3444-69db-4d91-ab24-590420f2c470@synthetic.invalid>"
+}

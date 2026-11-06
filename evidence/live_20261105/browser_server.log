@@ -1,0 +1,54 @@
+INFO:     Started server process [9]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:54745 (Press CTRL+C to quit)
+INFO:     127.0.0.1:39442 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /assets/fonts/noto-sans-sc.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39458 - "GET /assets/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39470 - "GET /assets/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39470 - "GET /api/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39470 - "GET /assets/fonts/noto-sans-sc-latin-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /assets/fonts/noto-sans-sc-118-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39458 - "GET /assets/fonts/noto-sans-sc-117-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39500 - "GET /assets/fonts/noto-sans-sc-90-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39484 - "GET /assets/fonts/noto-sans-sc-115-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39494 - "GET /assets/fonts/noto-sans-sc-116-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /assets/fonts/noto-sans-sc-88-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39500 - "GET /assets/fonts/noto-sans-sc-87-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39484 - "GET /assets/fonts/noto-sans-sc-101-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39470 - "GET /assets/fonts/noto-sans-sc-113-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39494 - "GET /assets/fonts/noto-sans-sc-119-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39458 - "GET /assets/fonts/noto-sans-sc-114-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39484 - "GET /assets/fonts/noto-sans-sc-112-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39470 - "GET /assets/fonts/noto-sans-sc-111-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39500 - "GET /assets/fonts/noto-sans-sc-108-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /assets/fonts/noto-sans-sc-107-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39494 - "GET /assets/fonts/noto-sans-sc-103-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39458 - "GET /assets/fonts/noto-sans-sc-109-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /api/emails HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /api/lines?email_id=%3Crfq-f-20260908%40customer.test%3E&search=&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /assets/fonts/noto-sans-sc-104-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /assets/fonts/noto-sans-sc-110-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "POST /api/emails/preview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "POST /api/emails/import HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /api/emails HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /api/lines?email_id=%3Crfq-f-20260908%40customer.test%3E&search=&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /api/lines?email_id=%3Cbrowser-genesis-live%40example.invalid%3E&search=&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "POST /api/emails/%3Cbrowser-genesis-live%40example.invalid%3E/extract HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "POST /api/extractions/EX-665EDE186611/confirm HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /api/rules HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /api/emails HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /api/lines?limit=500 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /assets/fonts/noto-sans-sc-105-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58098 - "GET /api/emails HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "POST /api/quote HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "POST /api/quote HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "PATCH /api/quotes/QP-CF04A0A89A57 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /api/quotes/QP-CF04A0A89A57/export/xlsx HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /api/integration HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39448 - "GET /assets/fonts/noto-sans-sc-106-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9]

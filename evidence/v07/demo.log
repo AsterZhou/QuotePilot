@@ -1,0 +1,17 @@
+{
+  "dataset": "official_sample (organizer simulated data, not real customers)",
+  "first_import_lines": 21,
+  "stats": {
+    "emails": 6,
+    "rfq_lines": 300,
+    "historical": 249,
+    "costs": 163,
+    "prices": 342
+  },
+  "quote_id": "QP-7C5BF4312D28",
+  "rule_version": "qp-rules-0.5.0",
+  "unit_cny": "16.63",
+  "total_cny": "133.04",
+  "source_sha256": "bd5508ae35ae05dd39d49e8f2835a90e4e030b3e46f25634c2c357ce8f8d9c18",
+  "review_actor": "AUTOMATED_DEMO_ONLY"
+}

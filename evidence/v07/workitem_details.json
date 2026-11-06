@@ -1,0 +1,2949 @@
+{
+  "moi:data.sql.process": {
+    "http": 200,
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "node_id": "moi:data.sql.process",
+        "display_name": "SQL Processing",
+        "short_description": "Execute one workspace MatrixOne SQL statement. Required input is sql; optional table_ref accepts a Catalog table reference from upstream moi:data.table.read to form a traceable Catalog-to-SQL data edge. When table_ref is bound, SQL may use the ${source_table} placeholder (replaced with the quoted database.table FQN at runtime). SELECT/SHOW/WITH queries output rows; DML/DDL output affected_rows, sql, elapsed_ms, and truncated.",
+        "category": "Code Processing",
+        "tags": [
+          "sql",
+          "database",
+          "code"
+        ],
+        "source": "system",
+        "provider": "go-worker",
+        "preferred_version": "v1",
+        "visibility": "user",
+        "versions": [
+          {
+            "version": "v1",
+            "description": "Execute one workspace MatrixOne SQL statement. Required input is sql; optional table_ref accepts a Catalog table reference from upstream moi:data.table.read to form a traceable Catalog-to-SQL data edge. When table_ref is bound, SQL may use the ${source_table} placeholder (replaced with the quoted database.table FQN at runtime). SELECT/SHOW/WITH queries output rows; DML/DDL output affected_rows, sql, elapsed_ms, and truncated.",
+            "visibility": "user",
+            "stream": false,
+            "source": "system",
+            "provider": "go-worker",
+            "input_schema": "{\"additionalProperties\":false,\"description\":\"Execute one SQL statement against the workspace MatrixOne database. Required input is sql. Optional table_ref accepts a Catalog table reference (typically bound from moi:data.table.read) so the SQL node has a traceable Catalog-to-SQL data edge. When table_ref is bound, SQL may use the ${source_table} placeholder which is replaced with the quoted database.table FQN at runtime. SELECT/SHOW/WITH queries return rows; DML/DDL statements return affected_rows and execution status fields.\",\"example\":{\"sql\":\"SELECT now()\",\"table_ref\":null},\"properties\":{\"sql\":{\"description\":\"SQL statement to execute. Put the complete business SQL here. When table_ref is bound, use ${source_table} as the Catalog-bound table reference instead of hard-coding physical names. Do not add materialization parameters; compose another SQL statement when a table write is needed.\",\"example\":\"SELECT now()\",\"minLength\":1,\"type\":\"string\",\"x-range\":\"length \\u003e= 1\",\"x-semantic-role\":\"tabular_query\"},\"table_ref\":{\"anyOf\":[{\"additionalProperties\":true,\"description\":\"Catalog resource reference selected by UI or returned by resource resolver. It can point to a volume/folder, every file in a volume with exclusions, one file, multiple files, or a data asset.\",\"example\":{\"all_selected\":false,\"asset_id\":\"example_id\",\"catalog_id\":1},\"properties\":{\"all_selected\":{\"description\":\"For kind=volume_files, select every file in volume_id without materializing all IDs.\",\"example\":false,\"type\":\"boolean\",\"x-range\":\"true or false\"},\"asset_id\":{\"description\":\"Data asset ID when the reference comes from lineage/catalog assets.\",\"example\":\"example_id\",\"type\":\"string\",\"x-range\":\"any string\"},\"catalog_id\":{\"description\":\"Catalog numeric ID.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"database_id\":{\"description\":\"Database numeric ID inside the catalog.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"database_name\":{\"description\":\"Database name when known from the selected catalog path.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"excluded_file_ids\":{\"description\":\"File IDs excluded from an all_selected volume_files source.\",\"example\":[\"example_id\"],\"items\":{\"description\":\"Parameter `excluded_file_ids_item` (string).\",\"example\":\"example_id\",\"minLength\":1,\"pattern\":\"\\\\S\",\"type\":\"string\",\"x-range\":\"length \\u003e= 1, pattern: \\\\S\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"},\"file_id\":{\"description\":\"Single file ID.\",\"example\":\"example_id\",\"type\":\"string\",\"x-range\":\"any string\"},\"file_ids\":{\"description\":\"Multiple selected file IDs; a by-file selection may span multiple catalog volumes.\",\"example\":[\"example_id\"],\"items\":{\"description\":\"Parameter `file_ids_item` (string).\",\"example\":\"example_id\",\"type\":\"string\",\"x-range\":\"any string\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"},\"file_name\":{\"description\":\"File name when known.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"file_volume_ids\":{\"description\":\"Optional per-file volume ID aligned 1:1 with file_ids. Lets by-file selections span volumes and lets UIs restore per-file volume context; not used to expand the file set.\",\"example\":[1],\"items\":{\"description\":\"Parameter `file_volume_ids_item` (integer).\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"},\"kind\":{\"description\":\"Resource kind, such as volume, volume_files, folder, file, files, table, or asset.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"name\":{\"description\":\"Display name for the selected resource.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"path\":{\"description\":\"Catalog path or folder path when available.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"raw_file_id\":{\"description\":\"Original source file ID associated with an asset.\",\"example\":\"example_id\",\"type\":\"string\",\"x-range\":\"any string\"},\"table_id\":{\"description\":\"Table numeric ID inside the catalog database.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"table_name\":{\"description\":\"Table name when the resource is a structured table.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"volume_id\":{\"description\":\"Volume/folder numeric ID used as source or destination location.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"volume_ids\":{\"description\":\"Multiple volume IDs for cross-volume expansion. Used with file_types for the by-type file scope contract; not combined with file_ids.\",\"example\":[1],\"items\":{\"description\":\"Parameter `volume_ids_item` (integer).\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"}},\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"No Catalog resource reference is bound.\",\"type\":\"null\",\"x-range\":\"null\"}],\"description\":\"Optional Catalog table reference consumed by this SQL node. Bind from an upstream moi:data.table.read table_ref output to establish a traceable Catalog-to-SQL data edge. Runtime resolves physical names from table_id. Unbound optional inputs are materialized as null by the workflow runtime.\",\"example\":null,\"x-range\":\"Catalog resource reference object or null\",\"x-semantic-role\":\"tabular_source_ref\"}},\"required\":[\"sql\"],\"type\":\"object\",\"x-range\":\"no undeclared properties\"}",
+            "output_schema": "{\"additionalProperties\":false,\"description\":\"Stable SQL execution result envelope. SELECT/SHOW/WITH queries put result records in rows. DML/DDL statements normally use affected_rows and do not produce business rows. When table_ref was bound, the resolved Catalog reference and physical names are echoed for lineage.\",\"example\":{\"affected_rows\":1,\"database\":\"example\",\"elapsed_ms\":1},\"properties\":{\"affected_rows\":{\"description\":\"Affected rows for DML/DDL statements when reported by the backend.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},\"database\":{\"description\":\"Resolved database name when table_ref was bound.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"elapsed_ms\":{\"description\":\"Execution time in milliseconds.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},\"rows\":{\"description\":\"Result rows for query statements; each row is an object keyed by column name.\",\"example\":[{}],\"items\":{\"additionalProperties\":true,\"description\":\"Parameter `rows_item` (object).\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\",\"x-semantic-role\":\"tabular_rows_payload\"},\"source_table\":{\"description\":\"Quoted database.table FQN substituted for ${source_table} when table_ref was bound.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"sql\":{\"description\":\"Executed SQL statement (with ${source_table} already expanded when used).\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"table_name\":{\"description\":\"Resolved table name when table_ref was bound.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"table_ref\":{\"additionalProperties\":true,\"description\":\"Catalog table reference when table_ref input was bound.\",\"example\":{\"all_selected\":false,\"asset_id\":\"example_id\",\"catalog_id\":1},\"properties\":{\"all_selected\":{\"description\":\"For kind=volume_files, select every file in volume_id without materializing all IDs.\",\"example\":false,\"type\":\"boolean\",\"x-range\":\"true or false\"},\"asset_id\":{\"description\":\"Data asset ID when the reference comes from lineage/catalog assets.\",\"example\":\"example_id\",\"type\":\"string\",\"x-range\":\"any string\"},\"catalog_id\":{\"description\":\"Catalog numeric ID.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"database_id\":{\"description\":\"Database numeric ID inside the catalog.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"database_name\":{\"description\":\"Database name when known from the selected catalog path.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"excluded_file_ids\":{\"description\":\"File IDs excluded from an all_selected volume_files source.\",\"example\":[\"example_id\"],\"items\":{\"description\":\"Parameter `excluded_file_ids_item` (string).\",\"example\":\"example_id\",\"minLength\":1,\"pattern\":\"\\\\S\",\"type\":\"string\",\"x-range\":\"length \\u003e= 1, pattern: \\\\S\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"},\"file_id\":{\"description\":\"Single file ID.\",\"example\":\"example_id\",\"type\":\"string\",\"x-range\":\"any string\"},\"file_ids\":{\"description\":\"Multiple selected file IDs; a by-file selection may span multiple catalog volumes.\",\"example\":[\"example_id\"],\"items\":{\"description\":\"Parameter `file_ids_item` (string).\",\"example\":\"example_id\",\"type\":\"string\",\"x-range\":\"any string\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"},\"file_name\":{\"description\":\"File name when known.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"file_volume_ids\":{\"description\":\"Optional per-file volume ID aligned 1:1 with file_ids. Lets by-file selections span volumes and lets UIs restore per-file volume context; not used to expand the file set.\",\"example\":[1],\"items\":{\"description\":\"Parameter `file_volume_ids_item` (integer).\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"},\"kind\":{\"description\":\"Resource kind, such as volume, volume_files, folder, file, files, table, or asset.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"name\":{\"description\":\"Display name for the selected resource.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"path\":{\"description\":\"Catalog path or folder path when available.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"raw_file_id\":{\"description\":\"Original source file ID associated with an asset.\",\"example\":\"example_id\",\"type\":\"string\",\"x-range\":\"any string\"},\"table_id\":{\"description\":\"Table numeric ID inside the catalog database.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"table_name\":{\"description\":\"Table name when the resource is a structured table.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"volume_id\":{\"description\":\"Volume/folder numeric ID used as source or destination location.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"volume_ids\":{\"description\":\"Multiple volume IDs for cross-volume expansion. Used with file_types for the by-type file scope contract; not combined with file_ids.\",\"example\":[1],\"items\":{\"description\":\"Parameter `volume_ids_item` (integer).\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"}},\"type\":\"object\",\"x-range\":\"JSON object\"},\"truncated\":{\"description\":\"Whether returned rows were truncated by backend limits.\",\"example\":false,\"type\":\"boolean\",\"x-range\":\"true or false\"}},\"required\":[\"sql\"],\"type\":\"object\",\"x-range\":\"no undeclared properties\"}",
+            "input_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Execute one workspace MatrixOne SQL statement. Required input is sql; optional table_ref accepts a Catalog table reference from upstream moi:data.table.read to form a traceable Catalog-to-SQL data edge. When table_ref is bound, SQL may use the ${source_table} placeholder (replaced with the quoted database.table FQN at runtime). SELECT/SHOW/WITH queries output rows; DML/DDL output affected_rows, sql, elapsed_ms, and truncated.",
+              "display_name": "SQL Processing",
+              "fields": [
+                {
+                  "default": "",
+                  "description": "SQL statement to execute against the selected MatrixOne data context.",
+                  "json_type": "string",
+                  "name": "sql",
+                  "path": "sql",
+                  "placeholder": "SQL",
+                  "range": "length >= 1",
+                  "required": true,
+                  "title": "SQL",
+                  "value_source": "user_input",
+                  "widget": "textarea"
+                },
+                {
+                  "description": "Optional Catalog table consumed by this SQL node. Bind from upstream moi:data.table.read.table_ref to create a traceable Catalog-to-SQL edge. When bound, SQL may use ${source_table} as the physical table reference.",
+                  "json_type": "object",
+                  "name": "table_ref",
+                  "path": "table_ref",
+                  "placeholder": "Table",
+                  "range": "upstream moi:data.table.read table_ref output, or runtime Catalog table picker",
+                  "resource_type": "table",
+                  "selector": {
+                    "kind": "catalog_lookup",
+                    "resource_type": "table"
+                  },
+                  "title": "Table",
+                  "value_source": "upstream_or_runtime",
+                  "widget": "catalog_picker"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:data.sql.process",
+              "provider": "go-worker",
+              "required_fields": [
+                "sql"
+              ],
+              "role": "input"
+            },
+            "output_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Execute one workspace MatrixOne SQL statement. Required input is sql; optional table_ref accepts a Catalog table reference from upstream moi:data.table.read to form a traceable Catalog-to-SQL data edge. When table_ref is bound, SQL may use the ${source_table} placeholder (replaced with the quoted database.table FQN at runtime). SELECT/SHOW/WITH queries output rows; DML/DDL output affected_rows, sql, elapsed_ms, and truncated.",
+              "display_name": "SQL Processing",
+              "fields": [
+                {
+                  "description": "Affected rows for DML/DDL statements when reported by the backend.",
+                  "json_type": "integer",
+                  "name": "affected_rows",
+                  "path": "affected_rows",
+                  "placeholder": "Affected rows",
+                  "range": "integer",
+                  "read_only": true,
+                  "title": "Affected rows",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Resolved database name when table_ref was bound.",
+                  "json_type": "string",
+                  "name": "database",
+                  "path": "database",
+                  "placeholder": "Database",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "Database",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Execution time in milliseconds.",
+                  "json_type": "integer",
+                  "name": "elapsed_ms",
+                  "path": "elapsed_ms",
+                  "placeholder": "Elapsed time",
+                  "range": "integer",
+                  "read_only": true,
+                  "title": "Elapsed time",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Result rows for query statements; each row is an object keyed by column name.",
+                  "json_type": "array",
+                  "name": "rows",
+                  "path": "rows",
+                  "placeholder": "Rows",
+                  "range": "array",
+                  "read_only": true,
+                  "title": "Rows",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Quoted database.table FQN substituted for ${source_table} when table_ref was bound.",
+                  "json_type": "string",
+                  "name": "source_table",
+                  "path": "source_table",
+                  "placeholder": "Source table",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "Source table",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Executed SQL statement (with ${source_table} already expanded when used).",
+                  "json_type": "string",
+                  "name": "sql",
+                  "path": "sql",
+                  "placeholder": "SQL",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "SQL",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Resolved table name when table_ref was bound.",
+                  "json_type": "string",
+                  "name": "table_name",
+                  "path": "table_name",
+                  "placeholder": "Table",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "Table",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Catalog table reference when table_ref input was bound.",
+                  "json_type": "object",
+                  "name": "table_ref",
+                  "path": "table_ref",
+                  "placeholder": "Table",
+                  "range": "object",
+                  "read_only": true,
+                  "title": "Table",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Whether returned rows were truncated by backend limits.",
+                  "json_type": "boolean",
+                  "name": "truncated",
+                  "path": "truncated",
+                  "placeholder": "Truncated",
+                  "range": "boolean",
+                  "read_only": true,
+                  "title": "Truncated",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:data.sql.process",
+              "provider": "go-worker",
+              "role": "output"
+            },
+            "input": {
+              "json_type": "object",
+              "description": "Execute one SQL statement against the workspace MatrixOne database. Required input is sql. Optional table_ref accepts a Catalog table reference (typically bound from moi:data.table.read) so the SQL node has a traceable Catalog-to-SQL data edge. When table_ref is bound, SQL may use the ${source_table} placeholder which is replaced with the quoted database.table FQN at runtime. SELECT/SHOW/WITH queries return rows; DML/DDL statements return affected_rows and execution status fields.",
+              "required_fields": [
+                "sql"
+              ],
+              "fields": [
+                {
+                  "name": "sql",
+                  "json_type": "string",
+                  "description": "SQL statement to execute. Put the complete business SQL here. When table_ref is bound, use ${source_table} as the Catalog-bound table reference instead of hard-coding physical names. Do not add materialization parameters; compose another SQL statement when a table write is needed.",
+                  "required": true,
+                  "example": "SELECT now()",
+                  "hint": {}
+                },
+                {
+                  "name": "table_ref",
+                  "json_type": "anyOf",
+                  "description": "Optional Catalog table reference consumed by this SQL node. Bind from an upstream moi:data.table.read table_ref output to establish a traceable Catalog-to-SQL data edge. Runtime resolves physical names from table_id. Unbound optional inputs are materialized as null by the workflow runtime.",
+                  "example": null,
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "sql": "SELECT now()",
+                "table_ref": null
+              }
+            },
+            "output": {
+              "json_type": "object",
+              "description": "Stable SQL execution result envelope. SELECT/SHOW/WITH queries put result records in rows. DML/DDL statements normally use affected_rows and do not produce business rows. When table_ref was bound, the resolved Catalog reference and physical names are echoed for lineage.",
+              "required_fields": [
+                "sql"
+              ],
+              "fields": [
+                {
+                  "name": "affected_rows",
+                  "json_type": "integer",
+                  "description": "Affected rows for DML/DDL statements when reported by the backend.",
+                  "example": 1,
+                  "hint": {}
+                },
+                {
+                  "name": "database",
+                  "json_type": "string",
+                  "description": "Resolved database name when table_ref was bound.",
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "elapsed_ms",
+                  "json_type": "integer",
+                  "description": "Execution time in milliseconds.",
+                  "example": 1,
+                  "hint": {}
+                },
+                {
+                  "name": "rows",
+                  "json_type": "array",
+                  "description": "Result rows for query statements; each row is an object keyed by column name.",
+                  "example": [
+                    {}
+                  ],
+                  "item": {
+                    "name": "item",
+                    "json_type": "object",
+                    "description": "Parameter `rows_item` (object).",
+                    "example": {},
+                    "additional_properties": true,
+                    "hint": {}
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "source_table",
+                  "json_type": "string",
+                  "description": "Quoted database.table FQN substituted for ${source_table} when table_ref was bound.",
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "sql",
+                  "json_type": "string",
+                  "description": "Executed SQL statement (with ${source_table} already expanded when used).",
+                  "required": true,
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "table_name",
+                  "json_type": "string",
+                  "description": "Resolved table name when table_ref was bound.",
+                  "example": "example_name",
+                  "hint": {}
+                },
+                {
+                  "name": "table_ref",
+                  "json_type": "object",
+                  "description": "Catalog table reference when table_ref input was bound.",
+                  "example": {
+                    "all_selected": false,
+                    "asset_id": "example_id",
+                    "catalog_id": 1
+                  },
+                  "additional_properties": true,
+                  "fields": [
+                    {
+                      "name": "all_selected",
+                      "json_type": "boolean",
+                      "description": "For kind=volume_files, select every file in volume_id without materializing all IDs.",
+                      "example": false,
+                      "hint": {}
+                    },
+                    {
+                      "name": "asset_id",
+                      "json_type": "string",
+                      "description": "Data asset ID when the reference comes from lineage/catalog assets.",
+                      "example": "example_id",
+                      "hint": {}
+                    },
+                    {
+                      "name": "catalog_id",
+                      "json_type": "integer",
+                      "description": "Catalog numeric ID.",
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "database_id",
+                      "json_type": "integer",
+                      "description": "Database numeric ID inside the catalog.",
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "database_name",
+                      "json_type": "string",
+                      "description": "Database name when known from the selected catalog path.",
+                      "example": "example_name",
+                      "hint": {}
+                    },
+                    {
+                      "name": "excluded_file_ids",
+                      "json_type": "array",
+                      "description": "File IDs excluded from an all_selected volume_files source.",
+                      "example": [
+                        "example_id"
+                      ],
+                      "item": {
+                        "name": "item",
+                        "json_type": "string",
+                        "description": "Parameter `excluded_file_ids_item` (string).",
+                        "example": "example_id",
+                        "hint": {}
+                      },
+                      "hint": {}
+                    },
+                    {
+                      "name": "file_id",
+                      "json_type": "string",
+                      "description": "Single file ID.",
+                      "example": "example_id",
+                      "hint": {}
+                    },
+                    {
+                      "name": "file_ids",
+                      "json_type": "array",
+                      "description": "Multiple selected file IDs; a by-file selection may span multiple catalog volumes.",
+                      "example": [
+                        "example_id"
+                      ],
+                      "item": {
+                        "name": "item",
+                        "json_type": "string",
+                        "description": "Parameter `file_ids_item` (string).",
+                        "example": "example_id",
+                        "hint": {}
+                      },
+                      "hint": {}
+                    },
+                    {
+                      "name": "file_name",
+                      "json_type": "string",
+                      "description": "File name when known.",
+                      "example": "example_name",
+                      "hint": {}
+                    },
+                    {
+                      "name": "file_volume_ids",
+                      "json_type": "array",
+                      "description": "Optional per-file volume ID aligned 1:1 with file_ids. Lets by-file selections span volumes and lets UIs restore per-file volume context; not used to expand the file set.",
+                      "example": [
+                        1
+                      ],
+                      "item": {
+                        "name": "item",
+                        "json_type": "integer",
+                        "description": "Parameter `file_volume_ids_item` (integer).",
+                        "example": 1,
+                        "hint": {}
+                      },
+                      "hint": {}
+                    },
+                    {
+                      "name": "kind",
+                      "json_type": "string",
+                      "description": "Resource kind, such as volume, volume_files, folder, file, files, table, or asset.",
+                      "example": "example",
+                      "hint": {}
+                    },
+                    {
+                      "name": "name",
+                      "json_type": "string",
+                      "description": "Display name for the selected resource.",
+                      "example": "example_name",
+                      "hint": {}
+                    },
+                    {
+                      "name": "path",
+                      "json_type": "string",
+                      "description": "Catalog path or folder path when available.",
+                      "example": "example",
+                      "hint": {}
+                    },
+                    {
+                      "name": "raw_file_id",
+                      "json_type": "string",
+                      "description": "Original source file ID associated with an asset.",
+                      "example": "example_id",
+                      "hint": {}
+                    },
+                    {
+                      "name": "table_id",
+                      "json_type": "integer",
+                      "description": "Table numeric ID inside the catalog database.",
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "table_name",
+                      "json_type": "string",
+                      "description": "Table name when the resource is a structured table.",
+                      "example": "example_name",
+                      "hint": {}
+                    },
+                    {
+                      "name": "volume_id",
+                      "json_type": "integer",
+                      "description": "Volume/folder numeric ID used as source or destination location.",
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "volume_ids",
+                      "json_type": "array",
+                      "description": "Multiple volume IDs for cross-volume expansion. Used with file_types for the by-type file scope contract; not combined with file_ids.",
+                      "example": [
+                        1
+                      ],
+                      "item": {
+                        "name": "item",
+                        "json_type": "integer",
+                        "description": "Parameter `volume_ids_item` (integer).",
+                        "example": 1,
+                        "hint": {}
+                      },
+                      "hint": {}
+                    }
+                  ],
+                  "hint": {}
+                },
+                {
+                  "name": "truncated",
+                  "json_type": "boolean",
+                  "description": "Whether returned rows were truncated by backend limits.",
+                  "example": false,
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "affected_rows": 1,
+                "database": "example",
+                "elapsed_ms": 1
+              }
+            },
+            "agent_context": {
+              "provider": "go-worker",
+              "display_name": "SQL Processing",
+              "category": "moi",
+              "display_group": "Code Processing",
+              "tags": [
+                "sql",
+                "database",
+                "code"
+              ],
+              "summary": "Execute one workspace MatrixOne SQL statement. Required input is sql; optional table_ref accepts a Catalog table reference from upstream moi:data.table.read to form a traceable Catalog-to-SQL data edge. When table_ref is bound, SQL may use the ${source_table} placeholder (replaced with the quoted database.table FQN at runtime). SELECT/SHOW/WITH queries output rows; DML/DDL output affected_rows, sql, elapsed_ms, and truncated.",
+              "side_effect_class": "writes_state",
+              "idempotence": "non_idempotent_or_requires_key",
+              "required_fields": [
+                "sql"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "moi:llm.output.generate": {
+    "http": 200,
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "node_id": "moi:llm.output.generate",
+        "display_name": "AI Inference",
+        "short_description": "Call a workspace LLM model to generate natural-language output. prompt is the user-authored instruction; optional text binds upstream payload or a runtime value. Omit text when there is no upstream document. Pass text/result to saving, extraction, or downstream processing nodes.",
+        "category": "AI Processing",
+        "tags": [
+          "llm",
+          "inference",
+          "generation",
+          "text"
+        ],
+        "source": "system",
+        "provider": "go-worker",
+        "preferred_version": "v3",
+        "visibility": "user",
+        "versions": [
+          {
+            "version": "v3",
+            "description": "Call a workspace LLM model to generate natural-language output. prompt is the user-authored instruction; optional text binds upstream payload or a runtime value. Omit text when there is no upstream document. Pass text/result to saving, extraction, or downstream processing nodes.",
+            "visibility": "user",
+            "stream": false,
+            "source": "system",
+            "provider": "go-worker",
+            "input_schema": "{\"additionalProperties\":false,\"description\":\"Generate natural-language output with a workspace LLM model. prompt is the user-authored instruction. Optional text is the payload to reason over; omit it when there is no upstream or runtime document.\",\"example\":{\"max_tokens\":1,\"model\":\"example\",\"prompt\":\"example\"},\"properties\":{\"max_tokens\":{\"description\":\"Optional maximum generated tokens.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"model\":{\"description\":\"Optional workspace LLM model. Empty reads the configured ai_infer AI Studio slot default.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"prompt\":{\"description\":\"User-authored instruction sent as the user message. Do not put upstream document payload in this field.\",\"example\":\"example\",\"minLength\":1,\"type\":\"string\",\"x-range\":\"length \\u003e= 1\"},\"system_prompt\":{\"description\":\"Optional system prompt. Use only when the user explicitly specifies role or behavior constraints.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"temperature\":{\"description\":\"Optional sampling temperature.\",\"example\":0,\"maximum\":2,\"minimum\":0,\"type\":\"number\",\"x-range\":\"\\u003e= 0, \\u003c= 2\"},\"text\":{\"description\":\"Optional plain-text payload to reason over, bound from an upstream text-producing node or supplied at runtime. Omit when the instruction is the whole user message.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"}},\"required\":[\"prompt\"],\"type\":\"object\",\"x-range\":\"no undeclared properties\"}",
+            "output_schema": "{\"additionalProperties\":true,\"description\":\"LLM inference output. Downstream nodes can consume text or result.\",\"example\":{\"model\":\"example\",\"result\":\"example\",\"text\":\"example\"},\"properties\":{\"model\":{\"description\":\"Model used for generation.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"result\":{\"description\":\"Alias of generated assistant text for generic downstream consumers.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"text\":{\"description\":\"Generated assistant text.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"usage\":{\"additionalProperties\":false,\"description\":\"Token usage the model provider reported for this call. Absent when the provider reported none.\",\"example\":{\"cached_tokens\":1,\"input_tokens\":1,\"output_tokens\":1},\"properties\":{\"cached_tokens\":{\"description\":\"Input tokens served from the provider's prompt cache.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},\"input_tokens\":{\"description\":\"Prompt tokens sent to the model.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},\"output_tokens\":{\"description\":\"Tokens the model generated.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},\"reasoning_tokens\":{\"description\":\"Output tokens spent on reasoning.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},\"total_tokens\":{\"description\":\"Input plus output tokens.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"}},\"required\":[\"input_tokens\",\"output_tokens\",\"total_tokens\"],\"type\":\"object\",\"x-range\":\"no undeclared properties\"}},\"required\":[\"text\"],\"type\":\"object\",\"x-range\":\"JSON object\"}",
+            "input_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Call a workspace LLM model to generate natural-language output. prompt is the user-authored instruction; optional text binds upstream payload or a runtime value. Omit text when there is no upstream document. Pass text/result to saving, extraction, or downstream processing nodes.",
+              "display_name": "AI Inference",
+              "fields": [
+                {
+                  "description": "Plain text supplied directly or bound from an upstream text-producing node.",
+                  "json_type": "string",
+                  "name": "text",
+                  "path": "text",
+                  "placeholder": "Text",
+                  "range": "upstream workflow output or runtime API input",
+                  "title": "Text",
+                  "value_source": "upstream_or_runtime",
+                  "widget": "textarea"
+                },
+                {
+                  "default": "",
+                  "description": "User-authored instruction sent to the model. Bind document payload to text instead of concatenating it here.",
+                  "json_type": "string",
+                  "name": "prompt",
+                  "path": "prompt",
+                  "placeholder": "Prompt",
+                  "range": "length >= 1",
+                  "required": true,
+                  "title": "Prompt",
+                  "value_source": "user_input",
+                  "widget": "textarea"
+                },
+                {
+                  "default": "",
+                  "description": "System-level instruction that constrains the model's role, style, or output format.",
+                  "json_type": "string",
+                  "name": "system_prompt",
+                  "path": "system_prompt",
+                  "placeholder": "System prompt",
+                  "range": "length >= 1",
+                  "title": "System prompt",
+                  "value_source": "user_input",
+                  "widget": "textarea"
+                },
+                {
+                  "default": 0,
+                  "description": "Sampling temperature for model output. Lower values are more deterministic.",
+                  "json_type": "number",
+                  "name": "temperature",
+                  "path": "temperature",
+                  "placeholder": "Temperature",
+                  "range": "number",
+                  "title": "Temperature",
+                  "value_source": "user_input",
+                  "widget": "number"
+                },
+                {
+                  "default": 0,
+                  "description": "Maximum number of tokens the model may generate.",
+                  "json_type": "integer",
+                  "name": "max_tokens",
+                  "path": "max_tokens",
+                  "placeholder": "Max tokens",
+                  "range": "integer >= 0",
+                  "title": "Max tokens",
+                  "value_source": "user_input",
+                  "widget": "number"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:llm.output.generate",
+              "provider": "go-worker",
+              "required_fields": [
+                "prompt"
+              ],
+              "role": "input"
+            },
+            "output_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Call a workspace LLM model to generate natural-language output. prompt is the user-authored instruction; optional text binds upstream payload or a runtime value. Omit text when there is no upstream document. Pass text/result to saving, extraction, or downstream processing nodes.",
+              "display_name": "AI Inference",
+              "fields": [
+                {
+                  "description": "Model used for generation.",
+                  "json_type": "string",
+                  "name": "model",
+                  "path": "model",
+                  "placeholder": "LLM model",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "LLM model",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Alias of generated assistant text for generic downstream consumers.",
+                  "json_type": "string",
+                  "name": "result",
+                  "path": "result",
+                  "placeholder": "Result",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "Result",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Generated assistant text.",
+                  "json_type": "string",
+                  "name": "text",
+                  "path": "text",
+                  "placeholder": "Text",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "Text",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Token usage the model provider reported for this call. Absent when the provider reported none.",
+                  "json_type": "object",
+                  "name": "usage",
+                  "path": "usage",
+                  "placeholder": "usage",
+                  "range": "object",
+                  "read_only": true,
+                  "title": "usage",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:llm.output.generate",
+              "provider": "go-worker",
+              "role": "output"
+            },
+            "input": {
+              "json_type": "object",
+              "description": "Generate natural-language output with a workspace LLM model. prompt is the user-authored instruction. Optional text is the payload to reason over; omit it when there is no upstream or runtime document.",
+              "required_fields": [
+                "prompt"
+              ],
+              "fields": [
+                {
+                  "name": "max_tokens",
+                  "json_type": "integer",
+                  "description": "Optional maximum generated tokens.",
+                  "example": 1,
+                  "hint": {}
+                },
+                {
+                  "name": "model",
+                  "json_type": "string",
+                  "description": "Optional workspace LLM model. Empty reads the configured ai_infer AI Studio slot default.",
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "prompt",
+                  "json_type": "string",
+                  "description": "User-authored instruction sent as the user message. Do not put upstream document payload in this field.",
+                  "required": true,
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "system_prompt",
+                  "json_type": "string",
+                  "description": "Optional system prompt. Use only when the user explicitly specifies role or behavior constraints.",
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "temperature",
+                  "json_type": "number",
+                  "description": "Optional sampling temperature.",
+                  "example": 0,
+                  "hint": {}
+                },
+                {
+                  "name": "text",
+                  "json_type": "string",
+                  "description": "Optional plain-text payload to reason over, bound from an upstream text-producing node or supplied at runtime. Omit when the instruction is the whole user message.",
+                  "example": "example",
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "max_tokens": 1,
+                "model": "example",
+                "prompt": "example"
+              }
+            },
+            "output": {
+              "json_type": "object",
+              "description": "LLM inference output. Downstream nodes can consume text or result.",
+              "additional_properties": true,
+              "required_fields": [
+                "text"
+              ],
+              "fields": [
+                {
+                  "name": "model",
+                  "json_type": "string",
+                  "description": "Model used for generation.",
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "result",
+                  "json_type": "string",
+                  "description": "Alias of generated assistant text for generic downstream consumers.",
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "text",
+                  "json_type": "string",
+                  "description": "Generated assistant text.",
+                  "required": true,
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "usage",
+                  "json_type": "object",
+                  "description": "Token usage the model provider reported for this call. Absent when the provider reported none.",
+                  "example": {
+                    "cached_tokens": 1,
+                    "input_tokens": 1,
+                    "output_tokens": 1
+                  },
+                  "fields": [
+                    {
+                      "name": "cached_tokens",
+                      "json_type": "integer",
+                      "description": "Input tokens served from the provider's prompt cache.",
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "input_tokens",
+                      "json_type": "integer",
+                      "description": "Prompt tokens sent to the model.",
+                      "required": true,
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "output_tokens",
+                      "json_type": "integer",
+                      "description": "Tokens the model generated.",
+                      "required": true,
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "reasoning_tokens",
+                      "json_type": "integer",
+                      "description": "Output tokens spent on reasoning.",
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "total_tokens",
+                      "json_type": "integer",
+                      "description": "Input plus output tokens.",
+                      "required": true,
+                      "example": 1,
+                      "hint": {}
+                    }
+                  ],
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "model": "example",
+                "result": "example",
+                "text": "example"
+              }
+            },
+            "agent_context": {
+              "provider": "go-worker",
+              "display_name": "AI Inference",
+              "category": "moi",
+              "display_group": "AI Processing",
+              "tags": [
+                "llm",
+                "inference",
+                "generation",
+                "text"
+              ],
+              "summary": "Call a workspace LLM model to generate natural-language output. prompt is the user-authored instruction; optional text binds upstream payload or a runtime value. Omit text when there is no upstream document. Pass text/result to saving, extraction, or downstream processing nodes.",
+              "side_effect_class": "external_io",
+              "idempotence": "non_idempotent_or_requires_key",
+              "required_fields": [
+                "prompt"
+              ]
+            }
+          },
+          {
+            "version": "v1",
+            "description": "Call a workspace LLM model to generate natural-language output. prompt is the user-authored instruction; optional text binds upstream payload or a runtime value. Omit text when there is no upstream document. Pass text/result to saving, extraction, or downstream processing nodes.",
+            "visibility": "internal",
+            "stream": false,
+            "source": "system",
+            "provider": "go-worker",
+            "input_schema": "{\"additionalProperties\":true,\"description\":\"Generate natural-language output with a workspace LLM model. prompt is the user-authored instruction. Optional text is the payload to reason over; omit it when there is no upstream or runtime document.\",\"example\":{\"max_tokens\":1,\"model\":\"example\",\"prompt\":\"example\"},\"properties\":{\"max_tokens\":{\"description\":\"Optional maximum generated tokens.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"model\":{\"description\":\"Optional workspace LLM model. Empty reads the configured ai_infer AI Studio slot default.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"prompt\":{\"description\":\"User-authored instruction sent as the user message. Do not put upstream document payload in this field.\",\"example\":\"example\",\"minLength\":1,\"type\":\"string\",\"x-range\":\"length \\u003e= 1\"},\"system_prompt\":{\"description\":\"Optional system prompt. Use only when the user explicitly specifies role or behavior constraints.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"temperature\":{\"description\":\"Optional sampling temperature.\",\"example\":0,\"maximum\":2,\"minimum\":0,\"type\":\"number\",\"x-range\":\"\\u003e= 0, \\u003c= 2\"},\"text\":{\"description\":\"Optional plain-text payload to reason over, bound from an upstream text-producing node or supplied at runtime. Omit when the instruction is the whole user message.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"}},\"required\":[\"prompt\"],\"type\":\"object\",\"x-range\":\"JSON object\"}",
+            "output_schema": "{\"additionalProperties\":true,\"description\":\"LLM inference output. Downstream nodes can consume text or result.\",\"example\":{\"model\":\"example\",\"result\":\"example\",\"text\":\"example\"},\"properties\":{\"model\":{\"description\":\"Model used for generation.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"result\":{\"description\":\"Alias of generated assistant text for generic downstream consumers.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"text\":{\"description\":\"Generated assistant text.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"usage\":{\"additionalProperties\":false,\"description\":\"Token usage the model provider reported for this call. Absent when the provider reported none.\",\"example\":{\"cached_tokens\":1,\"input_tokens\":1,\"output_tokens\":1},\"properties\":{\"cached_tokens\":{\"description\":\"Input tokens served from the provider's prompt cache.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},\"input_tokens\":{\"description\":\"Prompt tokens sent to the model.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},\"output_tokens\":{\"description\":\"Tokens the model generated.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},\"reasoning_tokens\":{\"description\":\"Output tokens spent on reasoning.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},\"total_tokens\":{\"description\":\"Input plus output tokens.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"}},\"required\":[\"input_tokens\",\"output_tokens\",\"total_tokens\"],\"type\":\"object\",\"x-range\":\"no undeclared properties\"}},\"required\":[\"text\"],\"type\":\"object\",\"x-range\":\"JSON object\"}",
+            "input_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Call a workspace LLM model to generate natural-language output. prompt is the user-authored instruction; optional text binds upstream payload or a runtime value. Omit text when there is no upstream document. Pass text/result to saving, extraction, or downstream processing nodes.",
+              "display_name": "AI Inference",
+              "fields": [
+                {
+                  "description": "Plain text supplied directly or bound from an upstream text-producing node.",
+                  "json_type": "string",
+                  "name": "text",
+                  "path": "text",
+                  "placeholder": "Text",
+                  "range": "upstream workflow output or runtime API input",
+                  "title": "Text",
+                  "value_source": "upstream_or_runtime",
+                  "widget": "textarea"
+                },
+                {
+                  "default": "",
+                  "description": "User-authored instruction sent to the model. Bind document payload to text instead of concatenating it here.",
+                  "json_type": "string",
+                  "name": "prompt",
+                  "path": "prompt",
+                  "placeholder": "Prompt",
+                  "range": "length >= 1",
+                  "required": true,
+                  "title": "Prompt",
+                  "value_source": "user_input",
+                  "widget": "textarea"
+                },
+                {
+                  "default": "",
+                  "description": "System-level instruction that constrains the model's role, style, or output format.",
+                  "json_type": "string",
+                  "name": "system_prompt",
+                  "path": "system_prompt",
+                  "placeholder": "System prompt",
+                  "range": "length >= 1",
+                  "title": "System prompt",
+                  "value_source": "user_input",
+                  "widget": "textarea"
+                },
+                {
+                  "default": 0,
+                  "description": "Sampling temperature for model output. Lower values are more deterministic.",
+                  "json_type": "number",
+                  "name": "temperature",
+                  "path": "temperature",
+                  "placeholder": "Temperature",
+                  "range": "number",
+                  "title": "Temperature",
+                  "value_source": "user_input",
+                  "widget": "number"
+                },
+                {
+                  "default": 0,
+                  "description": "Maximum number of tokens the model may generate.",
+                  "json_type": "integer",
+                  "name": "max_tokens",
+                  "path": "max_tokens",
+                  "placeholder": "Max tokens",
+                  "range": "integer >= 0",
+                  "title": "Max tokens",
+                  "value_source": "user_input",
+                  "widget": "number"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:llm.output.generate",
+              "provider": "go-worker",
+              "required_fields": [
+                "prompt"
+              ],
+              "role": "input"
+            },
+            "output_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Call a workspace LLM model to generate natural-language output. prompt is the user-authored instruction; optional text binds upstream payload or a runtime value. Omit text when there is no upstream document. Pass text/result to saving, extraction, or downstream processing nodes.",
+              "display_name": "AI Inference",
+              "fields": [
+                {
+                  "description": "Model used for generation.",
+                  "json_type": "string",
+                  "name": "model",
+                  "path": "model",
+                  "placeholder": "LLM model",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "LLM model",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Alias of generated assistant text for generic downstream consumers.",
+                  "json_type": "string",
+                  "name": "result",
+                  "path": "result",
+                  "placeholder": "Result",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "Result",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Generated assistant text.",
+                  "json_type": "string",
+                  "name": "text",
+                  "path": "text",
+                  "placeholder": "Text",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "Text",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Token usage the model provider reported for this call. Absent when the provider reported none.",
+                  "json_type": "object",
+                  "name": "usage",
+                  "path": "usage",
+                  "placeholder": "usage",
+                  "range": "object",
+                  "read_only": true,
+                  "title": "usage",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:llm.output.generate",
+              "provider": "go-worker",
+              "role": "output"
+            },
+            "input": {
+              "json_type": "object",
+              "description": "Generate natural-language output with a workspace LLM model. prompt is the user-authored instruction. Optional text is the payload to reason over; omit it when there is no upstream or runtime document.",
+              "additional_properties": true,
+              "required_fields": [
+                "prompt"
+              ],
+              "fields": [
+                {
+                  "name": "max_tokens",
+                  "json_type": "integer",
+                  "description": "Optional maximum generated tokens.",
+                  "example": 1,
+                  "hint": {}
+                },
+                {
+                  "name": "model",
+                  "json_type": "string",
+                  "description": "Optional workspace LLM model. Empty reads the configured ai_infer AI Studio slot default.",
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "prompt",
+                  "json_type": "string",
+                  "description": "User-authored instruction sent as the user message. Do not put upstream document payload in this field.",
+                  "required": true,
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "system_prompt",
+                  "json_type": "string",
+                  "description": "Optional system prompt. Use only when the user explicitly specifies role or behavior constraints.",
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "temperature",
+                  "json_type": "number",
+                  "description": "Optional sampling temperature.",
+                  "example": 0,
+                  "hint": {}
+                },
+                {
+                  "name": "text",
+                  "json_type": "string",
+                  "description": "Optional plain-text payload to reason over, bound from an upstream text-producing node or supplied at runtime. Omit when the instruction is the whole user message.",
+                  "example": "example",
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "max_tokens": 1,
+                "model": "example",
+                "prompt": "example"
+              }
+            },
+            "output": {
+              "json_type": "object",
+              "description": "LLM inference output. Downstream nodes can consume text or result.",
+              "additional_properties": true,
+              "required_fields": [
+                "text"
+              ],
+              "fields": [
+                {
+                  "name": "model",
+                  "json_type": "string",
+                  "description": "Model used for generation.",
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "result",
+                  "json_type": "string",
+                  "description": "Alias of generated assistant text for generic downstream consumers.",
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "text",
+                  "json_type": "string",
+                  "description": "Generated assistant text.",
+                  "required": true,
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "usage",
+                  "json_type": "object",
+                  "description": "Token usage the model provider reported for this call. Absent when the provider reported none.",
+                  "example": {
+                    "cached_tokens": 1,
+                    "input_tokens": 1,
+                    "output_tokens": 1
+                  },
+                  "fields": [
+                    {
+                      "name": "cached_tokens",
+                      "json_type": "integer",
+                      "description": "Input tokens served from the provider's prompt cache.",
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "input_tokens",
+                      "json_type": "integer",
+                      "description": "Prompt tokens sent to the model.",
+                      "required": true,
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "output_tokens",
+                      "json_type": "integer",
+                      "description": "Tokens the model generated.",
+                      "required": true,
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "reasoning_tokens",
+                      "json_type": "integer",
+                      "description": "Output tokens spent on reasoning.",
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "total_tokens",
+                      "json_type": "integer",
+                      "description": "Input plus output tokens.",
+                      "required": true,
+                      "example": 1,
+                      "hint": {}
+                    }
+                  ],
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "model": "example",
+                "result": "example",
+                "text": "example"
+              }
+            },
+            "agent_context": {
+              "provider": "go-worker",
+              "display_name": "AI Inference",
+              "category": "moi",
+              "display_group": "AI Processing",
+              "tags": [
+                "internal",
+                "llm",
+                "inference",
+                "generation",
+                "text"
+              ],
+              "summary": "Call a workspace LLM model to generate natural-language output. prompt is the user-authored instruction; optional text binds upstream payload or a runtime value. Omit text when there is no upstream document. Pass text/result to saving, extraction, or downstream processing nodes.",
+              "side_effect_class": "external_io",
+              "idempotence": "non_idempotent_or_requires_key",
+              "required_fields": [
+                "prompt"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "moi:data.table.upsert_json": {
+    "http": 200,
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "node_id": "moi:data.table.upsert_json",
+        "display_name": "Save to MOI Table",
+        "short_description": "Write one structured JSON object or values map into a workspace data table. It usually follows JSON output from LLM extraction or custom operators; for rows-style table arrays, prefer Catalog CSV saving or SQL/import nodes. Use table_ref for an existing table; when writing by table_name you must also select the parent database with database_ref, which cannot be omitted.",
+        "category": "Data IO",
+        "tags": [
+          "table",
+          "json"
+        ],
+        "source": "system",
+        "provider": "go-worker",
+        "preferred_version": "v3",
+        "visibility": "user",
+        "versions": [
+          {
+            "version": "v3",
+            "description": "Write one structured JSON object or values map into a workspace data table. It usually follows JSON output from LLM extraction or custom operators; for rows-style table arrays, prefer Catalog CSV saving or SQL/import nodes. Use table_ref for an existing table; when writing by table_name you must also select the parent database with database_ref, which cannot be omitted.",
+            "visibility": "user",
+            "stream": false,
+            "source": "system",
+            "provider": "go-worker",
+            "input_schema": "{\"additionalProperties\":false,\"anyOf\":[{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"not\":{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"rows\"],\"type\":\"object\",\"x-range\":\"JSON object\"},\"required\":[\"raw_json\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"not\":{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"rows\"],\"type\":\"object\",\"x-range\":\"JSON object\"},\"required\":[\"values\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"not\":{\"anyOf\":[{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"raw_json\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"values\"],\"type\":\"object\",\"x-range\":\"JSON object\"}],\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"required\":[\"rows\"],\"type\":\"object\",\"x-range\":\"JSON object\"}],\"description\":\"Write one structured JSON object or a rows array into a workspace table. The destination is either table_ref (an existing Catalog table selected for each run) or table_name together with a required database_ref Catalog database picker object; a table_name without database_ref is invalid. For auto-create or same-name reuse, select the parent database with database_ref and keep table_name as literal text; json_schema continues to drive auto-creation. The two destination modes are mutually exclusive. Exactly one payload group is required: raw_json and/or values, or a non-empty rows array. Unknown fields are rejected.\",\"example\":{\"raw_json\":{\"amount\":120.5,\"order_id\":\"A001\"},\"table_ref\":{\"table_id\":42}},\"oneOf\":[{\"description\":\"Existing Catalog table selection mode.\",\"example\":{\"raw_json\":{\"order_id\":\"A001\"},\"table_ref\":{\"table_id\":42}},\"not\":{\"anyOf\":[{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"table_name\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"database_ref\"],\"type\":\"object\",\"x-range\":\"JSON object\"}],\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"required\":[\"table_ref\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"Literal physical table name mode. database_ref selects the parent database and is required.\",\"example\":{\"database_ref\":{\"database_id\":7},\"raw_json\":{\"order_id\":\"A001\"},\"table_name\":\"contracts\"},\"not\":{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"table_ref\"],\"type\":\"object\",\"x-range\":\"JSON object\"},\"required\":[\"table_name\",\"database_ref\"],\"type\":\"object\",\"x-range\":\"JSON object\"}],\"properties\":{\"aliases\":{\"additionalProperties\":true,\"description\":\"Optional column mapping. Each key is a destination column name; each value is a payload key, or an array of payload keys tried in order, whose first non-empty value fills that column when the payload has no non-empty value under the column name itself. Example: {\\\"ticket_created_at\\\": \\\"created_at\\\"} writes the payload created_at value into column ticket_created_at. Entries whose key is not a destination column are ignored. A mapped payload key is not reported as unmatched, but when it also names a destination column its value is still written to that column.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"column_whitelist\":{\"description\":\"Explicit subset-write mode. Only listed columns are written and other payload keys are intentionally ignored. When omitted, every payload key must match a table column or an aliases mapping.\",\"example\":[\"example\"],\"items\":{\"description\":\"Parameter `column_whitelist_item` (string).\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"},\"database_ref\":{\"additionalProperties\":true,\"description\":\"Catalog database picker value for table_name mode. Bind the complete picker object; database_id is the authoritative identity resolved by the worker at runtime.\",\"example\":{\"catalog_id\":1,\"database_id\":1,\"database_name\":\"example_name\"},\"properties\":{\"catalog_id\":{\"description\":\"Catalog numeric ID when supplied by the picker.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"database_id\":{\"description\":\"Selected Catalog database numeric ID.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"database_name\":{\"description\":\"Selected database display or physical name when supplied by the picker; runtime resolution still uses database_id.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"kind\":{\"description\":\"Catalog picker resource kind.\",\"enum\":[\"database\"],\"example\":\"database\",\"type\":\"string\",\"x-range\":\"one of: database\"},\"name\":{\"description\":\"Selected database display name when supplied by the picker.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"}},\"required\":[\"database_id\"],\"type\":\"object\",\"x-range\":\"JSON object\"},\"json_schema\":{\"additionalProperties\":true,\"description\":\"JSON Schema describing the expected row structure. When the table does not exist, this schema drives auto-creation. When the table already exists, every schema property missing from that table is added as a new column before the write. Each property becomes a column with type inferred from the schema type (string→TEXT, integer→BIGINT, number→DOUBLE, boolean→BOOLEAN, array/object→JSON). Property names must be valid MatrixOne column names; invalid names fail explicitly. An auto-created table always adds id BIGINT AUTO_INCREMENT PRIMARY KEY and created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP; schema properties or payload keys named id or created_at do not create columns of their own. A payload created_at value is written into that TIMESTAMP column, which accepts YYYY-MM-DD, YYYY-MM-DD HH:MM:SS or YYYY-MM-DDTHH:MM:SS and rejects a trailing Z or UTC offset; keep source timestamps under another field name to store them as text.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object schema; Go authoring also accepts one raw-string JSON object literal.\",\"x-semantic-role\":\"json_schema\"},\"policy\":{\"default\":\"OVERWRITE\",\"description\":\"Conflict policy for an existing target row handled by this call. Omitted input uses OVERWRITE; this setting does not coordinate concurrent calls.\",\"enum\":[\"FAIL\",\"SKIP\",\"OVERWRITE\"],\"example\":\"FAIL\",\"type\":\"string\",\"x-range\":\"one of: FAIL | SKIP | OVERWRITE\"},\"raw_json\":{\"description\":\"One non-empty JSON object, supplied either as an object value or a string that decodes to a JSON object. Arrays, scalar JSON values, malformed strings, empty objects, and empty strings fail when passed directly. A rows array may feed raw_json only through an explicit jq transform that selects or reshapes it into exactly one non-empty object; a direct rows-array binding remains invalid. The worker does not repair truncated or fenced JSON. Without column_whitelist, every decoded key must match an existing destination column or be explicitly mapped by aliases. raw_json may be combined with values; it is mutually exclusive with rows.\",\"example\":{\"amount\":120.5,\"order_id\":\"A001\"},\"x-range\":\"JSON object or a string containing one JSON object\",\"x-semantic-role\":\"structured_json_payload\",\"x-semantic-role-jq-source-roles\":[\"tabular_rows_payload\"]},\"rows\":{\"description\":\"Structured row objects to insert or upsert atomically in this call. Input field names must match destination columns after aliases or column_whitelist are applied. Every row is validated against the destination columns before the transaction starts; rows is mutually exclusive with raw_json and values. This does not serialize or deduplicate other calls targeting the same destination.\",\"example\":[{}],\"items\":{\"additionalProperties\":true,\"description\":\"Parameter `rows_item` (object).\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"minItems\":1,\"type\":\"array\",\"x-range\":\"length \\u003e= 1\",\"x-semantic-role\":\"tabular_rows_payload\"},\"table_name\":{\"description\":\"Literal physical destination table name alternative to table_ref. For newly authored workflows, pair it with database_ref selected through the Catalog database picker. Keep table_name as text. If the named table exists it is reused; otherwise json_schema or raw data drives auto-creation. Use table_ref instead when selecting an existing MOI table.\",\"example\":\"example_name\",\"minLength\":1,\"pattern\":\"^[A-Za-z_][A-Za-z0-9_]{0,127}$\",\"type\":\"string\",\"x-range\":\"length \\u003e= 1, pattern: ^[A-Za-z_][A-Za-z0-9_]{0,127}$\"},\"table_ref\":{\"additionalProperties\":true,\"description\":\"Existing Catalog destination table selected separately for each workflow run. Declare this as a workflow-run input when the workflow accepts an existing MOI table without fixing its identity during design. The selected table must contain every incoming field after aliases or column_whitelist are applied. The worker resolves database and table names from table_id; table_ref is mutually exclusive with table_name and every database selector.\",\"example\":{\"database_name\":\"example_name\",\"table_id\":1,\"table_name\":\"example_name\"},\"properties\":{\"database_name\":{\"description\":\"Physical database name resolved from table_id when present in an output.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"table_id\":{\"description\":\"Catalog table numeric ID.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"table_name\":{\"description\":\"Physical table name resolved from table_id when present in an output.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"}},\"required\":[\"table_id\"],\"type\":\"object\",\"x-range\":\"JSON object\"},\"update_exclude_columns\":{\"description\":\"Columns excluded from update when an existing row is overwritten.\",\"example\":[\"2026-01-02T15:04:05Z\"],\"items\":{\"description\":\"Parameter `update_exclude_columns_item` (string).\",\"example\":\"2026-01-02T15:04:05Z\",\"type\":\"string\",\"x-range\":\"any string\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"},\"values\":{\"additionalProperties\":true,\"description\":\"Explicit column values map. These values are merged with raw_json and take precedence on key conflict. values may be combined with raw_json; it is mutually exclusive with rows.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"}},\"type\":\"object\",\"x-range\":\"no undeclared properties\",\"x-resource-write-targets\":[{\"concurrent_access\":\"unsafe\",\"paths\":[\"table_ref\"],\"selector_path\":\"table_ref\"},{\"concurrent_access\":\"unsafe\",\"paths\":[\"table_name\",\"database_ref\"],\"selector_path\":\"table_name\"}]}",
+            "output_schema": "{\"additionalProperties\":false,\"description\":\"Structured table write result. table_ref is present only when the destination was selected through table_ref.\",\"example\":{\"affected_rows\":1,\"database\":\"example\",\"table_name\":\"example_name\"},\"properties\":{\"affected_rows\":{\"description\":\"Number of rows inserted or updated.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},\"database\":{\"description\":\"Database that received the write.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"table_name\":{\"description\":\"Table that received the write.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"table_ref\":{\"additionalProperties\":true,\"description\":\"Resolved destination Catalog table reference when the target was selected through table_ref.\",\"example\":{\"database_name\":\"example_name\",\"table_id\":1,\"table_name\":\"example_name\"},\"properties\":{\"database_name\":{\"description\":\"Physical database name resolved from table_id when present in an output.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"table_id\":{\"description\":\"Catalog table numeric ID.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"table_name\":{\"description\":\"Physical table name resolved from table_id when present in an output.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"}},\"required\":[\"table_id\"],\"type\":\"object\",\"x-range\":\"JSON object\"},\"written_columns\":{\"description\":\"Column names written from the payload.\",\"example\":[\"example\"],\"items\":{\"description\":\"Parameter `written_columns_item` (string).\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"}},\"required\":[\"database\",\"table_name\",\"affected_rows\",\"written_columns\"],\"type\":\"object\",\"x-range\":\"no undeclared properties\"}",
+            "input_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Write one structured JSON object or values map into a workspace data table. It usually follows JSON output from LLM extraction or custom operators; for rows-style table arrays, prefer Catalog CSV saving or SQL/import nodes. Use table_ref for an existing table; when writing by table_name you must also select the parent database with database_ref, which cannot be omitted.",
+              "display_name": "Save to MOI Table",
+              "fields": [
+                {
+                  "description": "Existing Catalog destination table selected at runtime. Use this instead of table_name when the destination already exists.",
+                  "json_type": "object",
+                  "name": "table_ref",
+                  "path": "table_ref",
+                  "placeholder": "Table",
+                  "range": "selected catalog resource",
+                  "resource_type": "table",
+                  "selector": {
+                    "kind": "catalog_lookup",
+                    "resource_type": "table"
+                  },
+                  "title": "Table",
+                  "value_source": "catalog_lookup",
+                  "widget": "catalog_picker"
+                },
+                {
+                  "description": "Catalog database for table_name mode. Select the parent database; the worker resolves database_id and reuses or auto-creates the text table_name from json_schema.",
+                  "json_type": "string",
+                  "name": "database_ref",
+                  "path": "database_ref",
+                  "placeholder": "Database",
+                  "range": "selected catalog resource",
+                  "resource_type": "database",
+                  "selector": {
+                    "kind": "catalog_lookup",
+                    "resource_type": "database"
+                  },
+                  "title": "Database",
+                  "value_source": "catalog_lookup",
+                  "widget": "catalog_picker"
+                },
+                {
+                  "default": "",
+                  "description": "Destination MatrixOne table name.",
+                  "json_type": "string",
+                  "name": "table_name",
+                  "path": "table_name",
+                  "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,127}$",
+                  "placeholder": "Table",
+                  "range": "SQL identifier: starts with a letter or underscore, followed by letters, digits, or underscores",
+                  "title": "Table",
+                  "value_source": "user_input",
+                  "widget": "text"
+                },
+                {
+                  "description": "JSON object or array supplied directly by the user or an upstream node.",
+                  "json_type": "object",
+                  "name": "raw_json",
+                  "path": "raw_json",
+                  "placeholder": "JSON",
+                  "range": "upstream workflow output",
+                  "title": "JSON",
+                  "value_source": "upstream",
+                  "widget": "json_schema"
+                },
+                {
+                  "description": "Structured table rows returned by a query or read operation.",
+                  "json_type": "string",
+                  "name": "rows",
+                  "path": "rows",
+                  "placeholder": "Rows",
+                  "range": "upstream workflow output",
+                  "title": "Rows",
+                  "value_source": "upstream",
+                  "widget": "text"
+                },
+                {
+                  "description": "JSON Schema that defines the fields to extract and their expected types.",
+                  "json_type": "object",
+                  "name": "json_schema",
+                  "path": "json_schema",
+                  "placeholder": "Extraction schema",
+                  "range": "valid JSON object",
+                  "title": "Extraction schema",
+                  "value_source": "upstream_or_runtime",
+                  "widget": "json_schema"
+                },
+                {
+                  "description": "Field-value object or array supplied by an upstream extraction or custom processing node.",
+                  "json_type": "string",
+                  "name": "values",
+                  "path": "values",
+                  "placeholder": "Values",
+                  "range": "upstream workflow output",
+                  "title": "Values",
+                  "value_source": "upstream",
+                  "widget": "text"
+                },
+                {
+                  "default": "FAIL",
+                  "description": "What to do when a target row already exists: fail, skip, or overwrite. A value written in the workflow is the default the user can change before a run.",
+                  "enum_options": [
+                    {
+                      "description": "Fail this write when the target row already exists",
+                      "label": "Fail",
+                      "value": "FAIL"
+                    },
+                    {
+                      "description": "Skip this write when the target row already exists",
+                      "label": "Skip",
+                      "value": "SKIP"
+                    },
+                    {
+                      "description": "Overwrite the existing target row with this write",
+                      "label": "Overwrite",
+                      "value": "OVERWRITE"
+                    }
+                  ],
+                  "json_type": "string",
+                  "name": "policy",
+                  "path": "policy",
+                  "placeholder": "Write policy",
+                  "range": "one of enum_options",
+                  "title": "Write policy",
+                  "value_source": "user_input",
+                  "widget": "select"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:data.table.upsert_json",
+              "provider": "go-worker",
+              "role": "input"
+            },
+            "output_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Write one structured JSON object or values map into a workspace data table. It usually follows JSON output from LLM extraction or custom operators; for rows-style table arrays, prefer Catalog CSV saving or SQL/import nodes. Use table_ref for an existing table; when writing by table_name you must also select the parent database with database_ref, which cannot be omitted.",
+              "display_name": "Save to MOI Table",
+              "fields": [
+                {
+                  "description": "Number of rows inserted or updated.",
+                  "json_type": "integer",
+                  "name": "affected_rows",
+                  "path": "affected_rows",
+                  "placeholder": "Affected rows",
+                  "range": "integer",
+                  "read_only": true,
+                  "title": "Affected rows",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Database that received the write.",
+                  "json_type": "string",
+                  "name": "database",
+                  "path": "database",
+                  "placeholder": "Database",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "Database",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Table that received the write.",
+                  "json_type": "string",
+                  "name": "table_name",
+                  "path": "table_name",
+                  "placeholder": "Table",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "Table",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Resolved destination Catalog table reference when the target was selected through table_ref.",
+                  "json_type": "object",
+                  "name": "table_ref",
+                  "path": "table_ref",
+                  "placeholder": "Table",
+                  "range": "object",
+                  "read_only": true,
+                  "title": "Table",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Column names written from the payload.",
+                  "json_type": "array",
+                  "name": "written_columns",
+                  "path": "written_columns",
+                  "placeholder": "Written columns",
+                  "range": "array",
+                  "read_only": true,
+                  "title": "Written columns",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:data.table.upsert_json",
+              "provider": "go-worker",
+              "role": "output"
+            },
+            "input": {
+              "json_type": "object",
+              "description": "Write one structured JSON object or a rows array into a workspace table. The destination is either table_ref (an existing Catalog table selected for each run) or table_name together with a required database_ref Catalog database picker object; a table_name without database_ref is invalid. For auto-create or same-name reuse, select the parent database with database_ref and keep table_name as literal text; json_schema continues to drive auto-creation. The two destination modes are mutually exclusive. Exactly one payload group is required: raw_json and/or values, or a non-empty rows array. Unknown fields are rejected.",
+              "fields": [
+                {
+                  "name": "aliases",
+                  "json_type": "object",
+                  "description": "Optional column mapping. Each key is a destination column name; each value is a payload key, or an array of payload keys tried in order, whose first non-empty value fills that column when the payload has no non-empty value under the column name itself. Example: {\"ticket_created_at\": \"created_at\"} writes the payload created_at value into column ticket_created_at. Entries whose key is not a destination column are ignored. A mapped payload key is not reported as unmatched, but when it also names a destination column its value is still written to that column.",
+                  "example": {},
+                  "additional_properties": true,
+                  "hint": {}
+                },
+                {
+                  "name": "column_whitelist",
+                  "json_type": "array",
+                  "description": "Explicit subset-write mode. Only listed columns are written and other payload keys are intentionally ignored. When omitted, every payload key must match a table column or an aliases mapping.",
+                  "example": [
+                    "example"
+                  ],
+                  "item": {
+                    "name": "item",
+                    "json_type": "string",
+                    "description": "Parameter `column_whitelist_item` (string).",
+                    "example": "example",
+                    "hint": {}
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "database_ref",
+                  "json_type": "object",
+                  "description": "Catalog database picker value for table_name mode. Bind the complete picker object; database_id is the authoritative identity resolved by the worker at runtime.",
+                  "example": {
+                    "catalog_id": 1,
+                    "database_id": 1,
+                    "database_name": "example_name"
+                  },
+                  "additional_properties": true,
+                  "fields": [
+                    {
+                      "name": "catalog_id",
+                      "json_type": "integer",
+                      "description": "Catalog numeric ID when supplied by the picker.",
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "database_id",
+                      "json_type": "integer",
+                      "description": "Selected Catalog database numeric ID.",
+                      "required": true,
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "database_name",
+                      "json_type": "string",
+                      "description": "Selected database display or physical name when supplied by the picker; runtime resolution still uses database_id.",
+                      "example": "example_name",
+                      "hint": {}
+                    },
+                    {
+                      "name": "kind",
+                      "json_type": "string",
+                      "description": "Catalog picker resource kind.",
+                      "example": "database",
+                      "enum_values": [
+                        "database"
+                      ],
+                      "hint": {}
+                    },
+                    {
+                      "name": "name",
+                      "json_type": "string",
+                      "description": "Selected database display name when supplied by the picker.",
+                      "example": "example_name",
+                      "hint": {}
+                    }
+                  ],
+                  "hint": {}
+                },
+                {
+                  "name": "json_schema",
+                  "json_type": "object",
+                  "description": "JSON Schema describing the expected row structure. When the table does not exist, this schema drives auto-creation. When the table already exists, every schema property missing from that table is added as a new column before the write. Each property becomes a column with type inferred from the schema type (string→TEXT, integer→BIGINT, number→DOUBLE, boolean→BOOLEAN, array/object→JSON). Property names must be valid MatrixOne column names; invalid names fail explicitly. An auto-created table always adds id BIGINT AUTO_INCREMENT PRIMARY KEY and created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP; schema properties or payload keys named id or created_at do not create columns of their own. A payload created_at value is written into that TIMESTAMP column, which accepts YYYY-MM-DD, YYYY-MM-DD HH:MM:SS or YYYY-MM-DDTHH:MM:SS and rejects a trailing Z or UTC offset; keep source timestamps under another field name to store them as text.",
+                  "example": {},
+                  "additional_properties": true,
+                  "hint": {}
+                },
+                {
+                  "name": "policy",
+                  "json_type": "string",
+                  "description": "Conflict policy for an existing target row handled by this call. Omitted input uses OVERWRITE; this setting does not coordinate concurrent calls.",
+                  "example": "FAIL",
+                  "default": "OVERWRITE",
+                  "enum_values": [
+                    "FAIL",
+                    "SKIP",
+                    "OVERWRITE"
+                  ],
+                  "hint": {}
+                },
+                {
+                  "name": "raw_json",
+                  "description": "One non-empty JSON object, supplied either as an object value or a string that decodes to a JSON object. Arrays, scalar JSON values, malformed strings, empty objects, and empty strings fail when passed directly. A rows array may feed raw_json only through an explicit jq transform that selects or reshapes it into exactly one non-empty object; a direct rows-array binding remains invalid. The worker does not repair truncated or fenced JSON. Without column_whitelist, every decoded key must match an existing destination column or be explicitly mapped by aliases. raw_json may be combined with values; it is mutually exclusive with rows.",
+                  "example": {
+                    "amount": 120.5,
+                    "order_id": "A001"
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "rows",
+                  "json_type": "array",
+                  "description": "Structured row objects to insert or upsert atomically in this call. Input field names must match destination columns after aliases or column_whitelist are applied. Every row is validated against the destination columns before the transaction starts; rows is mutually exclusive with raw_json and values. This does not serialize or deduplicate other calls targeting the same destination.",
+                  "example": [
+                    {}
+                  ],
+                  "item": {
+                    "name": "item",
+                    "json_type": "object",
+                    "description": "Parameter `rows_item` (object).",
+                    "example": {},
+                    "additional_properties": true,
+                    "hint": {}
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "table_name",
+                  "json_type": "string",
+                  "description": "Literal physical destination table name alternative to table_ref. For newly authored workflows, pair it with database_ref selected through the Catalog database picker. Keep table_name as text. If the named table exists it is reused; otherwise json_schema or raw data drives auto-creation. Use table_ref instead when selecting an existing MOI table.",
+                  "example": "example_name",
+                  "hint": {}
+                },
+                {
+                  "name": "table_ref",
+                  "json_type": "object",
+                  "description": "Existing Catalog destination table selected separately for each workflow run. Declare this as a workflow-run input when the workflow accepts an existing MOI table without fixing its identity during design. The selected table must contain every incoming field after aliases or column_whitelist are applied. The worker resolves database and table names from table_id; table_ref is mutually exclusive with table_name and every database selector.",
+                  "example": {
+                    "database_name": "example_name",
+                    "table_id": 1,
+                    "table_name": "example_name"
+                  },
+                  "additional_properties": true,
+                  "fields": [
+                    {
+                      "name": "database_name",
+                      "json_type": "string",
+                      "description": "Physical database name resolved from table_id when present in an output.",
+                      "example": "example_name",
+                      "hint": {}
+                    },
+                    {
+                      "name": "table_id",
+                      "json_type": "integer",
+                      "description": "Catalog table numeric ID.",
+                      "required": true,
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "table_name",
+                      "json_type": "string",
+                      "description": "Physical table name resolved from table_id when present in an output.",
+                      "example": "example_name",
+                      "hint": {}
+                    }
+                  ],
+                  "hint": {}
+                },
+                {
+                  "name": "update_exclude_columns",
+                  "json_type": "array",
+                  "description": "Columns excluded from update when an existing row is overwritten.",
+                  "example": [
+                    "2026-01-02T15:04:05Z"
+                  ],
+                  "item": {
+                    "name": "item",
+                    "json_type": "string",
+                    "description": "Parameter `update_exclude_columns_item` (string).",
+                    "example": "2026-01-02T15:04:05Z",
+                    "hint": {}
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "values",
+                  "json_type": "object",
+                  "description": "Explicit column values map. These values are merged with raw_json and take precedence on key conflict. values may be combined with raw_json; it is mutually exclusive with rows.",
+                  "example": {},
+                  "additional_properties": true,
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "raw_json": {
+                  "amount": 120.5,
+                  "order_id": "A001"
+                },
+                "table_ref": {
+                  "table_id": 42
+                }
+              }
+            },
+            "output": {
+              "json_type": "object",
+              "description": "Structured table write result. table_ref is present only when the destination was selected through table_ref.",
+              "required_fields": [
+                "database",
+                "table_name",
+                "affected_rows",
+                "written_columns"
+              ],
+              "fields": [
+                {
+                  "name": "affected_rows",
+                  "json_type": "integer",
+                  "description": "Number of rows inserted or updated.",
+                  "required": true,
+                  "example": 1,
+                  "hint": {}
+                },
+                {
+                  "name": "database",
+                  "json_type": "string",
+                  "description": "Database that received the write.",
+                  "required": true,
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "table_name",
+                  "json_type": "string",
+                  "description": "Table that received the write.",
+                  "required": true,
+                  "example": "example_name",
+                  "hint": {}
+                },
+                {
+                  "name": "table_ref",
+                  "json_type": "object",
+                  "description": "Resolved destination Catalog table reference when the target was selected through table_ref.",
+                  "example": {
+                    "database_name": "example_name",
+                    "table_id": 1,
+                    "table_name": "example_name"
+                  },
+                  "additional_properties": true,
+                  "fields": [
+                    {
+                      "name": "database_name",
+                      "json_type": "string",
+                      "description": "Physical database name resolved from table_id when present in an output.",
+                      "example": "example_name",
+                      "hint": {}
+                    },
+                    {
+                      "name": "table_id",
+                      "json_type": "integer",
+                      "description": "Catalog table numeric ID.",
+                      "required": true,
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "table_name",
+                      "json_type": "string",
+                      "description": "Physical table name resolved from table_id when present in an output.",
+                      "example": "example_name",
+                      "hint": {}
+                    }
+                  ],
+                  "hint": {}
+                },
+                {
+                  "name": "written_columns",
+                  "json_type": "array",
+                  "description": "Column names written from the payload.",
+                  "required": true,
+                  "example": [
+                    "example"
+                  ],
+                  "item": {
+                    "name": "item",
+                    "json_type": "string",
+                    "description": "Parameter `written_columns_item` (string).",
+                    "example": "example",
+                    "hint": {}
+                  },
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "affected_rows": 1,
+                "database": "example",
+                "table_name": "example_name"
+              }
+            },
+            "agent_context": {
+              "provider": "go-worker",
+              "display_name": "Save to MOI Table",
+              "category": "moi",
+              "display_group": "Data IO",
+              "tags": [
+                "table",
+                "json"
+              ],
+              "summary": "Write one structured JSON object or values map into a workspace data table. It usually follows JSON output from LLM extraction or custom operators; for rows-style table arrays, prefer Catalog CSV saving or SQL/import nodes. Use table_ref for an existing table; when writing by table_name you must also select the parent database with database_ref, which cannot be omitted.",
+              "side_effect_class": "writes_state",
+              "idempotence": "non_idempotent_or_requires_key"
+            }
+          },
+          {
+            "version": "v1",
+            "description": "Write one structured JSON object or values map into a workspace data table. It usually follows JSON output from LLM extraction or custom operators; for rows-style table arrays, prefer Catalog CSV saving or SQL/import nodes. Use table_ref for an existing table; when writing by table_name you must also select the parent database with database_ref, which cannot be omitted.",
+            "visibility": "internal",
+            "stream": false,
+            "source": "system",
+            "provider": "go-worker",
+            "input_schema": "{\"additionalProperties\":false,\"anyOf\":[{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"not\":{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"rows\"],\"type\":\"object\",\"x-range\":\"JSON object\"},\"required\":[\"raw_json\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"not\":{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"rows\"],\"type\":\"object\",\"x-range\":\"JSON object\"},\"required\":[\"values\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"not\":{\"anyOf\":[{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"raw_json\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"values\"],\"type\":\"object\",\"x-range\":\"JSON object\"}],\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"required\":[\"rows\"],\"type\":\"object\",\"x-range\":\"JSON object\"}],\"description\":\"Write one structured JSON object or a rows array into a workspace table. The mutated resource is identified by table_ref, or by table_name together with a Catalog database_ref picker object. Select an existing Catalog destination separately for each workflow run with table_ref. For auto-create or same-name reuse, select the parent database with database_ref and keep table_name as literal text; json_schema continues to drive auto-creation. database/database_id and omission of every database selector remain compatibility-only paths for already persisted workflows and are not the authoring path. The two destination modes are mutually exclusive. Exactly one payload group is required: raw_json and/or values, or a non-empty rows array. Unknown fields are rejected.\",\"example\":{\"raw_json\":{\"amount\":120.5,\"order_id\":\"A001\"},\"table_ref\":{\"table_id\":42}},\"oneOf\":[{\"description\":\"Existing Catalog table selection mode.\",\"example\":{\"raw_json\":{\"order_id\":\"A001\"},\"table_ref\":{\"table_id\":42}},\"not\":{\"anyOf\":[{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"table_name\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"database_ref\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"database\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"database_id\"],\"type\":\"object\",\"x-range\":\"JSON object\"}],\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"required\":[\"table_ref\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"Literal physical table name mode. Newly authored workflows select the parent database with database_ref; database/database_id and the connection-default branch exist only for compatibility with already persisted workflows.\",\"example\":{\"database_ref\":{\"database_id\":7},\"raw_json\":{\"order_id\":\"A001\"},\"table_name\":\"contracts\"},\"not\":{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"table_ref\"],\"type\":\"object\",\"x-range\":\"JSON object\"},\"oneOf\":[{\"description\":\"Preferred database selection for newly authored workflows.\",\"example\":{},\"not\":{\"anyOf\":[{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"database\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"database_id\"],\"type\":\"object\",\"x-range\":\"JSON object\"}],\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"required\":[\"database_ref\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"Compatibility-only database_id selection for already persisted workflows.\",\"example\":{},\"not\":{\"anyOf\":[{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"database_ref\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"database\"],\"type\":\"object\",\"x-range\":\"JSON object\"}],\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"required\":[\"database_id\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"Compatibility-only database name selection for already persisted workflows.\",\"example\":{},\"not\":{\"anyOf\":[{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"database_ref\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"database_id\"],\"type\":\"object\",\"x-range\":\"JSON object\"}],\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"required\":[\"database\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"Compatibility-only connection default database for already persisted workflows that omitted every database selector.\",\"example\":{},\"not\":{\"anyOf\":[{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"database_ref\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"database\"],\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"required\":[\"database_id\"],\"type\":\"object\",\"x-range\":\"JSON object\"}],\"description\":\"JSON schema for workflow parameters.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"type\":\"object\",\"x-range\":\"JSON object\"}],\"required\":[\"table_name\"],\"type\":\"object\",\"x-range\":\"JSON object\"}],\"properties\":{\"aliases\":{\"additionalProperties\":true,\"description\":\"Optional column mapping. Each key is a destination column name; each value is a payload key, or an array of payload keys tried in order, whose first non-empty value fills that column when the payload has no non-empty value under the column name itself. Example: {\\\"ticket_created_at\\\": \\\"created_at\\\"} writes the payload created_at value into column ticket_created_at. Entries whose key is not a destination column are ignored. A mapped payload key is not reported as unmatched, but when it also names a destination column its value is still written to that column.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"column_whitelist\":{\"description\":\"Explicit subset-write mode. Only listed columns are written and other payload keys are intentionally ignored. When omitted, every payload key must match a table column or an aliases mapping.\",\"example\":[\"example\"],\"items\":{\"description\":\"Parameter `column_whitelist_item` (string).\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"},\"database\":{\"description\":\"Compatibility-only physical database name used with table_name by already persisted workflows. New workflows must use the database_ref Catalog picker; this field is intentionally absent from input_ui_schema.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"database_id\":{\"description\":\"Compatibility-only database numeric ID used with table_name by already persisted workflows. New workflows must bind the complete database_ref Catalog picker object; this scalar is intentionally absent from input_ui_schema.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"database_ref\":{\"additionalProperties\":true,\"description\":\"Catalog database picker value for table_name mode. Bind the complete picker object; database_id is the authoritative identity resolved by the worker at runtime.\",\"example\":{\"catalog_id\":1,\"database_id\":1,\"database_name\":\"example_name\"},\"properties\":{\"catalog_id\":{\"description\":\"Catalog numeric ID when supplied by the picker.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"database_id\":{\"description\":\"Selected Catalog database numeric ID.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"database_name\":{\"description\":\"Selected database display or physical name when supplied by the picker; runtime resolution still uses database_id.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"kind\":{\"description\":\"Catalog picker resource kind.\",\"enum\":[\"database\"],\"example\":\"database\",\"type\":\"string\",\"x-range\":\"one of: database\"},\"name\":{\"description\":\"Selected database display name when supplied by the picker.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"}},\"required\":[\"database_id\"],\"type\":\"object\",\"x-range\":\"JSON object\"},\"json_schema\":{\"additionalProperties\":true,\"description\":\"JSON Schema describing the expected row structure. When the table does not exist, this schema drives auto-creation. When the table already exists, every schema property missing from that table is added as a new column before the write. Each property becomes a column with type inferred from the schema type (string→TEXT, integer→BIGINT, number→DOUBLE, boolean→BOOLEAN, array/object→JSON). Property names must be valid MatrixOne column names; invalid names fail explicitly. An auto-created table always adds id BIGINT AUTO_INCREMENT PRIMARY KEY and created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP; schema properties or payload keys named id or created_at do not create columns of their own. A payload created_at value is written into that TIMESTAMP column, which accepts YYYY-MM-DD, YYYY-MM-DD HH:MM:SS or YYYY-MM-DDTHH:MM:SS and rejects a trailing Z or UTC offset; keep source timestamps under another field name to store them as text.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object schema; Go authoring also accepts one raw-string JSON object literal.\",\"x-semantic-role\":\"json_schema\"},\"policy\":{\"default\":\"OVERWRITE\",\"description\":\"Conflict policy for an existing target row handled by this call. Omitted input uses OVERWRITE; this setting does not coordinate concurrent calls.\",\"enum\":[\"FAIL\",\"SKIP\",\"OVERWRITE\"],\"example\":\"FAIL\",\"type\":\"string\",\"x-range\":\"one of: FAIL | SKIP | OVERWRITE\"},\"raw_json\":{\"description\":\"One non-empty JSON object, supplied either as an object value or a string that decodes to a JSON object. Arrays, scalar JSON values, malformed strings, empty objects, and empty strings fail when passed directly. A rows array may feed raw_json only through an explicit jq transform that selects or reshapes it into exactly one non-empty object; a direct rows-array binding remains invalid. The worker does not repair truncated or fenced JSON. Without column_whitelist, every decoded key must match an existing destination column or be explicitly mapped by aliases. raw_json may be combined with values; it is mutually exclusive with rows.\",\"example\":{\"amount\":120.5,\"order_id\":\"A001\"},\"x-range\":\"JSON object or a string containing one JSON object\",\"x-semantic-role\":\"structured_json_payload\",\"x-semantic-role-jq-source-roles\":[\"tabular_rows_payload\"]},\"rows\":{\"description\":\"Structured row objects to insert or upsert atomically in this call. Input field names must match destination columns after aliases or column_whitelist are applied. Every row is validated against the destination columns before the transaction starts; rows is mutually exclusive with raw_json and values. This does not serialize or deduplicate other calls targeting the same destination.\",\"example\":[{}],\"items\":{\"additionalProperties\":true,\"description\":\"Parameter `rows_item` (object).\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"minItems\":1,\"type\":\"array\",\"x-range\":\"length \\u003e= 1\",\"x-semantic-role\":\"tabular_rows_payload\"},\"table_name\":{\"description\":\"Literal physical destination table name alternative to table_ref. For newly authored workflows, pair it with database_ref selected through the Catalog database picker. Keep table_name as text. If the named table exists it is reused; otherwise json_schema or raw data drives auto-creation. Use table_ref instead when selecting an existing MOI table.\",\"example\":\"example_name\",\"minLength\":1,\"pattern\":\"^[A-Za-z_][A-Za-z0-9_]{0,127}$\",\"type\":\"string\",\"x-range\":\"length \\u003e= 1, pattern: ^[A-Za-z_][A-Za-z0-9_]{0,127}$\"},\"table_ref\":{\"additionalProperties\":true,\"description\":\"Existing Catalog destination table selected separately for each workflow run. Declare this as a workflow-run input when the workflow accepts an existing MOI table without fixing its identity during design. The selected table must contain every incoming field after aliases or column_whitelist are applied. The worker resolves database and table names from table_id; table_ref is mutually exclusive with table_name and every database selector.\",\"example\":{\"database_name\":\"example_name\",\"table_id\":1,\"table_name\":\"example_name\"},\"properties\":{\"database_name\":{\"description\":\"Physical database name resolved from table_id when present in an output.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"table_id\":{\"description\":\"Catalog table numeric ID.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"table_name\":{\"description\":\"Physical table name resolved from table_id when present in an output.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"}},\"required\":[\"table_id\"],\"type\":\"object\",\"x-range\":\"JSON object\"},\"update_exclude_columns\":{\"description\":\"Columns excluded from update when an existing row is overwritten.\",\"example\":[\"2026-01-02T15:04:05Z\"],\"items\":{\"description\":\"Parameter `update_exclude_columns_item` (string).\",\"example\":\"2026-01-02T15:04:05Z\",\"type\":\"string\",\"x-range\":\"any string\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"},\"values\":{\"additionalProperties\":true,\"description\":\"Explicit column values map. These values are merged with raw_json and take precedence on key conflict. values may be combined with raw_json; it is mutually exclusive with rows.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"}},\"type\":\"object\",\"x-range\":\"no undeclared properties\",\"x-resource-write-targets\":[{\"concurrent_access\":\"unsafe\",\"paths\":[\"table_ref\"],\"selector_path\":\"table_ref\"},{\"concurrent_access\":\"unsafe\",\"paths\":[\"table_name\",\"database_ref\",\"database\",\"database_id\"],\"selector_path\":\"table_name\"}]}",
+            "output_schema": "{\"additionalProperties\":false,\"description\":\"Structured table write result. table_ref is present only when the destination was selected through table_ref.\",\"example\":{\"affected_rows\":1,\"database\":\"example\",\"table_name\":\"example_name\"},\"properties\":{\"affected_rows\":{\"description\":\"Number of rows inserted or updated.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},\"database\":{\"description\":\"Database that received the write.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"table_name\":{\"description\":\"Table that received the write.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"table_ref\":{\"additionalProperties\":true,\"description\":\"Resolved destination Catalog table reference when the target was selected through table_ref.\",\"example\":{\"database_name\":\"example_name\",\"table_id\":1,\"table_name\":\"example_name\"},\"properties\":{\"database_name\":{\"description\":\"Physical database name resolved from table_id when present in an output.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"},\"table_id\":{\"description\":\"Catalog table numeric ID.\",\"example\":1,\"minimum\":1,\"type\":\"integer\",\"x-range\":\"\\u003e= 1\"},\"table_name\":{\"description\":\"Physical table name resolved from table_id when present in an output.\",\"example\":\"example_name\",\"type\":\"string\",\"x-range\":\"any string\"}},\"required\":[\"table_id\"],\"type\":\"object\",\"x-range\":\"JSON object\"},\"written_columns\":{\"description\":\"Column names written from the payload.\",\"example\":[\"example\"],\"items\":{\"description\":\"Parameter `written_columns_item` (string).\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"type\":\"array\",\"x-range\":\"array (length \\u003e= 0)\"}},\"required\":[\"database\",\"table_name\",\"affected_rows\",\"written_columns\"],\"type\":\"object\",\"x-range\":\"no undeclared properties\"}",
+            "input_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Write one structured JSON object or values map into a workspace data table. It usually follows JSON output from LLM extraction or custom operators; for rows-style table arrays, prefer Catalog CSV saving or SQL/import nodes. Use table_ref for an existing table; when writing by table_name you must also select the parent database with database_ref, which cannot be omitted.",
+              "display_name": "Save to MOI Table",
+              "fields": [
+                {
+                  "description": "Existing Catalog destination table selected at runtime. Use this instead of table_name when the destination already exists.",
+                  "json_type": "object",
+                  "name": "table_ref",
+                  "path": "table_ref",
+                  "placeholder": "Table",
+                  "range": "selected catalog resource",
+                  "resource_type": "table",
+                  "selector": {
+                    "kind": "catalog_lookup",
+                    "resource_type": "table"
+                  },
+                  "title": "Table",
+                  "value_source": "catalog_lookup",
+                  "widget": "catalog_picker"
+                },
+                {
+                  "description": "Catalog database for table_name mode. Select the parent database; the worker resolves database_id and reuses or auto-creates the text table_name from json_schema.",
+                  "json_type": "string",
+                  "name": "database_ref",
+                  "path": "database_ref",
+                  "placeholder": "Database",
+                  "range": "selected catalog resource",
+                  "resource_type": "database",
+                  "selector": {
+                    "kind": "catalog_lookup",
+                    "resource_type": "database"
+                  },
+                  "title": "Database",
+                  "value_source": "catalog_lookup",
+                  "widget": "catalog_picker"
+                },
+                {
+                  "default": "",
+                  "description": "Destination MatrixOne table name.",
+                  "json_type": "string",
+                  "name": "table_name",
+                  "path": "table_name",
+                  "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,127}$",
+                  "placeholder": "Table",
+                  "range": "SQL identifier: starts with a letter or underscore, followed by letters, digits, or underscores",
+                  "title": "Table",
+                  "value_source": "user_input",
+                  "widget": "text"
+                },
+                {
+                  "description": "JSON object or array supplied directly by the user or an upstream node.",
+                  "json_type": "object",
+                  "name": "raw_json",
+                  "path": "raw_json",
+                  "placeholder": "JSON",
+                  "range": "upstream workflow output",
+                  "title": "JSON",
+                  "value_source": "upstream",
+                  "widget": "json_schema"
+                },
+                {
+                  "description": "Structured table rows returned by a query or read operation.",
+                  "json_type": "string",
+                  "name": "rows",
+                  "path": "rows",
+                  "placeholder": "Rows",
+                  "range": "upstream workflow output",
+                  "title": "Rows",
+                  "value_source": "upstream",
+                  "widget": "text"
+                },
+                {
+                  "description": "JSON Schema that defines the fields to extract and their expected types.",
+                  "json_type": "object",
+                  "name": "json_schema",
+                  "path": "json_schema",
+                  "placeholder": "Extraction schema",
+                  "range": "valid JSON object",
+                  "title": "Extraction schema",
+                  "value_source": "upstream_or_runtime",
+                  "widget": "json_schema"
+                },
+                {
+                  "description": "Field-value object or array supplied by an upstream extraction or custom processing node.",
+                  "json_type": "string",
+                  "name": "values",
+                  "path": "values",
+                  "placeholder": "Values",
+                  "range": "upstream workflow output",
+                  "title": "Values",
+                  "value_source": "upstream",
+                  "widget": "text"
+                },
+                {
+                  "default": "FAIL",
+                  "description": "What to do when a target row already exists: fail, skip, or overwrite. A value written in the workflow is the default the user can change before a run.",
+                  "enum_options": [
+                    {
+                      "description": "Fail this write when the target row already exists",
+                      "label": "Fail",
+                      "value": "FAIL"
+                    },
+                    {
+                      "description": "Skip this write when the target row already exists",
+                      "label": "Skip",
+                      "value": "SKIP"
+                    },
+                    {
+                      "description": "Overwrite the existing target row with this write",
+                      "label": "Overwrite",
+                      "value": "OVERWRITE"
+                    }
+                  ],
+                  "json_type": "string",
+                  "name": "policy",
+                  "path": "policy",
+                  "placeholder": "Write policy",
+                  "range": "one of enum_options",
+                  "title": "Write policy",
+                  "value_source": "user_input",
+                  "widget": "select"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:data.table.upsert_json",
+              "provider": "go-worker",
+              "role": "input"
+            },
+            "output_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Write one structured JSON object or values map into a workspace data table. It usually follows JSON output from LLM extraction or custom operators; for rows-style table arrays, prefer Catalog CSV saving or SQL/import nodes. Use table_ref for an existing table; when writing by table_name you must also select the parent database with database_ref, which cannot be omitted.",
+              "display_name": "Save to MOI Table",
+              "fields": [
+                {
+                  "description": "Number of rows inserted or updated.",
+                  "json_type": "integer",
+                  "name": "affected_rows",
+                  "path": "affected_rows",
+                  "placeholder": "Affected rows",
+                  "range": "integer",
+                  "read_only": true,
+                  "title": "Affected rows",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Database that received the write.",
+                  "json_type": "string",
+                  "name": "database",
+                  "path": "database",
+                  "placeholder": "Database",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "Database",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Table that received the write.",
+                  "json_type": "string",
+                  "name": "table_name",
+                  "path": "table_name",
+                  "placeholder": "Table",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "Table",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Resolved destination Catalog table reference when the target was selected through table_ref.",
+                  "json_type": "object",
+                  "name": "table_ref",
+                  "path": "table_ref",
+                  "placeholder": "Table",
+                  "range": "object",
+                  "read_only": true,
+                  "title": "Table",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Column names written from the payload.",
+                  "json_type": "array",
+                  "name": "written_columns",
+                  "path": "written_columns",
+                  "placeholder": "Written columns",
+                  "range": "array",
+                  "read_only": true,
+                  "title": "Written columns",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:data.table.upsert_json",
+              "provider": "go-worker",
+              "role": "output"
+            },
+            "input": {
+              "json_type": "object",
+              "description": "Write one structured JSON object or a rows array into a workspace table. The mutated resource is identified by table_ref, or by table_name together with a Catalog database_ref picker object. Select an existing Catalog destination separately for each workflow run with table_ref. For auto-create or same-name reuse, select the parent database with database_ref and keep table_name as literal text; json_schema continues to drive auto-creation. database/database_id and omission of every database selector remain compatibility-only paths for already persisted workflows and are not the authoring path. The two destination modes are mutually exclusive. Exactly one payload group is required: raw_json and/or values, or a non-empty rows array. Unknown fields are rejected.",
+              "fields": [
+                {
+                  "name": "aliases",
+                  "json_type": "object",
+                  "description": "Optional column mapping. Each key is a destination column name; each value is a payload key, or an array of payload keys tried in order, whose first non-empty value fills that column when the payload has no non-empty value under the column name itself. Example: {\"ticket_created_at\": \"created_at\"} writes the payload created_at value into column ticket_created_at. Entries whose key is not a destination column are ignored. A mapped payload key is not reported as unmatched, but when it also names a destination column its value is still written to that column.",
+                  "example": {},
+                  "additional_properties": true,
+                  "hint": {}
+                },
+                {
+                  "name": "column_whitelist",
+                  "json_type": "array",
+                  "description": "Explicit subset-write mode. Only listed columns are written and other payload keys are intentionally ignored. When omitted, every payload key must match a table column or an aliases mapping.",
+                  "example": [
+                    "example"
+                  ],
+                  "item": {
+                    "name": "item",
+                    "json_type": "string",
+                    "description": "Parameter `column_whitelist_item` (string).",
+                    "example": "example",
+                    "hint": {}
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "database",
+                  "json_type": "string",
+                  "description": "Compatibility-only physical database name used with table_name by already persisted workflows. New workflows must use the database_ref Catalog picker; this field is intentionally absent from input_ui_schema.",
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "database_id",
+                  "json_type": "integer",
+                  "description": "Compatibility-only database numeric ID used with table_name by already persisted workflows. New workflows must bind the complete database_ref Catalog picker object; this scalar is intentionally absent from input_ui_schema.",
+                  "example": 1,
+                  "hint": {}
+                },
+                {
+                  "name": "database_ref",
+                  "json_type": "object",
+                  "description": "Catalog database picker value for table_name mode. Bind the complete picker object; database_id is the authoritative identity resolved by the worker at runtime.",
+                  "example": {
+                    "catalog_id": 1,
+                    "database_id": 1,
+                    "database_name": "example_name"
+                  },
+                  "additional_properties": true,
+                  "fields": [
+                    {
+                      "name": "catalog_id",
+                      "json_type": "integer",
+                      "description": "Catalog numeric ID when supplied by the picker.",
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "database_id",
+                      "json_type": "integer",
+                      "description": "Selected Catalog database numeric ID.",
+                      "required": true,
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "database_name",
+                      "json_type": "string",
+                      "description": "Selected database display or physical name when supplied by the picker; runtime resolution still uses database_id.",
+                      "example": "example_name",
+                      "hint": {}
+                    },
+                    {
+                      "name": "kind",
+                      "json_type": "string",
+                      "description": "Catalog picker resource kind.",
+                      "example": "database",
+                      "enum_values": [
+                        "database"
+                      ],
+                      "hint": {}
+                    },
+                    {
+                      "name": "name",
+                      "json_type": "string",
+                      "description": "Selected database display name when supplied by the picker.",
+                      "example": "example_name",
+                      "hint": {}
+                    }
+                  ],
+                  "hint": {}
+                },
+                {
+                  "name": "json_schema",
+                  "json_type": "object",
+                  "description": "JSON Schema describing the expected row structure. When the table does not exist, this schema drives auto-creation. When the table already exists, every schema property missing from that table is added as a new column before the write. Each property becomes a column with type inferred from the schema type (string→TEXT, integer→BIGINT, number→DOUBLE, boolean→BOOLEAN, array/object→JSON). Property names must be valid MatrixOne column names; invalid names fail explicitly. An auto-created table always adds id BIGINT AUTO_INCREMENT PRIMARY KEY and created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP; schema properties or payload keys named id or created_at do not create columns of their own. A payload created_at value is written into that TIMESTAMP column, which accepts YYYY-MM-DD, YYYY-MM-DD HH:MM:SS or YYYY-MM-DDTHH:MM:SS and rejects a trailing Z or UTC offset; keep source timestamps under another field name to store them as text.",
+                  "example": {},
+                  "additional_properties": true,
+                  "hint": {}
+                },
+                {
+                  "name": "policy",
+                  "json_type": "string",
+                  "description": "Conflict policy for an existing target row handled by this call. Omitted input uses OVERWRITE; this setting does not coordinate concurrent calls.",
+                  "example": "FAIL",
+                  "default": "OVERWRITE",
+                  "enum_values": [
+                    "FAIL",
+                    "SKIP",
+                    "OVERWRITE"
+                  ],
+                  "hint": {}
+                },
+                {
+                  "name": "raw_json",
+                  "description": "One non-empty JSON object, supplied either as an object value or a string that decodes to a JSON object. Arrays, scalar JSON values, malformed strings, empty objects, and empty strings fail when passed directly. A rows array may feed raw_json only through an explicit jq transform that selects or reshapes it into exactly one non-empty object; a direct rows-array binding remains invalid. The worker does not repair truncated or fenced JSON. Without column_whitelist, every decoded key must match an existing destination column or be explicitly mapped by aliases. raw_json may be combined with values; it is mutually exclusive with rows.",
+                  "example": {
+                    "amount": 120.5,
+                    "order_id": "A001"
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "rows",
+                  "json_type": "array",
+                  "description": "Structured row objects to insert or upsert atomically in this call. Input field names must match destination columns after aliases or column_whitelist are applied. Every row is validated against the destination columns before the transaction starts; rows is mutually exclusive with raw_json and values. This does not serialize or deduplicate other calls targeting the same destination.",
+                  "example": [
+                    {}
+                  ],
+                  "item": {
+                    "name": "item",
+                    "json_type": "object",
+                    "description": "Parameter `rows_item` (object).",
+                    "example": {},
+                    "additional_properties": true,
+                    "hint": {}
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "table_name",
+                  "json_type": "string",
+                  "description": "Literal physical destination table name alternative to table_ref. For newly authored workflows, pair it with database_ref selected through the Catalog database picker. Keep table_name as text. If the named table exists it is reused; otherwise json_schema or raw data drives auto-creation. Use table_ref instead when selecting an existing MOI table.",
+                  "example": "example_name",
+                  "hint": {}
+                },
+                {
+                  "name": "table_ref",
+                  "json_type": "object",
+                  "description": "Existing Catalog destination table selected separately for each workflow run. Declare this as a workflow-run input when the workflow accepts an existing MOI table without fixing its identity during design. The selected table must contain every incoming field after aliases or column_whitelist are applied. The worker resolves database and table names from table_id; table_ref is mutually exclusive with table_name and every database selector.",
+                  "example": {
+                    "database_name": "example_name",
+                    "table_id": 1,
+                    "table_name": "example_name"
+                  },
+                  "additional_properties": true,
+                  "fields": [
+                    {
+                      "name": "database_name",
+                      "json_type": "string",
+                      "description": "Physical database name resolved from table_id when present in an output.",
+                      "example": "example_name",
+                      "hint": {}
+                    },
+                    {
+                      "name": "table_id",
+                      "json_type": "integer",
+                      "description": "Catalog table numeric ID.",
+                      "required": true,
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "table_name",
+                      "json_type": "string",
+                      "description": "Physical table name resolved from table_id when present in an output.",
+                      "example": "example_name",
+                      "hint": {}
+                    }
+                  ],
+                  "hint": {}
+                },
+                {
+                  "name": "update_exclude_columns",
+                  "json_type": "array",
+                  "description": "Columns excluded from update when an existing row is overwritten.",
+                  "example": [
+                    "2026-01-02T15:04:05Z"
+                  ],
+                  "item": {
+                    "name": "item",
+                    "json_type": "string",
+                    "description": "Parameter `update_exclude_columns_item` (string).",
+                    "example": "2026-01-02T15:04:05Z",
+                    "hint": {}
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "values",
+                  "json_type": "object",
+                  "description": "Explicit column values map. These values are merged with raw_json and take precedence on key conflict. values may be combined with raw_json; it is mutually exclusive with rows.",
+                  "example": {},
+                  "additional_properties": true,
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "raw_json": {
+                  "amount": 120.5,
+                  "order_id": "A001"
+                },
+                "table_ref": {
+                  "table_id": 42
+                }
+              }
+            },
+            "output": {
+              "json_type": "object",
+              "description": "Structured table write result. table_ref is present only when the destination was selected through table_ref.",
+              "required_fields": [
+                "database",
+                "table_name",
+                "affected_rows",
+                "written_columns"
+              ],
+              "fields": [
+                {
+                  "name": "affected_rows",
+                  "json_type": "integer",
+                  "description": "Number of rows inserted or updated.",
+                  "required": true,
+                  "example": 1,
+                  "hint": {}
+                },
+                {
+                  "name": "database",
+                  "json_type": "string",
+                  "description": "Database that received the write.",
+                  "required": true,
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "table_name",
+                  "json_type": "string",
+                  "description": "Table that received the write.",
+                  "required": true,
+                  "example": "example_name",
+                  "hint": {}
+                },
+                {
+                  "name": "table_ref",
+                  "json_type": "object",
+                  "description": "Resolved destination Catalog table reference when the target was selected through table_ref.",
+                  "example": {
+                    "database_name": "example_name",
+                    "table_id": 1,
+                    "table_name": "example_name"
+                  },
+                  "additional_properties": true,
+                  "fields": [
+                    {
+                      "name": "database_name",
+                      "json_type": "string",
+                      "description": "Physical database name resolved from table_id when present in an output.",
+                      "example": "example_name",
+                      "hint": {}
+                    },
+                    {
+                      "name": "table_id",
+                      "json_type": "integer",
+                      "description": "Catalog table numeric ID.",
+                      "required": true,
+                      "example": 1,
+                      "hint": {}
+                    },
+                    {
+                      "name": "table_name",
+                      "json_type": "string",
+                      "description": "Physical table name resolved from table_id when present in an output.",
+                      "example": "example_name",
+                      "hint": {}
+                    }
+                  ],
+                  "hint": {}
+                },
+                {
+                  "name": "written_columns",
+                  "json_type": "array",
+                  "description": "Column names written from the payload.",
+                  "required": true,
+                  "example": [
+                    "example"
+                  ],
+                  "item": {
+                    "name": "item",
+                    "json_type": "string",
+                    "description": "Parameter `written_columns_item` (string).",
+                    "example": "example",
+                    "hint": {}
+                  },
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "affected_rows": 1,
+                "database": "example",
+                "table_name": "example_name"
+              }
+            },
+            "agent_context": {
+              "provider": "go-worker",
+              "display_name": "Save to MOI Table",
+              "category": "moi",
+              "display_group": "Data IO",
+              "tags": [
+                "internal",
+                "table",
+                "json"
+              ],
+              "summary": "Write one structured JSON object or values map into a workspace data table. It usually follows JSON output from LLM extraction or custom operators; for rows-style table arrays, prefer Catalog CSV saving or SQL/import nodes. Use table_ref for an existing table; when writing by table_name you must also select the parent database with database_ref, which cannot be omitted.",
+              "side_effect_class": "writes_state",
+              "idempotence": "non_idempotent_or_requires_key"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "moi:api.request": {
+    "http": 200,
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "node_id": "moi:api.request",
+        "display_name": "HTTP Request",
+        "short_description": "Send one request to an external HTTP API, webhook, or service endpoint. Inputs include method, url, headers, body, and timeout_seconds; outputs include status_code, headers, body (raw response text), and json (parsed JSON when the body is JSON, otherwise null).",
+        "category": "Data IO",
+        "tags": [
+          "api",
+          "http",
+          "webhook",
+          "external"
+        ],
+        "source": "system",
+        "provider": "go-worker",
+        "preferred_version": "v3",
+        "visibility": "user",
+        "versions": [
+          {
+            "version": "v3",
+            "description": "Send one request to an external HTTP API, webhook, or service endpoint. Inputs include method, url, headers, body, and timeout_seconds; outputs include status_code, headers, body (raw response text), and json (parsed JSON when the body is JSON, otherwise null).",
+            "visibility": "user",
+            "stream": false,
+            "source": "system",
+            "provider": "go-worker",
+            "input_schema": "{\"additionalProperties\":false,\"description\":\"Send one HTTP request to an external API, webhook, or HTTP endpoint. Use this as the user-facing API node instead of catalog:http.request.\",\"example\":{\"body\":{\"name\":\"moi\"},\"headers\":{\"Content-Type\":\"application/json\"},\"idempotency_key_mode\":\"\"},\"properties\":{\"body\":{\"anyOf\":[{},{\"description\":\"Parameter `body` (null).\",\"type\":\"null\",\"x-range\":\"null\"}],\"description\":\"Optional JSON request body. Missing or null means no request body. Objects and arrays are sent as JSON text.\",\"example\":{\"name\":\"moi\"},\"x-range\":\"Any valid JSON value. Omit or set null for methods that do not send a body.\"},\"headers\":{\"anyOf\":[{\"additionalProperties\":{\"description\":\"Parameter `headers_value` (string).\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"description\":\"Parameter `headers` (object).\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"Parameter `headers` (null).\",\"type\":\"null\",\"x-range\":\"null\"}],\"description\":\"Optional request headers object. Missing or null means no extra request headers. Every value must be a string, for example {\\\"Authorization\\\":\\\"Bearer token\\\"}.\",\"example\":{\"Content-Type\":\"application/json\"},\"x-range\":\"Object whose keys are HTTP header names and values are strings, or null.\"},\"idempotency_key_mode\":{\"description\":\"Optional idempotency header policy. Empty or omitted leaves headers unchanged; workflow_execution_id sets Idempotency-Key from the current workflow execution and forbids an explicit Idempotency-Key header.\",\"enum\":[\"\",\"workflow_execution_id\"],\"example\":\"\",\"type\":\"string\",\"x-range\":\"one of:  | workflow_execution_id\"},\"method\":{\"description\":\"HTTP method. Must be one of GET, POST, PUT, PATCH, DELETE, HEAD.\",\"enum\":[\"GET\",\"POST\",\"PUT\",\"PATCH\",\"DELETE\",\"HEAD\"],\"example\":\"GET\",\"type\":\"string\",\"x-range\":\"one of: GET | POST | PUT | PATCH | DELETE | HEAD\"},\"timeout_seconds\":{\"anyOf\":[{\"description\":\"Parameter `timeout_seconds` (integer).\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},{\"description\":\"Parameter `timeout_seconds` (null).\",\"type\":\"null\",\"x-range\":\"null\"}],\"description\":\"Optional request timeout in seconds. Missing, null, or 0 uses the node default timeout.\",\"example\":30,\"maximum\":300,\"minimum\":0,\"x-range\":\"Integer from 0 to 300 seconds, or null. Missing, null, or 0 uses the node default timeout.\"},\"url\":{\"description\":\"Absolute HTTP or HTTPS request URL.\",\"example\":\"https://example.com\",\"minLength\":1,\"type\":\"string\",\"x-range\":\"length \\u003e= 1\"}},\"required\":[\"method\",\"url\"],\"type\":\"object\",\"x-range\":\"no undeclared properties\"}",
+            "output_schema": "{\"additionalProperties\":false,\"description\":\"HTTP response envelope returned by the API node. HTTP 4xx/5xx responses are represented by status_code and body; transport failures return a node error.\",\"example\":{\"body\":\"example\",\"headers\":{},\"json\":{\"ok\":true}},\"properties\":{\"body\":{\"description\":\"Raw HTTP response body.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"headers\":{\"additionalProperties\":{\"description\":\"Parameter `headers_value` (string).\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"description\":\"HTTP response headers object. Each key is a response header name and each value is the header string reported by Go's http client.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"json\":{\"anyOf\":[{},{\"description\":\"Parameter `json` (null).\",\"type\":\"null\",\"x-range\":\"null\"}],\"description\":\"Parsed JSON value when body is valid JSON; otherwise null.\",\"example\":{\"ok\":true}},\"status_code\":{\"description\":\"HTTP response status code.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"}},\"required\":[\"status_code\",\"headers\",\"body\"],\"type\":\"object\",\"x-range\":\"no undeclared properties\"}",
+            "input_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Send one request to an external HTTP API, webhook, or service endpoint. Inputs include method, url, headers, body, and timeout_seconds; outputs include status_code, headers, body (raw response text), and json (parsed JSON when the body is JSON, otherwise null).",
+              "display_name": "HTTP Request",
+              "fields": [
+                {
+                  "default": "GET",
+                  "description": "HTTP method to send. Choose one of GET, POST, PUT, PATCH, DELETE, HEAD.",
+                  "enum_options": [
+                    {
+                      "description": "HTTP GET request",
+                      "label": "GET",
+                      "value": "GET"
+                    },
+                    {
+                      "description": "HTTP POST request",
+                      "label": "POST",
+                      "value": "POST"
+                    },
+                    {
+                      "description": "HTTP PUT request",
+                      "label": "PUT",
+                      "value": "PUT"
+                    },
+                    {
+                      "description": "HTTP PATCH request",
+                      "label": "PATCH",
+                      "value": "PATCH"
+                    },
+                    {
+                      "description": "HTTP DELETE request",
+                      "label": "DELETE",
+                      "value": "DELETE"
+                    },
+                    {
+                      "description": "HTTP HEAD request",
+                      "label": "HEAD",
+                      "value": "HEAD"
+                    }
+                  ],
+                  "json_type": "string",
+                  "name": "method",
+                  "path": "method",
+                  "placeholder": "HTTP method",
+                  "range": "one of enum_options",
+                  "required": true,
+                  "title": "HTTP method",
+                  "value_source": "user_input",
+                  "widget": "select"
+                },
+                {
+                  "default": "",
+                  "description": "Absolute HTTP or HTTPS URL for the request.",
+                  "json_type": "string",
+                  "name": "url",
+                  "path": "url",
+                  "placeholder": "Request URL",
+                  "range": "length >= 1",
+                  "required": true,
+                  "title": "Request URL",
+                  "value_source": "user_input",
+                  "widget": "text"
+                },
+                {
+                  "default": {},
+                  "description": "Optional HTTP request or response headers. Every value must be a string.",
+                  "example": {
+                    "Content-Type": "application/json"
+                  },
+                  "json_type": "object",
+                  "name": "headers",
+                  "path": "headers",
+                  "placeholder": "Request headers",
+                  "range": "HTTP headers object with string values",
+                  "title": "Request headers",
+                  "value_source": "upstream_or_runtime",
+                  "widget": "http_headers"
+                },
+                {
+                  "default": null,
+                  "description": "HTTP request JSON body or raw HTTP response body.",
+                  "json_type": "any",
+                  "name": "body",
+                  "path": "body",
+                  "placeholder": "Request body",
+                  "range": "valid JSON value",
+                  "title": "Request body",
+                  "value_source": "upstream_or_runtime",
+                  "widget": "json_value"
+                },
+                {
+                  "default": 0,
+                  "description": "Maximum time to wait before this node fails with a timeout.",
+                  "json_type": "integer",
+                  "name": "timeout_seconds",
+                  "path": "timeout_seconds",
+                  "placeholder": "Timeout seconds",
+                  "range": "integer >= 0",
+                  "title": "Timeout seconds",
+                  "value_source": "user_input",
+                  "widget": "number"
+                },
+                {
+                  "default": "workflow_execution_id",
+                  "description": "Empty leaves request headers unchanged. workflow_execution_id sets Idempotency-Key to the current workflow execution ID; do not also supply that header manually.",
+                  "enum_options": [
+                    {
+                      "description": "Set the Idempotency-Key header from the current execution ID",
+                      "label": "Workflow execution ID",
+                      "value": "workflow_execution_id"
+                    }
+                  ],
+                  "json_type": "string",
+                  "name": "idempotency_key_mode",
+                  "path": "idempotency_key_mode",
+                  "placeholder": "Idempotency header policy",
+                  "range": "one of enum_options",
+                  "title": "Idempotency header policy",
+                  "value_source": "user_input",
+                  "widget": "select"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:api.request",
+              "provider": "go-worker",
+              "required_fields": [
+                "method",
+                "url"
+              ],
+              "role": "input"
+            },
+            "output_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Send one request to an external HTTP API, webhook, or service endpoint. Inputs include method, url, headers, body, and timeout_seconds; outputs include status_code, headers, body (raw response text), and json (parsed JSON when the body is JSON, otherwise null).",
+              "display_name": "HTTP Request",
+              "fields": [
+                {
+                  "description": "HTTP response status code.",
+                  "json_type": "integer",
+                  "name": "status_code",
+                  "path": "status_code",
+                  "placeholder": "HTTP status code",
+                  "range": "integer",
+                  "read_only": true,
+                  "title": "HTTP status code",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Optional HTTP request or response headers. Every value must be a string.",
+                  "json_type": "object",
+                  "name": "headers",
+                  "path": "headers",
+                  "placeholder": "Request headers",
+                  "range": "object",
+                  "read_only": true,
+                  "title": "Request headers",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "HTTP request JSON body or raw HTTP response body.",
+                  "json_type": "string",
+                  "name": "body",
+                  "path": "body",
+                  "placeholder": "Request body",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "Request body",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Parsed JSON when the response body is valid JSON; otherwise null.",
+                  "json_type": "any",
+                  "name": "json",
+                  "path": "json",
+                  "placeholder": "JSON",
+                  "range": "any",
+                  "read_only": true,
+                  "title": "JSON",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:api.request",
+              "provider": "go-worker",
+              "role": "output"
+            },
+            "input": {
+              "json_type": "object",
+              "description": "Send one HTTP request to an external API, webhook, or HTTP endpoint. Use this as the user-facing API node instead of catalog:http.request.",
+              "required_fields": [
+                "method",
+                "url"
+              ],
+              "fields": [
+                {
+                  "name": "body",
+                  "json_type": "anyOf",
+                  "description": "Optional JSON request body. Missing or null means no request body. Objects and arrays are sent as JSON text.",
+                  "example": {
+                    "name": "moi"
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "headers",
+                  "json_type": "anyOf",
+                  "description": "Optional request headers object. Missing or null means no extra request headers. Every value must be a string, for example {\"Authorization\":\"Bearer token\"}.",
+                  "example": {
+                    "Content-Type": "application/json"
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "idempotency_key_mode",
+                  "json_type": "string",
+                  "description": "Optional idempotency header policy. Empty or omitted leaves headers unchanged; workflow_execution_id sets Idempotency-Key from the current workflow execution and forbids an explicit Idempotency-Key header.",
+                  "example": "",
+                  "enum_values": [
+                    "",
+                    "workflow_execution_id"
+                  ],
+                  "hint": {}
+                },
+                {
+                  "name": "method",
+                  "json_type": "string",
+                  "description": "HTTP method. Must be one of GET, POST, PUT, PATCH, DELETE, HEAD.",
+                  "required": true,
+                  "example": "GET",
+                  "enum_values": [
+                    "GET",
+                    "POST",
+                    "PUT",
+                    "PATCH",
+                    "DELETE",
+                    "HEAD"
+                  ],
+                  "hint": {}
+                },
+                {
+                  "name": "timeout_seconds",
+                  "json_type": "anyOf",
+                  "description": "Optional request timeout in seconds. Missing, null, or 0 uses the node default timeout.",
+                  "example": 30,
+                  "hint": {}
+                },
+                {
+                  "name": "url",
+                  "json_type": "string",
+                  "description": "Absolute HTTP or HTTPS request URL.",
+                  "required": true,
+                  "example": "https://example.com",
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "body": {
+                  "name": "moi"
+                },
+                "headers": {
+                  "Content-Type": "application/json"
+                },
+                "idempotency_key_mode": ""
+              }
+            },
+            "output": {
+              "json_type": "object",
+              "description": "HTTP response envelope returned by the API node. HTTP 4xx/5xx responses are represented by status_code and body; transport failures return a node error.",
+              "required_fields": [
+                "status_code",
+                "headers",
+                "body"
+              ],
+              "fields": [
+                {
+                  "name": "body",
+                  "json_type": "string",
+                  "description": "Raw HTTP response body.",
+                  "required": true,
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "headers",
+                  "json_type": "object",
+                  "description": "HTTP response headers object. Each key is a response header name and each value is the header string reported by Go's http client.",
+                  "required": true,
+                  "example": {},
+                  "additional_properties": true,
+                  "hint": {}
+                },
+                {
+                  "name": "json",
+                  "json_type": "anyOf",
+                  "description": "Parsed JSON value when body is valid JSON; otherwise null.",
+                  "example": {
+                    "ok": true
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "status_code",
+                  "json_type": "integer",
+                  "description": "HTTP response status code.",
+                  "required": true,
+                  "example": 1,
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "body": "example",
+                "headers": {},
+                "json": {
+                  "ok": true
+                }
+              }
+            },
+            "agent_context": {
+              "provider": "go-worker",
+              "display_name": "HTTP Request",
+              "category": "moi",
+              "display_group": "Data IO",
+              "tags": [
+                "api",
+                "http",
+                "webhook",
+                "external"
+              ],
+              "summary": "Send one request to an external HTTP API, webhook, or service endpoint. Inputs include method, url, headers, body, and timeout_seconds; outputs include status_code, headers, body (raw response text), and json (parsed JSON when the body is JSON, otherwise null).",
+              "side_effect_class": "external_io",
+              "idempotence": "non_idempotent_or_requires_key",
+              "required_fields": [
+                "method",
+                "url"
+              ]
+            }
+          },
+          {
+            "version": "v1",
+            "description": "Send one request to an external HTTP API, webhook, or service endpoint. Inputs include method, url, headers, body, and timeout_seconds; outputs include status_code, headers, body (raw response text), and json (parsed JSON when the body is JSON, otherwise null).",
+            "visibility": "internal",
+            "stream": false,
+            "source": "system",
+            "provider": "go-worker",
+            "input_schema": "{\"additionalProperties\":false,\"description\":\"Send one HTTP request to an external API, webhook, or HTTP endpoint. Use this as the user-facing API node instead of catalog:http.request.\",\"example\":{\"body\":{\"name\":\"moi\"},\"headers\":{\"Content-Type\":\"application/json\"},\"idempotency_key_mode\":\"\"},\"properties\":{\"body\":{\"anyOf\":[{},{\"description\":\"Parameter `body` (null).\",\"type\":\"null\",\"x-range\":\"null\"}],\"description\":\"Optional JSON request body. Missing or null means no request body. Objects and arrays are sent as JSON text.\",\"example\":{\"name\":\"moi\"},\"x-range\":\"Any valid JSON value. Omit or set null for methods that do not send a body.\"},\"headers\":{\"anyOf\":[{\"additionalProperties\":{\"description\":\"Parameter `headers_value` (string).\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"description\":\"Parameter `headers` (object).\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},{\"description\":\"Parameter `headers` (null).\",\"type\":\"null\",\"x-range\":\"null\"}],\"description\":\"Optional request headers object. Missing or null means no extra request headers. Every value must be a string, for example {\\\"Authorization\\\":\\\"Bearer token\\\"}.\",\"example\":{\"Content-Type\":\"application/json\"},\"x-range\":\"Object whose keys are HTTP header names and values are strings, or null.\"},\"idempotency_key_mode\":{\"description\":\"Optional idempotency header policy. Empty or omitted leaves headers unchanged; workflow_execution_id sets Idempotency-Key from the current workflow execution and forbids an explicit Idempotency-Key header.\",\"enum\":[\"\",\"workflow_execution_id\"],\"example\":\"\",\"type\":\"string\",\"x-range\":\"one of:  | workflow_execution_id\"},\"method\":{\"description\":\"HTTP method. Must be one of GET, POST, PUT, PATCH, DELETE, HEAD.\",\"enum\":[\"GET\",\"POST\",\"PUT\",\"PATCH\",\"DELETE\",\"HEAD\"],\"example\":\"GET\",\"type\":\"string\",\"x-range\":\"one of: GET | POST | PUT | PATCH | DELETE | HEAD\"},\"timeout_seconds\":{\"anyOf\":[{\"description\":\"Parameter `timeout_seconds` (integer).\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"},{\"description\":\"Parameter `timeout_seconds` (null).\",\"type\":\"null\",\"x-range\":\"null\"}],\"description\":\"Optional request timeout in seconds. Missing, null, or 0 uses the node default timeout.\",\"example\":30,\"maximum\":300,\"minimum\":0,\"x-range\":\"Integer from 0 to 300 seconds, or null. Missing, null, or 0 uses the node default timeout.\"},\"url\":{\"description\":\"Absolute HTTP or HTTPS request URL.\",\"example\":\"https://example.com\",\"minLength\":1,\"type\":\"string\",\"x-range\":\"length \\u003e= 1\"}},\"required\":[\"method\",\"url\"],\"type\":\"object\",\"x-range\":\"no undeclared properties\"}",
+            "output_schema": "{\"additionalProperties\":false,\"description\":\"HTTP response envelope returned by the API node. HTTP 4xx/5xx responses are represented by status_code and body; transport failures return a node error.\",\"example\":{\"body\":\"example\",\"headers\":{},\"json\":{\"ok\":true}},\"properties\":{\"body\":{\"description\":\"Raw HTTP response body.\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"headers\":{\"additionalProperties\":{\"description\":\"Parameter `headers_value` (string).\",\"example\":\"example\",\"type\":\"string\",\"x-range\":\"any string\"},\"description\":\"HTTP response headers object. Each key is a response header name and each value is the header string reported by Go's http client.\",\"example\":{},\"type\":\"object\",\"x-range\":\"JSON object\"},\"json\":{\"anyOf\":[{},{\"description\":\"Parameter `json` (null).\",\"type\":\"null\",\"x-range\":\"null\"}],\"description\":\"Parsed JSON value when body is valid JSON; otherwise null.\",\"example\":{\"ok\":true}},\"status_code\":{\"description\":\"HTTP response status code.\",\"example\":1,\"type\":\"integer\",\"x-range\":\"any integer\"}},\"required\":[\"status_code\",\"headers\",\"body\"],\"type\":\"object\",\"x-range\":\"no undeclared properties\"}",
+            "input_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Send one request to an external HTTP API, webhook, or service endpoint. Inputs include method, url, headers, body, and timeout_seconds; outputs include status_code, headers, body (raw response text), and json (parsed JSON when the body is JSON, otherwise null).",
+              "display_name": "HTTP Request",
+              "fields": [
+                {
+                  "default": "GET",
+                  "description": "HTTP method to send. Choose one of GET, POST, PUT, PATCH, DELETE, HEAD.",
+                  "enum_options": [
+                    {
+                      "description": "HTTP GET request",
+                      "label": "GET",
+                      "value": "GET"
+                    },
+                    {
+                      "description": "HTTP POST request",
+                      "label": "POST",
+                      "value": "POST"
+                    },
+                    {
+                      "description": "HTTP PUT request",
+                      "label": "PUT",
+                      "value": "PUT"
+                    },
+                    {
+                      "description": "HTTP PATCH request",
+                      "label": "PATCH",
+                      "value": "PATCH"
+                    },
+                    {
+                      "description": "HTTP DELETE request",
+                      "label": "DELETE",
+                      "value": "DELETE"
+                    },
+                    {
+                      "description": "HTTP HEAD request",
+                      "label": "HEAD",
+                      "value": "HEAD"
+                    }
+                  ],
+                  "json_type": "string",
+                  "name": "method",
+                  "path": "method",
+                  "placeholder": "HTTP method",
+                  "range": "one of enum_options",
+                  "required": true,
+                  "title": "HTTP method",
+                  "value_source": "user_input",
+                  "widget": "select"
+                },
+                {
+                  "default": "",
+                  "description": "Absolute HTTP or HTTPS URL for the request.",
+                  "json_type": "string",
+                  "name": "url",
+                  "path": "url",
+                  "placeholder": "Request URL",
+                  "range": "length >= 1",
+                  "required": true,
+                  "title": "Request URL",
+                  "value_source": "user_input",
+                  "widget": "text"
+                },
+                {
+                  "default": {},
+                  "description": "Optional HTTP request or response headers. Every value must be a string.",
+                  "example": {
+                    "Content-Type": "application/json"
+                  },
+                  "json_type": "object",
+                  "name": "headers",
+                  "path": "headers",
+                  "placeholder": "Request headers",
+                  "range": "HTTP headers object with string values",
+                  "title": "Request headers",
+                  "value_source": "upstream_or_runtime",
+                  "widget": "http_headers"
+                },
+                {
+                  "default": null,
+                  "description": "HTTP request JSON body or raw HTTP response body.",
+                  "json_type": "any",
+                  "name": "body",
+                  "path": "body",
+                  "placeholder": "Request body",
+                  "range": "valid JSON value",
+                  "title": "Request body",
+                  "value_source": "upstream_or_runtime",
+                  "widget": "json_value"
+                },
+                {
+                  "default": 0,
+                  "description": "Maximum time to wait before this node fails with a timeout.",
+                  "json_type": "integer",
+                  "name": "timeout_seconds",
+                  "path": "timeout_seconds",
+                  "placeholder": "Timeout seconds",
+                  "range": "integer >= 0",
+                  "title": "Timeout seconds",
+                  "value_source": "user_input",
+                  "widget": "number"
+                },
+                {
+                  "default": "workflow_execution_id",
+                  "description": "Empty leaves request headers unchanged. workflow_execution_id sets Idempotency-Key to the current workflow execution ID; do not also supply that header manually.",
+                  "enum_options": [
+                    {
+                      "description": "Set the Idempotency-Key header from the current execution ID",
+                      "label": "Workflow execution ID",
+                      "value": "workflow_execution_id"
+                    }
+                  ],
+                  "json_type": "string",
+                  "name": "idempotency_key_mode",
+                  "path": "idempotency_key_mode",
+                  "placeholder": "Idempotency header policy",
+                  "range": "one of enum_options",
+                  "title": "Idempotency header policy",
+                  "value_source": "user_input",
+                  "widget": "select"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:api.request",
+              "provider": "go-worker",
+              "required_fields": [
+                "method",
+                "url"
+              ],
+              "role": "input"
+            },
+            "output_ui_schema": {
+              "contract_version": "1.1",
+              "description": "Send one request to an external HTTP API, webhook, or service endpoint. Inputs include method, url, headers, body, and timeout_seconds; outputs include status_code, headers, body (raw response text), and json (parsed JSON when the body is JSON, otherwise null).",
+              "display_name": "HTTP Request",
+              "fields": [
+                {
+                  "description": "HTTP response status code.",
+                  "json_type": "integer",
+                  "name": "status_code",
+                  "path": "status_code",
+                  "placeholder": "HTTP status code",
+                  "range": "integer",
+                  "read_only": true,
+                  "title": "HTTP status code",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Optional HTTP request or response headers. Every value must be a string.",
+                  "json_type": "object",
+                  "name": "headers",
+                  "path": "headers",
+                  "placeholder": "Request headers",
+                  "range": "object",
+                  "read_only": true,
+                  "title": "Request headers",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "HTTP request JSON body or raw HTTP response body.",
+                  "json_type": "string",
+                  "name": "body",
+                  "path": "body",
+                  "placeholder": "Request body",
+                  "range": "string",
+                  "read_only": true,
+                  "title": "Request body",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                },
+                {
+                  "description": "Parsed JSON when the response body is valid JSON; otherwise null.",
+                  "json_type": "any",
+                  "name": "json",
+                  "path": "json",
+                  "placeholder": "JSON",
+                  "range": "any",
+                  "read_only": true,
+                  "title": "JSON",
+                  "value_source": "runtime_output",
+                  "widget": "text"
+                }
+              ],
+              "json_type": "object",
+              "node_id": "moi:api.request",
+              "provider": "go-worker",
+              "role": "output"
+            },
+            "input": {
+              "json_type": "object",
+              "description": "Send one HTTP request to an external API, webhook, or HTTP endpoint. Use this as the user-facing API node instead of catalog:http.request.",
+              "required_fields": [
+                "method",
+                "url"
+              ],
+              "fields": [
+                {
+                  "name": "body",
+                  "json_type": "anyOf",
+                  "description": "Optional JSON request body. Missing or null means no request body. Objects and arrays are sent as JSON text.",
+                  "example": {
+                    "name": "moi"
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "headers",
+                  "json_type": "anyOf",
+                  "description": "Optional request headers object. Missing or null means no extra request headers. Every value must be a string, for example {\"Authorization\":\"Bearer token\"}.",
+                  "example": {
+                    "Content-Type": "application/json"
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "idempotency_key_mode",
+                  "json_type": "string",
+                  "description": "Optional idempotency header policy. Empty or omitted leaves headers unchanged; workflow_execution_id sets Idempotency-Key from the current workflow execution and forbids an explicit Idempotency-Key header.",
+                  "example": "",
+                  "enum_values": [
+                    "",
+                    "workflow_execution_id"
+                  ],
+                  "hint": {}
+                },
+                {
+                  "name": "method",
+                  "json_type": "string",
+                  "description": "HTTP method. Must be one of GET, POST, PUT, PATCH, DELETE, HEAD.",
+                  "required": true,
+                  "example": "GET",
+                  "enum_values": [
+                    "GET",
+                    "POST",
+                    "PUT",
+                    "PATCH",
+                    "DELETE",
+                    "HEAD"
+                  ],
+                  "hint": {}
+                },
+                {
+                  "name": "timeout_seconds",
+                  "json_type": "anyOf",
+                  "description": "Optional request timeout in seconds. Missing, null, or 0 uses the node default timeout.",
+                  "example": 30,
+                  "hint": {}
+                },
+                {
+                  "name": "url",
+                  "json_type": "string",
+                  "description": "Absolute HTTP or HTTPS request URL.",
+                  "required": true,
+                  "example": "https://example.com",
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "body": {
+                  "name": "moi"
+                },
+                "headers": {
+                  "Content-Type": "application/json"
+                },
+                "idempotency_key_mode": ""
+              }
+            },
+            "output": {
+              "json_type": "object",
+              "description": "HTTP response envelope returned by the API node. HTTP 4xx/5xx responses are represented by status_code and body; transport failures return a node error.",
+              "required_fields": [
+                "status_code",
+                "headers",
+                "body"
+              ],
+              "fields": [
+                {
+                  "name": "body",
+                  "json_type": "string",
+                  "description": "Raw HTTP response body.",
+                  "required": true,
+                  "example": "example",
+                  "hint": {}
+                },
+                {
+                  "name": "headers",
+                  "json_type": "object",
+                  "description": "HTTP response headers object. Each key is a response header name and each value is the header string reported by Go's http client.",
+                  "required": true,
+                  "example": {},
+                  "additional_properties": true,
+                  "hint": {}
+                },
+                {
+                  "name": "json",
+                  "json_type": "anyOf",
+                  "description": "Parsed JSON value when body is valid JSON; otherwise null.",
+                  "example": {
+                    "ok": true
+                  },
+                  "hint": {}
+                },
+                {
+                  "name": "status_code",
+                  "json_type": "integer",
+                  "description": "HTTP response status code.",
+                  "required": true,
+                  "example": 1,
+                  "hint": {}
+                }
+              ],
+              "example": {
+                "body": "example",
+                "headers": {},
+                "json": {
+                  "ok": true
+                }
+              }
+            },
+            "agent_context": {
+              "provider": "go-worker",
+              "display_name": "HTTP Request",
+              "category": "moi",
+              "display_group": "Data IO",
+              "tags": [
+                "internal",
+                "api",
+                "http",
+                "webhook",
+                "external"
+              ],
+              "summary": "Send one request to an external HTTP API, webhook, or service endpoint. Inputs include method, url, headers, body, and timeout_seconds; outputs include status_code, headers, body (raw response text), and json (parsed JSON when the body is JSON, otherwise null).",
+              "side_effect_class": "external_io",
+              "idempotence": "non_idempotent_or_requires_key",
+              "required_fields": [
+                "method",
+                "url"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

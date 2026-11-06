@@ -1,0 +1,60 @@
+{
+  "workspace_id": "ec94c942-2d64-c6be-c968-e793caaef007",
+  "requests": [
+    {
+      "path": "/workflow/v2/workflow-apps?offset=0&limit=20",
+      "http_status": 200,
+      "response": {
+        "code": "OK",
+        "msg": "OK",
+        "data": {
+          "total": 0,
+          "workflows": []
+        }
+      }
+    },
+    {
+      "path": "/catalog/list",
+      "http_status": 200,
+      "response": {
+        "code": "OK",
+        "msg": "OK",
+        "data": {
+          "list": [
+            {
+              "id": 10001,
+              "name": "default",
+              "display_name": "default",
+              "description": "Default",
+              "display_description": "Default",
+              "database_count": 0,
+              "reserved": true,
+              "allowed_actions": []
+            },
+            {
+              "id": 10002,
+              "name": "shared",
+              "display_name": "shared",
+              "description": "Shared databases",
+              "display_description": "Shared databases",
+              "database_count": 0,
+              "reserved": true,
+              "allowed_actions": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "path": "/query/execute",
+      "http_status": 200,
+      "response": {
+        "code": 200,
+        "data": {
+          "id": "01a1ab64-f5f9-75b1-8e0e-6c1551e0a617",
+          "query_id": "01a1ab64-f5f9-75b1-8e0e-6c1551e0a617"
+        }
+      }
+    }
+  ]
+}

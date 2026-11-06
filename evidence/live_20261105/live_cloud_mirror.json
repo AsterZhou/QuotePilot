@@ -1,0 +1,17 @@
+{
+  "verified": true,
+  "quote_id": "QP-771C05221452",
+  "version": 2,
+  "workspace_id": "ec94c942-2d64-c6be-c968-e793caaef007",
+  "database": "quotepilot",
+  "table": "quote_snapshots_v1",
+  "payload_sha256": "7d65cdb2692eb172a07d45d36503754b90e7198939883f7589920738461223e9",
+  "query_ids": [
+    "01a1ab6b-ff27-7966-8562-f4a933139e8a",
+    "01a1ab6c-22be-7069-ac88-cf65a7cbaeb7",
+    "01a1ab6c-4af4-71e3-b3c7-7924c5d7f900",
+    "01a1ab6c-7060-7b42-abf1-46d6eb5a08dc"
+  ],
+  "primary_store": "sqlite",
+  "scope": "approved_quote_snapshot_mirror"
+}

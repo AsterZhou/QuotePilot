@@ -1,0 +1,11 @@
+{
+  "url": "https://api.moi.matrixorigin.cn/v5/workspaces",
+  "http_status": 200,
+  "business_code": "OK",
+  "workspaces": [
+    {
+      "id": "ec94c942-2d64-c6be-c968-e793caaef007",
+      "name": "Aster Zhou的工作区"
+    }
+  ]
+}

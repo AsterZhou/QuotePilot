@@ -1,0 +1,1 @@
+PASS: extracted ZIP fresh startup / 300 lines / Decimal quote 133.04 / XLSX / local fonts

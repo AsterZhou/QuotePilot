@@ -1,0 +1,41 @@
+INFO:     Started server process [6]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8765 (Press CTRL+C to quit)
+INFO:     127.0.0.1:58774 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58786 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58786 - "GET /assets/fonts/noto-sans-sc.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58792 - "GET /assets/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58802 - "GET /assets/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58786 - "GET /api/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58786 - "GET /assets/fonts/noto-sans-sc-latin-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58802 - "GET /assets/fonts/noto-sans-sc-118-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58792 - "GET /assets/fonts/noto-sans-sc-117-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58816 - "GET /assets/fonts/noto-sans-sc-116-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "GET /assets/fonts/noto-sans-sc-115-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58830 - "GET /assets/fonts/noto-sans-sc-90-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58786 - "GET /assets/fonts/noto-sans-sc-88-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58802 - "GET /assets/fonts/noto-sans-sc-114-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58816 - "GET /assets/fonts/noto-sans-sc-87-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58830 - "GET /assets/fonts/noto-sans-sc-101-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58792 - "GET /assets/fonts/noto-sans-sc-113-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "GET /assets/fonts/noto-sans-sc-119-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58786 - "GET /assets/fonts/noto-sans-sc-108-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58816 - "GET /assets/fonts/noto-sans-sc-107-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58792 - "GET /assets/fonts/noto-sans-sc-111-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58816 - "GET /assets/fonts/noto-sans-sc-112-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58786 - "GET /assets/fonts/noto-sans-sc-103-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "GET /assets/fonts/noto-sans-sc-109-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "GET /api/rules HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "GET /api/emails HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "GET /api/lines?limit=500 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "GET /assets/fonts/noto-sans-sc-105-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "POST /api/quote HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "GET /assets/fonts/noto-sans-sc-110-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "PATCH /api/quotes/QP-D0035C812BCF HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "PATCH /api/quotes/QP-D0035C812BCF HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "GET /api/quotes/QP-D0035C812BCF/export/xlsx HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "GET /api/lines?email_id=%3Crfq-f-20260908%40customer.test%3E&search=&limit=20&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "GET /assets/fonts/noto-sans-sc-104-400-normal.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "GET /api/lines/151 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58804 - "GET /api/price/candidates?part_number=CPL-501&quantity=2&condition=&asof=2026-09-20 HTTP/1.1" 200 OK

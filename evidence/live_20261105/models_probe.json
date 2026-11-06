@@ -1,0 +1,100 @@
+{
+  "url": "https://token.moi.matrixorigin.cn/v1/models?type=chat",
+  "http_status": 200,
+  "models": [
+    {
+      "id": "kimi-k2.7-code",
+      "capabilities": [
+        "responses",
+        "vision"
+      ],
+      "type": "chat",
+      "sub_type": "multimodal"
+    },
+    {
+      "id": "qwen3.7-plus",
+      "capabilities": [
+        "messages",
+        "responses",
+        "vision"
+      ],
+      "type": "chat",
+      "sub_type": "multimodal"
+    },
+    {
+      "id": "glm-5.2",
+      "capabilities": [
+        "responses",
+        "vision"
+      ],
+      "type": "chat",
+      "sub_type": "text"
+    },
+    {
+      "id": "qwen3.8-27b",
+      "capabilities": [
+        "responses",
+        "vision"
+      ],
+      "type": "chat",
+      "sub_type": "multimodal"
+    },
+    {
+      "id": "qwen3.8-max",
+      "capabilities": [
+        "responses",
+        "vision"
+      ],
+      "type": "chat",
+      "sub_type": "multimodal"
+    },
+    {
+      "id": "qwen3.8-flash",
+      "capabilities": [
+        "responses",
+        "vision"
+      ],
+      "type": "chat",
+      "sub_type": "multimodal"
+    },
+    {
+      "id": "kimi-k3",
+      "capabilities": [
+        "messages",
+        "responses",
+        "vision"
+      ],
+      "type": "chat",
+      "sub_type": "multimodal"
+    },
+    {
+      "id": "deepseek-v4.1-flash",
+      "capabilities": [
+        "messages",
+        "responses",
+        "vision"
+      ],
+      "type": "chat",
+      "sub_type": "multimodal"
+    },
+    {
+      "id": "glm-5.3",
+      "capabilities": [
+        "messages",
+        "responses",
+        "vision"
+      ],
+      "type": "chat",
+      "sub_type": "text"
+    },
+    {
+      "id": "glm-5.3-flash",
+      "capabilities": [
+        "responses",
+        "vision"
+      ],
+      "type": "chat",
+      "sub_type": "multimodal"
+    }
+  ]
+}

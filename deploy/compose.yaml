@@ -1,0 +1,51 @@
+services:
+  app:
+    build:
+      context: ..
+    restart: unless-stopped
+    environment:
+      QUOTEPILOT_ENV: production
+      QUOTEPILOT_PUBLIC_URL: https://${QUOTEPILOT_DOMAIN:?Set QUOTEPILOT_DOMAIN}
+      QUOTEPILOT_PROVIDER: genesis
+      QUOTEPILOT_DB: /data/quotepilot.db
+      GENESIS_BASE_URL: https://token.moi.matrixorigin.cn/v1
+      GENESIS_MODEL_ID: qwen3.8-flash
+      GENESIS_API_STYLE: responses
+      MOI_WORKSPACE_ID: ${MOI_WORKSPACE_ID:?Set MOI_WORKSPACE_ID}
+      MOI_WORKFLOW_ID: ${MOI_WORKFLOW_ID:-}
+    secrets:
+      - genesis_api_key
+      - login_password
+      - session_secret
+    volumes:
+      - quote_data:/data
+    read_only: true
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 768m
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_healthy
+    environment:
+      QUOTEPILOT_DOMAIN: ${QUOTEPILOT_DOMAIN:?Set QUOTEPILOT_DOMAIN}
+    ports: ['80:80', '443:443']
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+volumes:
+  quote_data:
+  caddy_data:
+  caddy_config:
+secrets:
+  genesis_api_key:
+    file: ${QP_SECRET_DIR:?Set QP_SECRET_DIR}/genesis_api_key
+  login_password:
+    file: ${QP_SECRET_DIR:?Set QP_SECRET_DIR}/login_password
+  session_secret:
+    file: ${QP_SECRET_DIR:?Set QP_SECRET_DIR}/session_secret

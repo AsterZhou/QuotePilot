@@ -1,0 +1,63 @@
+{
+  "public_url": "https://127.0.0.1:53623",
+  "external": false,
+  "passed": true,
+  "synthetic": true,
+  "steps": {
+    "anonymous_api_denied": true,
+    "authenticated_session": true,
+    "eml_upload": true,
+    "real_genesis": {
+      "model": "qwen3.8-flash",
+      "response_id": "resp_9136ec7e-c946-9464-bfb9-e002dbb3712b",
+      "usage": {
+        "input_tokens": 439,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 634,
+        "output_tokens_details": {
+          "reasoning_tokens": 530
+        },
+        "total_tokens": 1073,
+        "x_details": [
+          {
+            "input_tokens": 439,
+            "output_tokens": 634,
+            "output_tokens_details": {
+              "reasoning_tokens": 530
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 1073,
+            "x_billing_type": "response_api"
+          }
+        ]
+      }
+    },
+    "human_confirmation_and_repeat_protection": true,
+    "missing_price_blocks_approval": true,
+    "deterministic_total_cny": "66.52",
+    "export_and_db_agree": true,
+    "real_cloud_snapshot": {
+      "verified": true,
+      "quote_id": "QP-2329022C5184",
+      "version": 2,
+      "workspace_id": "ec94c942-2d64-c6be-c968-e793caaef007",
+      "database": "quotepilot",
+      "table": "quote_snapshots_v1",
+      "payload_sha256": "8f6bc5ed5fade2199958620831ae2de8500570027a1dc360cb798ff8ae0f8f5c",
+      "query_ids": [
+        "01a1ab8d-4937-7a8b-8708-6d69dd5d3213",
+        "01a1ab8d-6aad-71f5-883b-2d48c230c836",
+        "01a1ab8d-931c-756e-b371-b0ef8fb6e56d",
+        "01a1ab8d-c507-74f3-b07c-92adea12da99"
+      ],
+      "primary_store": "sqlite",
+      "scope": "approved_quote_snapshot_mirror"
+    }
+  },
+  "quote_id": "QP-2329022C5184"
+}

@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "key_saved": false,
+  "health": {
+    "ok": true,
+    "version": "0.6.0",
+    "mode": "genesis_assisted_local",
+    "moi_connected": false,
+    "matrixone_connected": false,
+    "model_connected": false,
+    "stats": {
+      "mails": 6,
+      "mail_lines": 300,
+      "history_lines": 249,
+      "history_rfq_groups": 94,
+      "cost_records": 163,
+      "price_records": 342
+    }
+  },
+  "note": "Manual hidden prompt also reached Uvicorn startup; automated HTTP smoke uses exported process env."
+}

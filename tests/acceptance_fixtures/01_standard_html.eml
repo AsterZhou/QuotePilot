@@ -1,0 +1,25 @@
+From: Fresh QA <fresh@example.invalid>
+To: sales@example.invalid
+Date: Thu, 05 Nov 2026 10:00:00 +0800
+Subject: SYNTHETIC QA RFQ
+Message-ID: <01@fixture.invalid>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="===============5445372334417137084=="
+
+--===============5445372334417137084==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+Please quote the attached RFQ. Synthetic acceptance test.
+
+--===============5445372334417137084==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+<table><tr><th>RFQ No</th><th>Part Number</th><th>Description</th><th>Quantit=
+y</th><th>Unit</th><th>Condition</th></tr><tr><td>QA-ONE</td><td>VX-731</td><=
+td>VALVE</td><td>3</td><td>EA</td><td>FN</td></tr></table>
+
+--===============5445372334417137084==--

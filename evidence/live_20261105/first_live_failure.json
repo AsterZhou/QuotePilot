@@ -1,0 +1,4 @@
+{
+  "error_type": "ImportError",
+  "error": "Using SOCKS proxy, but the 'socksio' package is not installed. Make sure to install httpx using `pip install httpx[socks]`."
+}

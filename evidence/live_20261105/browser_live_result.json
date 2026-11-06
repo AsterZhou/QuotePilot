@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "real_genesis_call": true,
+  "extraction_run_id": "EX-665EDE186611",
+  "response_id": "resp_b09c0deb-f294-959e-8abd-183cf0688daa",
+  "total_cny": "49.89",
+  "checks": [
+    "EML upload",
+    "real Genesis suggestions",
+    "human confirmation form",
+    "missing price remains pending",
+    "single valid line quote",
+    "quote approval",
+    "XLSX download",
+    "real-call integration status"
+  ],
+  "page_errors": []
+}

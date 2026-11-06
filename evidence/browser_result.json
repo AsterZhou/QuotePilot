@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checks": [
+    "desktop navigation",
+    "official quote 133.04",
+    "manual review",
+    "approval",
+    "xlsx download",
+    "source drawer",
+    "mobile no overflow"
+  ],
+  "page_errors": []
+}

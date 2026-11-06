@@ -1,0 +1,22 @@
+INFO:     Started server process [8]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:55277 (Press CTRL+C to quit)
+INFO:     127.0.0.1:44900 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44900 - "POST /api/emails/import HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44900 - "POST /api/emails/%3Cgenesis-live-20261105%40example.invalid%3E/extract HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44900 - "GET /api/lines?email_id=%3Cgenesis-live-20261105%40example.invalid%3E HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44900 - "POST /api/extractions/EX-8E659D110B4E/confirm HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:44900 - "POST /api/extractions/EX-8E659D110B4E/confirm HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44900 - "POST /api/extractions/EX-8E659D110B4E/confirm HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44900 - "POST /api/quote HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44900 - "POST /api/quote HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44900 - "PATCH /api/quotes/QP-771C05221452 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44900 - "GET /api/quotes/QP-771C05221452/export/csv?final=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44900 - "GET /api/quotes/QP-771C05221452/export/xlsx?final=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44900 - "GET /api/quotes/QP-771C05221452/export/json?final=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44900 - "GET /api/integration HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [8]

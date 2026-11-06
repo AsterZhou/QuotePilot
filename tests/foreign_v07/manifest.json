@@ -1,0 +1,123 @@
+{
+  "origin": "new post-parser-freeze synthetic inputs; no external customer corpus",
+  "parser_freeze_sha256": {
+    "quotepilot/parsing.py": "2d10d05123647a1bab7c584e7cc981ae1f716ad3210db862d1c73ab74791ba40",
+    "quotepilot/xlsxio.py": "f734b5b85a3d0a40713ae4d007e175321d31beb750e7e1f9a3112bd9451e47be"
+  },
+  "cases": [
+    {
+      "name": "01_multi_business.eml",
+      "sha256": "2d06b3d849cb9504418e327e9d4bdcc8e998cc384ebf7c7ad0201f27c9662301",
+      "expected": [
+        [
+          "QPX-517102",
+          4,
+          "EA",
+          "F07-A"
+        ],
+        [
+          "QPX-517102",
+          4,
+          "EA",
+          "F07-B"
+        ]
+      ],
+      "must_report_issue": false
+    },
+    {
+      "name": "02_notes.eml",
+      "sha256": "cb4b38c6202e28faf24013fa8119f17029ed0766c50cc291ed9d8a04a64bd5d8",
+      "expected": [
+        [
+          "QPX-517102",
+          5,
+          "EA",
+          "F07-N"
+        ]
+      ],
+      "must_report_issue": true
+    },
+    {
+      "name": "03_offset_header.eml",
+      "sha256": "09df5440ca78c4ac9a3db6d15bb5e412653fa29b0abf9b99d7c3859eebad7b99",
+      "expected": [
+        [
+          "QPX-517102",
+          8,
+          "PCS",
+          "F07-C"
+        ]
+      ],
+      "must_report_issue": false
+    },
+    {
+      "name": "04_formula.eml",
+      "sha256": "be4a10177cc9d1756e719e46ee8849f5aeddbe85e9618810e0541746eb2e5c54",
+      "expected": [],
+      "must_report_issue": true
+    },
+    {
+      "name": "05_geometry_pdf.eml",
+      "sha256": "3c4e110707697bcddb8c35a6e2df15de5a2b7e8df001bc0405095f6560aa9bce",
+      "expected": [
+        [
+          "QPX-517102",
+          7,
+          "EA",
+          "RFQ-NEW-707"
+        ]
+      ],
+      "must_report_issue": false
+    },
+    {
+      "name": "06_horizontal_two_rfqs.eml",
+      "sha256": "bbdd8919d6c75498178c9af853a982bc7d6346a1d8d344cc17505c27ae51ec39",
+      "expected": [
+        [
+          "QPX-517102",
+          6,
+          "EA",
+          "NEW-ROW-1"
+        ],
+        [
+          "QPX-517102",
+          6,
+          "EA",
+          "NEW-ROW-2"
+        ]
+      ],
+      "must_report_issue": false
+    },
+    {
+      "name": "07_invalid_pdf_qty.eml",
+      "sha256": "553dc57e005c3908066842c344477e9c46922659019ba3508f61808ac94fca58",
+      "expected": [],
+      "must_report_issue": true
+    },
+    {
+      "name": "08_scan_manual.eml",
+      "sha256": "edd691ee697e77d207c87b49ca1ce4292716e29727d7b5542c2ccded7423419a",
+      "expected": [],
+      "must_report_issue": true
+    },
+    {
+      "name": "09_plain_alias.eml",
+      "sha256": "5b7d3b88e70536ac6d5e4cbd50374633662bf61481efa0d1a815d77cb4bdf5b0",
+      "expected": [
+        [
+          "QPX-517102",
+          9,
+          "EA",
+          "F07-P"
+        ]
+      ],
+      "must_report_issue": false
+    },
+    {
+      "name": "10_corrupt.eml",
+      "sha256": "e128a1c28d5dbbe68841460fdea202a79447d68f96748e1ddc1baa2b662804c1",
+      "expected": [],
+      "must_report_issue": true
+    }
+  ]
+}

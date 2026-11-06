@@ -1,0 +1,2 @@
+﻿part_number,quantity,unit,condition,status,source_ref,supplier,cost_cny,quoted_unit_cny,amount_cny,lead_days,issues,quote_id,version,asof,review_status,rfq_no,customer,original_source,rule_version
+PN-0001,4,EA,FN,已人工确认,PR000067,广州白鹭航空技术服务有限公司,13.86,16.63,66.52,23,库存件状缺失; 库存件状不符；请核对件状; 库存不足：可用 0，需求 4，差额 4 EA；请补货或选择供应商; PR000068: 件状不符；请核对件状,QP-2329022C5184,2,2026-09-20,approved,SYNTH-ac4e3444,SYNTHETIC ACCEPTANCE,acceptance.eml · EX-F86329911D11 / suggestion 1,qp-rules-0.5.0

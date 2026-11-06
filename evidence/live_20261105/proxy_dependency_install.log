@@ -1,0 +1,15 @@
+Requirement already satisfied: httpx[socks] in ./audit_20261105/venv/lib/python3.12/site-packages (0.28.1)
+Requirement already satisfied: anyio in ./audit_20261105/venv/lib/python3.12/site-packages (from httpx[socks]) (4.16.0)
+Requirement already satisfied: certifi in ./audit_20261105/venv/lib/python3.12/site-packages (from httpx[socks]) (2026.10.19)
+Requirement already satisfied: httpcore==1.* in ./audit_20261105/venv/lib/python3.12/site-packages (from httpx[socks]) (1.0.9)
+Requirement already satisfied: idna in ./audit_20261105/venv/lib/python3.12/site-packages (from httpx[socks]) (3.19)
+Collecting socksio==1.* (from httpx[socks])
+  Downloading socksio-1.0.0-py3-none-any.whl.metadata (6.1 kB)
+Requirement already satisfied: h11>=0.16 in ./audit_20261105/venv/lib/python3.12/site-packages (from httpcore==1.*->httpx[socks]) (0.16.0)
+Requirement already satisfied: typing_extensions>=4.16.0 in ./audit_20261105/venv/lib/python3.12/site-packages (from anyio->httpx[socks]) (4.16.0)
+Downloading socksio-1.0.0-py3-none-any.whl (12 kB)
+Installing collected packages: socksio
+Successfully installed socksio-1.0.0
+
+[notice] A new release of pip is available: 25.0.1 -> 26.3
+[notice] To update, run: python -m pip install --upgrade pip

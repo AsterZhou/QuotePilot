@@ -1,0 +1,38 @@
+From: Synthetic QA <fresh07@example.invalid>
+Subject: SYNTHETIC v0.7 07_invalid_pdf_qty.eml
+Message-ID: <07_invalid_pdf_qty.eml@fresh07.invalid>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============5114968944676821995=="
+
+--===============5114968944676821995==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+SYNTHETIC TEST ONLY. Please quote attached RFQ.
+
+--===============5114968944676821995==
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="invalid.pdf"
+MIME-Version: 1.0
+
+JVBERi0xLjcKJcK1wrYKCjEgMCBvYmoKPDwvVHlwZS9DYXRhbG9nL1BhZ2VzIDIgMCBSPj4KZW5k
+b2JqCgoyIDAgb2JqCjw8L1R5cGUvUGFnZXMvQ291bnQgMS9LaWRzWzQgMCBSXT4+CmVuZG9iagoK
+MyAwIG9iago8PC9Gb250PDwvaGVsdiA1IDAgUj4+Pj4KZW5kb2JqCgo0IDAgb2JqCjw8L1R5cGUv
+UGFnZS9NZWRpYUJveFswIDAgMTAwMCA2MDBdL1JvdGF0ZSAwL1Jlc291cmNlcyAzIDAgUi9QYXJl
+bnQgMiAwIFIvQ29udGVudHNbNiAwIFIgNyAwIFJdPj4KZW5kb2JqCgo1IDAgb2JqCjw8L1R5cGUv
+Rm9udC9TdWJ0eXBlL1R5cGUxL0Jhc2VGb250L0hlbHZldGljYS9FbmNvZGluZy9XaW5BbnNpRW5j
+b2Rpbmc+PgplbmRvYmoKCjYgMCBvYmoKPDwvTGVuZ3RoIDEwNi9GaWx0ZXIvRmxhdGVEZWNvZGU+
+PgpzdHJlYW0KeNodizsKQkEQBPM5xdzA+XTvIoiB8BIzYTIxe7sYaGDi+V2kqQoKWj5yKXG1Ndc0
+ZTOttxye4/VVd62p9xMDpJPLSYShYTLC/m0S8MUREyMscvVAo8eOsR499uxp2c+PuspWcpMf9Q8a
+HgplbmRzdHJlYW0KZW5kb2JqCgo3IDAgb2JqCjw8L0xlbmd0aCAxMjkvRmlsdGVyL0ZsYXRlRGVj
+b2RlPj4Kc3RyZWFtCnjaTYw7CgJBEETzPkVfQO2a/rkgBrImZsJkYrYjBhqYeH5HQXYpCopX8OhF
+h0pg6QGrsMO5Pmlzb483A1xvfNm5BLKkFbGWHlOU8CxF/nF0imhpMaTlsHg82pftr/VEwiv4GjCu
+I3UrXHxbJnWFZq/owqkyb3PDz3CsdKYPpSMmNAplbmRzdHJlYW0KZW5kb2JqCgp4cmVmCjAgOAow
+MDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMTYgMDAwMDAgbiAKMDAwMDAwMDA2MiAwMDAwMCBu
+IAowMDAwMDAwMTE0IDAwMDAwIG4gCjAwMDAwMDAxNTUgMDAwMDAgbiAKMDAwMDAwMDI2OSAwMDAw
+MCBuIAowMDAwMDAwMzU4IDAwMDAwIG4gCjAwMDAwMDA1MzMgMDAwMDAgbiAKCnRyYWlsZXIKPDwv
+U2l6ZSA4L1Jvb3QgMSAwIFIvSURbPEMzQURDMzhDQzM5QjAzQzM4NkMyQTNDMkFGQzI4OTJFPjwx
+MTg0RjcyOTEwQzk0QkQ3NTlBMjM4OUY2QkJDRDcyOD5dPj4Kc3RhcnR4cmVmCjczMQolJUVPRgo=
+
+--===============5114968944676821995==--

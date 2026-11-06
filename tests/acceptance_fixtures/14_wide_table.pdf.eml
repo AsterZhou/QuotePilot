@@ -1,0 +1,38 @@
+From: Fresh QA <fresh@example.invalid>
+To: sales@example.invalid
+Date: Thu, 05 Nov 2026 10:00:00 +0800
+Subject: SYNTHETIC QA RFQ
+Message-ID: <14_wide_table.pdf@fixture.invalid>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============7935128667965376967=="
+
+--===============7935128667965376967==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+Please quote the attached RFQ. Synthetic acceptance test.
+
+--===============7935128667965376967==
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="14_wide_table.pdf"
+MIME-Version: 1.0
+
+JVBERi0xLjcKJcK1wrYKCjEgMCBvYmoKPDwvVHlwZS9DYXRhbG9nL1BhZ2VzIDIgMCBSPj4KZW5k
+b2JqCgoyIDAgb2JqCjw8L1R5cGUvUGFnZXMvQ291bnQgMS9LaWRzWzQgMCBSXT4+CmVuZG9iagoK
+MyAwIG9iago8PC9Gb250PDwvaGVsdiA1IDAgUj4+Pj4KZW5kb2JqCgo0IDAgb2JqCjw8L1R5cGUv
+UGFnZS9NZWRpYUJveFswIDAgNTk1IDg0Ml0vUm90YXRlIDAvUmVzb3VyY2VzIDMgMCBSL1BhcmVu
+dCAyIDAgUi9Db250ZW50c1s2IDAgUl0+PgplbmRvYmoKCjUgMCBvYmoKPDwvVHlwZS9Gb250L1N1
+YnR5cGUvVHlwZTEvQmFzZUZvbnQvSGVsdmV0aWNhL0VuY29kaW5nL1dpbkFuc2lFbmNvZGluZz4+
+CmVuZG9iagoKNiAwIG9iago8PC9MZW5ndGggMTkxL0ZpbHRlci9GbGF0ZURlY29kZT4+CnN0cmVh
+bQp42m1OPUsFQQzs91ekFtR8TeKBvEK0sRO2EytvF4tnYePvf7kDOYvHkBQzmcm0n/bUmxAXhMCU
+i1L/bvdf4/xLItQnvT9CHRCgtsGVPXxClXduwl1qFp8+lNWKVw+IrhAXc7PTR39tTLeCOxGn/twq
+k0NSc0sbiVhDA1mZf/CKSAtLjSU5PZaYMQ4dUi6JsSnpVftQEGPj9q/9ZusfeNDV0szkuPvnCBf/
+rI1rqrLZdb5awmX/89LbW7sAFD5G6wplbmRzdHJlYW0KZW5kb2JqCgp4cmVmCjAgNwowMDAwMDAw
+MDAwIDY1NTM1IGYgCjAwMDAwMDAwMTYgMDAwMDAgbiAKMDAwMDAwMDA2MiAwMDAwMCBuIAowMDAw
+MDAwMTE0IDAwMDAwIG4gCjAwMDAwMDAxNTUgMDAwMDAgbiAKMDAwMDAwMDI2MiAwMDAwMCBuIAow
+MDAwMDAwMzUxIDAwMDAwIG4gCgp0cmFpbGVyCjw8L1NpemUgNy9Sb290IDEgMCBSL0lEWzw3QTcz
+QzI5RDJGQzJCNkMyOTA1MzNGMkFDM0I3QzM4NT48OUE3NjQ1MjQ0RkJERURERDYzNEY1NEI2NjdG
+MjYxQzU+XT4+CnN0YXJ0eHJlZgo2MTEKJSVFT0YK
+
+--===============7935128667965376967==--

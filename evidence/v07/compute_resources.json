@@ -1,0 +1,8 @@
+{
+  "http": 200,
+  "response": {
+    "code": "OK",
+    "msg": "OK",
+    "data": []
+  }
+}

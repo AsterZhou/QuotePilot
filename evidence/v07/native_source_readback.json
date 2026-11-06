@@ -1,0 +1,63 @@
+{
+  "query_id": "01a1ab8e-fca4-7ae4-a639-48cefb5a541d",
+  "statement_id": "01a1ab8e-fdb4-7a83-9e2e-473b67ea4851",
+  "data": {
+    "query_id": "01a1ab8e-fca4-7ae4-a639-48cefb5a541d",
+    "db_name": "",
+    "statement_id": "01a1ab8e-fdb4-7a83-9e2e-473b67ea4851",
+    "status": "success",
+    "offset": 0,
+    "limit": 10,
+    "total": 1,
+    "rows_affected": 0,
+    "truncated": false,
+    "columns": [
+      {
+        "name": "run_ref",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "input_base64",
+        "type": "TEXT"
+      },
+      {
+        "name": "input_sha256",
+        "type": "CHAR"
+      },
+      {
+        "name": "review_status",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "model_text_base64",
+        "type": "TEXT"
+      }
+    ],
+    "result": [
+      [
+        {
+          "String": "QP-NATIVE-QA-20261105",
+          "Valid": true
+        },
+        {
+          "String": "U1lOVEhFVElDIFJGUSBPTkxZLiBQbGVhc2UgcXVvdGUgdGhyZWUgRUEgb2YgUE4tMDAwMSBpbiBGTiBjb25kaXRpb24uIEFsc28gcXVvdGUgdHdvIEVBIG9mIEdTSy0wMDE7IGNvbmRpdGlvbiBub3Qgc3BlY2lmaWVkLg==",
+          "Valid": true
+        },
+        {
+          "String": "d550ca791ed156df0de9a876a2b357d5eac40cf07ecd034bade3c126a362a788",
+          "Valid": true
+        },
+        {
+          "String": "pending",
+          "Valid": true
+        },
+        {
+          "String": "",
+          "Valid": false
+        }
+      ]
+    ]
+  },
+  "input_hash_verified": true,
+  "native_model_result_present": false
+}

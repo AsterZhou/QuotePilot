@@ -1,0 +1,9 @@
+{
+  "compose_yaml": "parsed, expected services/secrets/volumes; no public app port",
+  "docker_build": "未执行：没有Docker/Podman",
+  "caddy_tls_certificate": "未执行：没有部署服务器与域名",
+  "shell_syntax": "bash -n passed",
+  "native_dsl_yaml": "four nodes parsed; native runtime not yet verified",
+  "public_deployment": "未完成",
+  "public_browser_e2e": "未执行"
+}

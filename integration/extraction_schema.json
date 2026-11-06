@@ -1,0 +1,84 @@
+{
+  "$defs": {
+    "Suggestion": {
+      "additionalProperties": false,
+      "properties": {
+        "part_number": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Part Number"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quantity"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Condition"
+        },
+        "evidence": {
+          "minLength": 1,
+          "title": "Evidence",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence"
+      ],
+      "title": "Suggestion",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "lines": {
+      "items": {
+        "$ref": "#/$defs/Suggestion"
+      },
+      "maxItems": 100,
+      "title": "Lines",
+      "type": "array"
+    }
+  },
+  "required": [
+    "lines"
+  ],
+  "title": "Extraction",
+  "type": "object"
+}

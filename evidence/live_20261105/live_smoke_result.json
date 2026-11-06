@@ -1,0 +1,122 @@
+{
+  "mode": "REAL Genesis network + real localhost HTTP",
+  "synthetic_input": true,
+  "model": "qwen3.8-flash",
+  "credential_saved": false,
+  "moi_connected": false,
+  "matrixone_connected": false,
+  "public_deployment_verified": false,
+  "extraction": {
+    "provider": "genesis",
+    "simulated": false,
+    "model": "qwen3.8-flash",
+    "api_style": "responses",
+    "response_id": "resp_40543327-b426-9332-876b-96ff225090e9",
+    "usage": {
+      "input_tokens": 455,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 447,
+      "output_tokens_details": {
+        "reasoning_tokens": 299
+      },
+      "total_tokens": 902,
+      "x_details": [
+        {
+          "input_tokens": 455,
+          "output_tokens": 447,
+          "output_tokens_details": {
+            "reasoning_tokens": 299
+          },
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 902,
+          "x_billing_type": "response_api"
+        }
+      ]
+    },
+    "elapsed_seconds": 15.959,
+    "review_required": true,
+    "lines": [
+      {
+        "part_number": "PN-0001",
+        "quantity": 3,
+        "unit": "EA",
+        "condition": "FN",
+        "evidence": "Please quote three EA of PN-0001 in FN condition."
+      },
+      {
+        "part_number": "GSK-001",
+        "quantity": 2,
+        "unit": "EA",
+        "condition": null,
+        "evidence": "We also need two EA of GSK-001; condition not specified."
+      }
+    ],
+    "message": "仅为模型建议，未写入询价；必须对照证据人工确认。",
+    "source_ids": [
+      "d4b1cc589355cb42f20fe6d8a9cd7f5acf204be2e109cb789895e77c720a3f69"
+    ],
+    "source_notes": [],
+    "run_id": "EX-8E659D110B4E",
+    "email_id": "<genesis-live-20261105@example.invalid>"
+  },
+  "passed": true,
+  "checks": {
+    "not_written_before_confirmation": true,
+    "new_lines": 2,
+    "repeat_confirmation_idempotent": true,
+    "missing_price_pending": true,
+    "unit_quote_cny": "16.63",
+    "database_csv_xlsx_amount": "49.89"
+  },
+  "integration": {
+    "moi_connected": false,
+    "matrixone_connected": false,
+    "model_connected": true,
+    "genesis_configured": true,
+    "last_successful_genesis_call": {
+      "model": "qwen3.8-flash",
+      "response_id": "resp_40543327-b426-9332-876b-96ff225090e9",
+      "at": "2026-11-05 11:04:56"
+    },
+    "connection_check": "已保存的最近成功调用证据，不代表持续在线探测",
+    "mode": "genesis_assisted_local",
+    "next_steps": [
+      "在来件页明确触发Genesis提取",
+      "对照原文人工确认再入库",
+      "配置MOI工作区和MatrixOne原生数据链路",
+      "部署并验证评委访问"
+    ],
+    "disclaimer": "Genesis模型调用与MOI工作区/MatrixOne数据库是独立验收项；当前业务数据库仍为SQLite。"
+  },
+  "usage": {
+    "input_tokens": 455,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 447,
+    "output_tokens_details": {
+      "reasoning_tokens": 299
+    },
+    "total_tokens": 902,
+    "x_details": [
+      {
+        "input_tokens": 455,
+        "output_tokens": 447,
+        "output_tokens_details": {
+          "reasoning_tokens": 299
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 902,
+        "x_billing_type": "response_api"
+      }
+    ]
+  }
+}

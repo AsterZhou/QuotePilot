@@ -1,0 +1,608 @@
+{
+  "http": 200,
+  "response": {
+    "code": "OK",
+    "msg": "OK",
+    "data": {
+      "items": [
+        {
+          "node_id": "moi:api.request",
+          "display_name": "HTTP Request",
+          "short_description": "Send one request to an external HTTP API, webhook, or service endpoint. Inputs include method, url, headers, body, and timeout_seconds; outputs include status_code, headers, body (raw response text), and json (parsed JSON when the body is JSON, otherwise null).",
+          "category": "Data IO",
+          "tags": [
+            "api",
+            "http",
+            "webhook",
+            "external"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:cad.segment.parts",
+          "display_name": "Segment CAD Parts",
+          "short_description": "Run the CAD segmentation agent on drawing PDFs or images to produce part regions, OCR, and visible specifications as cad_result for document_visual.parse.",
+          "category": "Other",
+          "tags": [
+            "cad",
+            "segmentation",
+            "sam",
+            "opencv",
+            "agent",
+            "drawing"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": true
+        },
+        {
+          "node_id": "moi:catalog.files.manifest",
+          "display_name": "Catalog Files Manifest",
+          "short_description": "Enumerate Catalog file sources into stable JSONL shard manifests with file_id, available name and path, and global ordinal. It does not download file content. Downstream parallel branches each consume a fixed manifest shard; enumeration itself is not a transactional Catalog snapshot.",
+          "category": "Other",
+          "tags": [
+            "catalog",
+            "manifest",
+            "shard",
+            "files"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:catalog.sink.write",
+          "display_name": "Save to MOI Volume",
+          "short_description": "Save upstream documents, rows/columns, text, JSON, or file_ids as Catalog files. format is encoding and extension only and does not convert one payload type into another: txt/markdown write the bound text body (text, otherwise documents[].content joined), jsonl/json serialize document records, and rows+columns write CSV with a header. Multiple document source groups produce per-source parse ZIPs; a single group with parse artifacts or extraction_result also produces a ZIP for json/jsonl. It is usually the final output node; file_id/file_ids can be passed to import or lineage nodes.",
+          "category": "Data IO",
+          "tags": [
+            "catalog",
+            "sink",
+            "output",
+            "csv",
+            "export",
+            "file"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:catalog.source.read",
+          "display_name": "Read MOI Volume",
+          "short_description": "Select files, folders, volumes, or data assets from Catalog as workflow input. It outputs raw sources and file_ids without file content. Use it as the first node for user documents, files to parse, or files to import; parser nodes consume sources, and import nodes consume file_ids. Bind source_ref from the form or a Build parameter and do not invent IDs; do not pass a volume or sourceRef as documents.",
+          "category": "Data IO",
+          "tags": [
+            "catalog",
+            "source",
+            "input"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:catalog.source.read.v2",
+          "display_name": "Read MOI Volume",
+          "short_description": "Select files, folders, volumes, or data assets from Catalog as workflow input. Use this version for new workflows. V2 requires a non-empty resource selector and returns stable canonical files[] entries with file_id, name, and file_name, together with sources and file_ids, without file content. Bind source_ref from the form or a Build parameter and do not invent IDs; do not pass a volume or sourceRef as Parse body or documents.",
+          "category": "Data IO",
+          "tags": [
+            "catalog",
+            "source",
+            "input",
+            "v2",
+            "canonical-files"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:connector.s3-mo",
+          "display_name": "Import Files to MOI Table",
+          "short_description": "Import CSV, Parquet, ORC, and similar data files from Catalog/S3 into a MatrixOne table. For Excel imports, numeric MatrixOne target columns use raw cell values while other target columns retain formatted cell values; the destination table type controls precision and scale. It usually receives upstream file_ids; when importing a rows+columns CSV generated by catalog.sink.write, set start_row=1 to skip the header.",
+          "category": "Other",
+          "tags": [
+            "connector",
+            "s3",
+            "mo"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:data.lineage.register",
+          "display_name": "Lineage Registration",
+          "short_description": "Register data assets and derivation relationships to connect lineage across source files, parsed docsets, vector indexes, or other output files. It is usually placed after parsing, file writing, or indexing for governance and traceability.",
+          "category": "Other",
+          "tags": [
+            "lineage",
+            "governance"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:data.records.join",
+          "display_name": "Join Records by Key",
+          "short_description": "Left-join object arrays by scalar keys, retain left order, copy lookup fields, assign shared values and join string-array fields.",
+          "category": "Data Processing",
+          "tags": [
+            "data",
+            "transform"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:data.sql.process",
+          "display_name": "SQL Processing",
+          "short_description": "Execute one workspace MatrixOne SQL statement. Required input is sql; optional table_ref accepts a Catalog table reference from upstream moi:data.table.read to form a traceable Catalog-to-SQL data edge. When table_ref is bound, SQL may use the ${source_table} placeholder (replaced with the quoted database.table FQN at runtime). SELECT/SHOW/WITH queries output rows; DML/DDL output affected_rows, sql, elapsed_ms, and truncated.",
+          "category": "Code Processing",
+          "tags": [
+            "sql",
+            "database",
+            "code"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:data.table.lineage.register",
+          "display_name": "Register Table Lineage",
+          "short_description": "Register derivation lineage between two existing MOI tables. It consumes source and target Catalog table_ref values and creates typed table assets plus a transformed_from relationship.",
+          "category": "Governance",
+          "tags": [
+            "table",
+            "lineage",
+            "governance"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:data.table.read",
+          "display_name": "Read MOI Table",
+          "short_description": "Read data from a workspace MatrixOne table as a workflow table input node. Use it when the user explicitly selects an existing MOI table and passes rows to downstream SQL, LLM, saving, or export nodes.",
+          "category": "Data IO",
+          "tags": [
+            "table",
+            "database",
+            "source",
+            "rows"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:data.table.to_documents",
+          "display_name": "Table to Documents",
+          "short_description": "Convert a column-name array and row arrays into documents by a named text column. No jq is needed.",
+          "category": "Data Processing",
+          "tags": [
+            "data",
+            "transform"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:data.table.upsert_json",
+          "display_name": "Save to MOI Table",
+          "short_description": "Write one structured JSON object or values map into a workspace data table. It usually follows JSON output from LLM extraction or custom operators; for rows-style table arrays, prefer Catalog CSV saving or SQL/import nodes. Use table_ref for an existing table; when writing by table_name you must also select the parent database with database_ref, which cannot be omitted.",
+          "category": "Data IO",
+          "tags": [
+            "table",
+            "json"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:document_visual.index.image",
+          "display_name": "Image Embedding",
+          "short_description": "Build image retrieval rows from a document visual manifest and write real image embeddings into a model-bound image vector index.",
+          "category": "AI Processing",
+          "tags": [
+            "document_visual",
+            "index",
+            "embedding",
+            "vector",
+            "image"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:document_visual.index.text",
+          "display_name": "Document Text Embedding",
+          "short_description": "Build text retrieval rows from a document visual manifest and write real text embeddings into MatrixOne vector index.",
+          "category": "Other",
+          "tags": [
+            "document_visual",
+            "index",
+            "embedding",
+            "vector",
+            "text"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:document_visual.parse",
+          "display_name": "Build Drawing Visual Manifest",
+          "short_description": "Project moi:cad.segment.parts cad_result into a drawing visual manifest. Bind cad_result; do not bind Catalog file sources. Use Build Document Visual Manifest for PDF/page images.",
+          "category": "Other",
+          "tags": [
+            "document_visual",
+            "drawing",
+            "cad",
+            "parse"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:document_visual.parse.document",
+          "display_name": "Build Document Visual Manifest",
+          "short_description": "Parse Catalog documents into a visual manifest with page-image backlinks. Provide exactly one of sources, file_id, file_ids, or documents. Do not bind cad_result; use Build Drawing Visual Manifest for CAD drawings. options.vlm_ocr_model is optional: omit it or leave it empty to use the workspace AI Studio parse slot; do not bind an empty model name just to satisfy validation.",
+          "category": "Other",
+          "tags": [
+            "document_visual",
+            "document",
+            "pdf",
+            "image",
+            "parse",
+            "ocr"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:email.archive.etl",
+          "display_name": "Parse Email Archive",
+          "short_description": "Parse RFC822/MIME email archive files into five relational tables: email path provenance, email headers/body, To recipients, X-To recipients, and quoted original-message headers. This node does not produce separate attachment files or attachment documents. Production/parallel mode consumes Catalog JSONL manifest shards or file references, writes shard-local Catalog CSV files, and returns CSV file IDs for importing large maildir archives into MatrixOne.",
+          "category": "Other",
+          "tags": [
+            "email",
+            "archive",
+            "etl",
+            "table",
+            "maildir"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:embedding.generate",
+          "display_name": "Text Embedding",
+          "short_description": "Generate embeddings for documents and write vectors back to each document record. Use it for custom vector or index processing; prefer Embed and Add to Knowledge Base for final knowledge-base writes.",
+          "category": "AI Processing",
+          "tags": [
+            "embedding",
+            "documents"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:extract",
+          "display_name": "Information Extraction",
+          "short_description": "Extract structured JSON from documents: take documents from an upstream parse node, or hand it files (PDF) and let this node parse them itself. Suitable for field extraction that requires semantic understanding; result/results can be written to data tables, saved as JSON, or passed to custom operators.",
+          "category": "AI Processing",
+          "tags": [
+            "extract",
+            "llm"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:files.write_documents",
+          "display_name": "Write Document File",
+          "short_description": "Write a documents array into workspace JSONL files and output file_id/file_ids. Use it when parsed, split, or custom document results in memory need to be persisted before saving, importing, or lineage registration.",
+          "category": "Other",
+          "tags": [
+            "file",
+            "documents"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:knowledge.index.build",
+          "display_name": "Embed and Add to Knowledge Base",
+          "short_description": "Generate embeddings from documents and write them into a knowledge base or vector index for later retrieval and Q&A. It usually follows moi:parse or moi:parser.split.documents.length as the final indexing output node, and written reports the number of rows written. The required execution inputs table_name and embedding_model come from the same user-selected vector index. embedding_model is the model bound to that index, not an independent model selection. Do not invent table or model names or supply nil or empty strings.",
+          "category": "AI Processing",
+          "tags": [
+            "knowledge",
+            "index",
+            "retrieval"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:llm.output.generate",
+          "display_name": "AI Inference",
+          "short_description": "Call a workspace LLM model to generate natural-language output. prompt is the user-authored instruction; optional text binds upstream payload or a runtime value. Omit text when there is no upstream document. Pass text/result to saving, extraction, or downstream processing nodes.",
+          "category": "AI Processing",
+          "tags": [
+            "llm",
+            "inference",
+            "generation",
+            "text"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:parse",
+          "display_name": "Parse Document",
+          "short_description": "Use parse-v3 in the in-process engine to parse Catalog sources or file_id/file_ids into standard documents (parser_version is fixed to v3). It covers documents (PDF/DOCX/PPTX/XLSX/images/XML), text (TXT/CSV/Markdown/HTML/JSON) and email, routing each to its matching parse path. The email path processes body text and images; it does not extract non-image binary MIME attachments such as PDF or DOCX files. V3 carries its own option schema for table enrichment, cross-page merge, reading order, and related settings. It is the default general document parser for new workflows; the moi:document.parse node remains for builtin templates and existing workflows that use V2.",
+          "category": "AI Processing",
+          "tags": [
+            "document",
+            "parse",
+            "v3",
+            "pdf",
+            "docx",
+            "image",
+            "stage"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:parse.compress",
+          "display_name": "PDF Compress",
+          "short_description": "Shrink large PDFs before parsing: lossless structural optimization first, then page images downsampled and re-encoded within the chosen quality budget. The output feeds Document Parsing or PDF Split directly. Non-PDF files and files that do not get smaller pass through unchanged. Suited to scans and catalogs of tens of megabytes or more.",
+          "category": "AI Processing",
+          "tags": [
+            "document",
+            "pdf",
+            "compress",
+            "parse"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:parse.merge",
+          "display_name": "Parse Result Merge",
+          "short_description": "Merge the parse results of PDF Split parts back into one complete result: original page numbers and file name are restored and per-part Markdown and layout outputs become one, ready for extraction, knowledge base, or save nodes. If the upstream General Document Parsing node set a page selector (page_selector), the parts no longer cover every page and this node cannot merge them correctly.",
+          "category": "AI Processing",
+          "tags": [
+            "document",
+            "parse",
+            "merge"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:parse.split",
+          "display_name": "PDF Split",
+          "short_description": "Split a large PDF into sub-files of at most pages_per_part pages before parsing, to reduce the risk that very large files fail to parse. Follow it with General Document Parsing and then Parse Result Merge to reassemble the whole file's result. Non-PDF files and PDFs within the per-part page limit pass through unchanged. Once this node is in the chain, leave the page selector (page_selector) on General Document Parsing empty.",
+          "category": "AI Processing",
+          "tags": [
+            "document",
+            "pdf",
+            "split",
+            "parse"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:parser.clean.text",
+          "display_name": "Clean",
+          "short_description": "Clean repeated whitespace and line breaks from text and output normalized text. Every option still ends with strings.Fields normalization, collapsing whitespace and newlines into a single line. There is no mode that preserves heading line breaks, including remove_invisible_char. This node cannot perform cleaning that must preserve heading structure.",
+          "category": "AI Processing",
+          "tags": [
+            "text",
+            "clean"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:parser.convert.audio.rich",
+          "display_name": "Parse Audio",
+          "short_description": "Transcribe audio files into standard documents with timestamp metadata. Use it before splitting, extraction, indexing, or saving for meeting recordings, interviews, defenses, and similar audio sources.",
+          "category": "AI Processing",
+          "tags": [
+            "audio",
+            "asr",
+            "parse",
+            "vad"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:parser.convert.image.rich",
+          "display_name": "Parse Image",
+          "short_description": "Parse image files into standard documents. It can run OCR, image captioning, or both before image materials are split, extracted, indexed, or saved.",
+          "category": "AI Processing",
+          "tags": [
+            "image",
+            "ocr",
+            "caption",
+            "parse"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:parser.convert.video.rich",
+          "display_name": "Parse Video",
+          "short_description": "Extract the audio track from video and transcribe it into standard documents with timestamp metadata. Use it before splitting, extraction, indexing, or saving for meeting videos, training videos, defenses, and similar video sources.",
+          "category": "AI Processing",
+          "tags": [
+            "video",
+            "asr",
+            "parse",
+            "vad"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:parser.split.documents.length",
+          "display_name": "Segment",
+          "short_description": "Split documents by length and overlap; when enable_level_based_split is true, first split at Markdown heading boundaries. Preserve source metadata and semantic atomicity. Tables, code, and Markdown containers with fenced code remain whole and may exceed chunk_size. Headings require preserved newlines; flattening first then enabling level split does nothing.",
+          "category": "AI Processing",
+          "tags": [
+            "document",
+            "split"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:parser.split.level",
+          "display_name": "Split Documents by Heading",
+          "short_description": "Split documents by Markdown or heading hierarchy while preserving source metadata. Input documents must still contain newlines and # headings. A flattened upstream such as default CleanText cannot be split by level.",
+          "category": "Other",
+          "tags": [
+            "document",
+            "split"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:text.render.blocks",
+          "display_name": "Render Text Blocks",
+          "short_description": "Render plain text or Markdown using scalar placeholders and declarative count/filter/sort/limit parameters. No template expressions or loops.",
+          "category": "Data Processing",
+          "tags": [
+            "data",
+            "transform"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v1",
+          "visibility": "user",
+          "stream": false
+        },
+        {
+          "node_id": "moi:workflow.trigger",
+          "display_name": "Workflow Trigger",
+          "short_description": "Trigger another published workflow version for product-level orchestration and chained execution. Inputs must explicitly provide workflow_version_id and task_name, and may pass data/vars to the triggered workflow.",
+          "category": "Flow Control",
+          "tags": [
+            "workflow",
+            "trigger",
+            "orchestration"
+          ],
+          "source": "system",
+          "provider": "go-worker",
+          "preferred_version": "v3",
+          "visibility": "user",
+          "stream": false
+        }
+      ],
+      "total": 36
+    }
+  }
+}

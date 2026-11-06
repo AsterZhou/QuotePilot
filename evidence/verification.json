@@ -1,0 +1,36 @@
+{
+  "python": "3.12.14",
+  "groups": {
+    "official": {
+      "tests": 37,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 37,
+      "exit_code": 0
+    },
+    "synthetic": {
+      "tests": 85,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 85,
+      "exit_code": 0
+    }
+  },
+  "unverified": [
+    "This offline command does not execute Genesis live calls; see evidence/live_20261105 for recorded real calls",
+    "MOI workflow / Python service not deployed",
+    "RFQ/cost/supplier MatrixOne primary-table migration not implemented; approved snapshot mirror is separate",
+    "Agent publication and judge access (not deployed)",
+    "General OCR remains unimplemented (targeted scan fixture failed); model extraction quality unverified"
+  ],
+  "unit_regression_passed": true,
+  "format_acceptance": {
+    "cases": 20,
+    "passed": 19,
+    "failed": 1
+  },
+  "passed": false,
+  "competition_ready": false
+}

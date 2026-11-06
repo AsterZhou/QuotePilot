@@ -1,0 +1,467 @@
+{
+  "project": "/workspace/scratch/71230713a709/QuotePilot",
+  "origin": "post-freeze synthetic fixtures; no third-party real customer corpus executed",
+  "summary": {
+    "cases": 20,
+    "passed": 19,
+    "failed": 1
+  },
+  "cases": [
+    {
+      "name": "01_standard_html.eml",
+      "sha256": "440a3cf8d225c83259e1c0c64ab793b1b61fa95122303224f36d6f4917f848d7",
+      "expected": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "notes": [],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "02_plain_text.eml",
+      "sha256": "8e7b18cca7cb9c49cad83469d4c87e4bc01bd3786828f52f911a6fe1920c6c6d",
+      "expected": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "notes": [],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "03_alias_html.eml",
+      "sha256": "2e80aeba84851153a018d248b879602a2d067a9ccf49cf6b9926c2079aae894d",
+      "expected": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "notes": [],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "04_duplicate_html_header.eml",
+      "sha256": "0784fb18c9d2f354b149b8d2dd2c50b5e11b9ecef4661db178f859447e69d0df",
+      "expected": [],
+      "must_report_issue": true,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [],
+      "notes": [
+        "规范化后表头重复；拒绝覆盖数量等业务字段",
+        "没有可靠提取的需求行；请人工录入或使用提取 Provider"
+      ],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "05_partial_missing_part.eml",
+      "sha256": "a7063155ec53b4e8e2692934ef4f195f5a00484bd1a632da64574e04b1defe5f",
+      "expected": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": true,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "notes": [
+        "件号缺失；保留原始行待人工修复"
+      ],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "06_zero_quantity.eml",
+      "sha256": "b05f9bb25f05e546b796bf557831eb59752e6980d63f957451c9cc40be9ffee1",
+      "expected": [],
+      "must_report_issue": true,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [],
+      "notes": [
+        "数量必须为正整数且不超过精确存储上限",
+        "没有可靠提取的需求行；请人工录入或使用提取 Provider"
+      ],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "07_standard.xlsx.eml",
+      "sha256": "ab6cb7f86292b81ac00692f20cdea441eaa08d13aaad776c47ba91b651c69556",
+      "expected": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "notes": [],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "08_alias.xlsx.eml",
+      "sha256": "70b0e25fe24644d5d143522ad28c913597174e64f7d932dcc587a91c91814c68",
+      "expected": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "notes": [],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "09_title_rows.xlsx.eml",
+      "sha256": "398c512bd008574f6cf2aa2c21e834c306a1b61b2961d8f328a821de7f421724",
+      "expected": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "notes": [],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "10_duplicate_trimmed_headers.xlsx.eml",
+      "sha256": "b30b16c25b066104c1ee5f8a80b8e1b34dbc44d8f9f8a481bfe8d5703bd9ce24",
+      "expected": [],
+      "must_report_issue": true,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [],
+      "notes": [
+        "10_duplicate_trimmed_headers.xlsx: ValueError: 规范化后表头重复；拒绝覆盖数量等业务字段",
+        "没有可靠提取的需求行；请人工录入或使用提取 Provider"
+      ],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "11_multisheet.xlsx.eml",
+      "sha256": "6c36297d8f06898cdbad315008589ba41662f81f65fc9bbc44461c6724bddc31",
+      "expected": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "notes": [
+        "工作表 Notes 未识别询价表头，未解析；请人工核对原附件"
+      ],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "12_formula.xlsx.eml",
+      "sha256": "477a138a69a143aa56f1fb09efaaf38c35608e9b3214e826caa500b0284c51f1",
+      "expected": [],
+      "must_report_issue": true,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [],
+      "notes": [
+        "12_formula.xlsx: ValueError: 公式单元格 Fresh RFQ!C2 不作为可靠询价值，请提供静态值",
+        "没有可靠提取的需求行；请人工录入或使用提取 Provider"
+      ],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "13_template.pdf.eml",
+      "sha256": "ced016ff94e15f602755b0a69174a9e2c57635ef2d128a741b01525e109c164c",
+      "expected": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "notes": [],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "14_wide_table.pdf.eml",
+      "sha256": "c82d79767f0fc895d87887a865d80408fc4ce2b58d93d4373e5f537e08261ad9",
+      "expected": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "notes": [],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "15_long_part.pdf.eml",
+      "sha256": "0e470a949247f6eb9ff8ad37312df71226779935ecc3e244a81e4f37e5504ec5",
+      "expected": [
+        [
+          "NAS1149F0363P",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "NAS1149F0363P",
+          3,
+          "EA"
+        ]
+      ],
+      "notes": [],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "16_wrapped_description.pdf.eml",
+      "sha256": "056aeabb25f3ae4926e9041e5eff70b9aa039f690587b65a6748dcf11d460e99",
+      "expected": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "notes": [],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "17_not_an_rfq.pdf.eml",
+      "sha256": "ccf606f5df564ae9c1ba1f98f322da317a00cbdb06225334f631ec05b7de72b3",
+      "expected": [],
+      "must_report_issue": true,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [],
+      "notes": [
+        "17_not_an_rfq.pdf: ValueError: 未识别可靠的 RFQ 标题；文档用途待人工确认",
+        "没有可靠提取的需求行；请人工录入或使用提取 Provider"
+      ],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "18_scan.pdf.eml",
+      "sha256": "d0687a1ec129d3c7c0d9e2dde6fa7bbe441ff2ad7a3e2fefa562c352e55b1cc4",
+      "expected": [
+        [
+          "VX-731",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [],
+      "notes": [
+        "18_scan.pdf: ValueError: 未识别可靠的 RFQ 标题；文档用途待人工确认",
+        "没有可靠提取的需求行；请人工录入或使用提取 Provider"
+      ],
+      "exception": null,
+      "extraction_ok": false,
+      "safety_diagnostic_ok": true,
+      "passed": false
+    },
+    {
+      "name": "19_unknown_part.eml",
+      "sha256": "e7df96bcd63a28d3a30e67a5de93898b36535275bc38c86c877a3535518d7e0b",
+      "expected": [
+        [
+          "UNSEEN-2026",
+          2,
+          "FT"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "UNSEEN-2026",
+          2,
+          "FT"
+        ]
+      ],
+      "notes": [],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    },
+    {
+      "name": "20_known_price_new_mail.eml",
+      "sha256": "930cca79cfa64562c81e8dd27f0908442f47af040598db5e81672157f12ef965",
+      "expected": [
+        [
+          "PN-0001",
+          3,
+          "EA"
+        ]
+      ],
+      "must_report_issue": false,
+      "origin": "new synthetic input created after v0.5 freeze",
+      "actual": [
+        [
+          "PN-0001",
+          3,
+          "EA"
+        ]
+      ],
+      "notes": [],
+      "exception": null,
+      "extraction_ok": true,
+      "safety_diagnostic_ok": true,
+      "passed": true
+    }
+  ]
+}

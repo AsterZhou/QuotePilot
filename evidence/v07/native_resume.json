@@ -1,0 +1,31 @@
+{
+  "calls": [
+    {
+      "path": "/workflow/v2/workflow-apps/45e246b6-9a6f-5331-82cd-44c00f67cb18/executions",
+      "http": 200,
+      "response": {
+        "code": "OK",
+        "msg": "OK",
+        "data": {
+          "total": 0,
+          "executions": []
+        }
+      }
+    },
+    {
+      "path": "/workflow/v2/workflow-apps/45e246b6-9a6f-5331-82cd-44c00f67cb18/resume",
+      "http": 400,
+      "response": {
+        "code": "ErrParamInvalid",
+        "msg": "Bad Request"
+      }
+    }
+  ],
+  "workflow_id": "45e246b6-9a6f-5331-82cd-44c00f67cb18",
+  "passed": false,
+  "before": {
+    "total": 0,
+    "executions": []
+  },
+  "error": "{'code': 'ErrParamInvalid', 'msg': 'Bad Request'}"
+}
