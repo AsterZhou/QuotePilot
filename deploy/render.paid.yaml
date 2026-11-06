@@ -1,0 +1,40 @@
+# REVIEW ONLY: this blueprint creates paid ongoing compute + disk.
+# Do not apply before the account owner confirms the actual dashboard price.
+services:
+  - type: web
+    name: quotepilot
+    runtime: docker
+    plan: 0.5c-512mb
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    autoDeployTrigger: "off"
+    numInstances: 1
+    disk:
+      name: quotepilot-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: QUOTEPILOT_ENV
+        value: production
+      - key: QUOTEPILOT_PROVIDER
+        value: genesis
+      - key: QUOTEPILOT_DB
+        value: /data/quotepilot.db
+      - key: GENESIS_BASE_URL
+        value: https://token.moi.matrixorigin.cn/v1
+      - key: GENESIS_MODEL_ID
+        value: qwen3.8-flash
+      - key: GENESIS_API_STYLE
+        value: responses
+      - key: GENESIS_ACCESS_TOKEN
+        sync: false
+      - key: QUOTEPILOT_LOGIN_PASSWORD
+        sync: false
+      - key: QUOTEPILOT_SESSION_SECRET
+        generateValue: true
+      - key: MOI_WORKSPACE_ID
+        sync: false
+      - key: MOI_WORKFLOW_ID
+        sync: false

@@ -1,0 +1,31 @@
+INFO:     Started server process [7]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:48295 (Press CTRL+C to quit)
+INFO:     127.0.0.1:44492 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44502 - "GET /api/emails HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:44514 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44524 - "POST /api/emails/import HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44528 - "POST /api/emails/import HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:44534 - "POST /api/emails/import HTTP/1.1" 415 Unsupported Media Type
+INFO:     127.0.0.1:44542 - "POST /api/emails/import HTTP/1.1" 413 Request Entity Too Large
+INFO:     127.0.0.1:44544 - "POST /api/quote HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:44554 - "POST /api/quote HTTP/1.1" 403 Forbidden
+INFO:     127.0.0.1:44566 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44576 - "GET /api/emails HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [7]
+INFO:     Started server process [9]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:48295 (Press CTRL+C to quit)
+INFO:     127.0.0.1:37962 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37972 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37986 - "GET /api/emails HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37996 - "POST /api/emails/import HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9]

@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "scope": "local Render-style PORT/public-origin startup and persistent SQLite restart; not a Docker build or external test",
+  "checks": {
+    "custom_PORT_and_RENDER_EXTERNAL_URL": true,
+    "anonymous_denied_and_secure_session": true,
+    "empty_wrong_type_oversize_rejected": true,
+    "invalid_json_and_cross_origin_rejected": true,
+    "sqlite_records_survive_process_recreation": true,
+    "restart_repeat_import_no_duplicate": true
+  },
+  "data_isolation": {
+    "model": "single shared demo team",
+    "two_valid_sessions_share_team_records": true,
+    "tenant_isolation": "NOT_IMPLEMENTED; do not use real confidential business data"
+  }
+}

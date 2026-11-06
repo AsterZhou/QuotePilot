@@ -1,0 +1,18 @@
+{
+  "git_repository_exists": false,
+  "git_remote": null,
+  "github_commit": null,
+  "docker_cli": null,
+  "docker_socket": false,
+  "podman_cli": null,
+  "rootless_user_namespace_probe": {
+    "command": "unshare --user --map-root-user true",
+    "exit_code": 1,
+    "stderr": "unshare: write failed /proc/self/uid_map: Operation not permitted"
+  },
+  "docker_build": "未执行：无Docker CLI/daemon，rootless用户命名空间被拒绝",
+  "github_authorization": "待连接GitHub",
+  "render_authorization": "待连接Render",
+  "public_url": null,
+  "stage": "initial inventory, before local Git init"
+}

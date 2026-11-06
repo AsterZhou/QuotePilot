@@ -1,0 +1,1 @@
+{"real_docker": false, "passed": false, "real_genesis": "未执行：容器检查使用明确Mock模式", "public_browser": "未执行", "steps": {}, "error": "Docker CLI unavailable"}

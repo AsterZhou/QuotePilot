@@ -1,8 +1,14 @@
-# QuotePilot · 报价室 v0.7.0
+# QuotePilot · 报价室 v0.7（上线准备补丁）
 
 面向报价专员的RFQ处理工作台。输入EML及Excel/PDF附件，保留原文件，提取需求，匹配价格，执行Decimal规则，人工复核，审批后导出Excel并可镜像至MOI云端。
 
 **当前验收：受限本地闭环与真实Genesis/MOI报价镜像通过；公网部署未完成，MOI原生工作流未运行成功。** 不具备完整参赛验收通过结论。详见[本次验收报告](docs/ACCEPTANCE_V07.md)。
+
+## 2026-11-06上线状态
+
+源码已建立本地Git基线tag v0.7.0；GitHub远程备份仍待账号授权，不能将本地SHA当成已推送版本。Render适配见deploy/RENDER.md；付费模板deploy/render.paid.yaml尚未应用，创建前必须由账户所有者确认价格。Docker构建流程见.github/workflows/container-acceptance.yml，仅手动触发；目前没有真实构建成功记录。公网URL仍未产生。
+
+本轮修改限于PORT、Render公共Origin、运行时secret读取、构建/持久化验收脚本及交付文档。MOI最新只读诊断与可发送官方支持的问题说明见docs/MOI_SUPPORT_REQUEST_20261106.md。2026-11-05的disabled与空实例列表为历史事实；2026-11-06相关读取多返回503，当前状态不能沿用旧记录冒充最新读取。
 
 ## 启动
 

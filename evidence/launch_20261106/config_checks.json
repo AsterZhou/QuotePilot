@@ -1,0 +1,8 @@
+{
+  "yaml_parsed": true,
+  "paid_resources_created": false,
+  "render_template_plan": "0.5c-512mb",
+  "render_api_validation": "未执行：待账号授权",
+  "github_ci_trigger": "manual workflow_dispatch only",
+  "invalid_port_rejected": true
+}

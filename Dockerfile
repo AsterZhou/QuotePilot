@@ -11,5 +11,5 @@ COPY --chown=quote:quote deploy/entrypoint.py /app/entrypoint.py
 ENV QUOTEPILOT_DB=/data/quotepilot.db
 USER quote
 EXPOSE 8765
-HEALTHCHECK --interval=30s --timeout=5s --start-period=45s CMD python -c "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8765/healthz',timeout=4)"
+HEALTHCHECK --interval=30s --timeout=5s --start-period=45s CMD python -c "import os,urllib.request;urllib.request.urlopen('http://127.0.0.1:'+os.environ.get('PORT','8765')+'/healthz',timeout=4)"
 CMD ["python", "entrypoint.py"]
