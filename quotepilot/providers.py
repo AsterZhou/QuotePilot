@@ -25,6 +25,10 @@ class MockProvider:
         return {'provider':'mock','simulated':True,'review_required':True,'lines':[],
                 'message':'显式 Mock：不推断业务字段。端到端报价走真实确定性解析；模型建议须人工确认。'}
 
+class ModelOutputError(ValueError):
+    def __init__(self,message,receipt):
+        super().__init__(message);self.receipt=receipt
+
 class GenesisProvider:
     def __init__(self,transport=None):
         self.token=os.environ.get('GENESIS_ACCESS_TOKEN') or os.environ.get('GENESIS_API_KEY','')
@@ -35,23 +39,24 @@ class GenesisProvider:
         if self.api_style not in ('responses','chat_completions'):raise ValueError('未知 Genesis API_STYLE')
         if not self.token or not self.model:raise ValueError('Genesis 缺少访问凭据或模型 ID')
         if not self.base.startswith('https://'):raise ValueError('Genesis 服务地址必须使用 HTTPS')
-    def complete_json(self,instructions,text):
+    def complete_json(self,instructions,text,max_output_tokens=2048):
         messages=[{'role':'system','content':instructions}, {'role':'user','content':text}]
         started=time.perf_counter()
         if self.api_style=='responses':
             path='/responses';payload={'model':self.model,'input':[{'role':'user','content':text}],
-                                      'instructions':messages[0]['content'],'store':False,'max_output_tokens':2048}
+                                      'instructions':messages[0]['content'],'store':False,'max_output_tokens':min(4096,max(512,int(max_output_tokens)))}
         else:
-            path='/chat/completions';payload={'model':self.model,'messages':messages,'max_tokens':2048}
+            path='/chat/completions';payload={'model':self.model,'messages':messages,'max_tokens':min(4096,max(512,int(max_output_tokens)))}
         with httpx.Client(timeout=60,transport=self.transport,follow_redirects=False) as client:
             response=client.post(self.base+path,headers={'Authorization':'Bearer '+self.token},json=payload)
             response.raise_for_status();raw=response.json()
+        metadata={'provider':'genesis','simulated':False,'model':self.model,'api_style':self.api_style,'response_id':raw.get('id'),'usage':raw.get('usage',{}),'elapsed_seconds':round(time.perf_counter()-started,3),'status':raw.get('status')}
         if self.api_style=='responses':
-            if raw.get('status')!='completed':raise ValueError('模型输出未完成，未采用任何字段')
+            if raw.get('status')!='completed':raise ModelOutputError('模型输出未完成，未采用任何字段',metadata)
             content=''.join(block.get('text','') for item in raw.get('output',[]) if item.get('type')=='message'
                             for block in item.get('content',[]) if block.get('type')=='output_text')
         else:
-            if raw['choices'][0].get('finish_reason')=='length':raise ValueError('模型输出被截断，未采用任何字段')
+            if raw['choices'][0].get('finish_reason')=='length':raise ModelOutputError('模型输出被截断，未采用任何字段',metadata)
             content=raw['choices'][0]['message']['content']
         content=re.sub(r'^```(?:json)?\s*|\s*```$','',content.strip())
         return content,{'provider':'genesis','simulated':False,'model':self.model,'api_style':self.api_style,

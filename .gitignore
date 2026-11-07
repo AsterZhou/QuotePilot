@@ -14,3 +14,8 @@ secrets/
 /evidence/**/*.jpg
 /evidence/*.png
 /evidence/*.jpg
+
+*.py[cod]
+workspace/
+evidence/batch1/*
+!evidence/batch1/acceptance.json

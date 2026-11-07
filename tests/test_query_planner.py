@@ -42,7 +42,8 @@ def test_true_model_plan_queries_real_filtered_data(client,monkeypatch):
     with server.database() as con:
         expected=[dict(x) for x in con.execute("SELECT COALESCE(NULLIF(airline,''),'未提供') AS 客户, COUNT(DISTINCT rfq_no) AS 询价份数,COUNT(*) AS 明细行数 FROM historical WHERE urgency IN ('AOG','URGENT','USR','WSP') AND substr(inquiry_date,1,10)>='2025-01-01' AND substr(inquiry_date,1,10)<='2025-12-31' GROUP BY 1 ORDER BY 2 DESC,1 ASC LIMIT 5")]
     assert r['rows']==expected and r['rows']
-    assert r['sql_parameters'][-1]==5 and '2025-01-01' not in r['sql']
+    assert r['row_limit']==5 and r['readonly'] and '2025-01-01' not in r['sql']
+    assert r['sql_parameters'][:4]==['AOG','URGENT','USR','WSP']
 
 
 def test_flights_are_not_mapped_to_airline_rfq(client,monkeypatch):

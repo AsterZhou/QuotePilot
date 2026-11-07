@@ -124,9 +124,15 @@ def compile_plan(plan):
 
 def execute_plan(con,plan):
     sql,params,groups=compile_plan(plan)
-    rows=[dict(r) for r in con.execute(sql,params)]
+    from .query_sql import execute as readonly_execute
+    db_path=next((row[2] for row in con.execute('PRAGMA database_list') if row[1]=='main'),None)
+    if not db_path:raise ValueError('AI查询需要可独立只读连接的SQLite文件')
+    # plan.limit is validated by Pydantic; old compiler's final parameter is its LIMIT.
+    query=readonly_execute(db_path,sql[:-1]+str(plan.limit),params[:-1])
+    rows=query['rows']
+    sql=query['sql'];params=query['sql_parameters']
     spec=SPECS[plan.dataset]
-    return {'rows':rows,'sql':sql,'sql_parameters':params,'dataset_rows':con.execute('SELECT COUNT(*) FROM '+spec['table']).fetchone()[0],
+    return {'rows':rows,'sql':sql,'sql_parameters':params,'row_limit':query['row_limit'],'readonly':True,'dataset_rows':con.execute('SELECT COUNT(*) FROM '+spec['table']).fetchone()[0],
             'dataset_label':spec['label'],'group_labels':[spec['fields'][k][1] for k in groups],
             'metric_labels':[METRICS[k][1] for k in dict.fromkeys(plan.metrics)],
             'scope_note':'来自'+spec['label']+'；日期范围按'+spec['fields']['date'][1]+'筛选。数量按单位、原币价格按币种分别统计。'}

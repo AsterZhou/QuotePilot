@@ -1,0 +1,32 @@
+/* DOM unit tests with mocked HTTP; not a real browser or live model test. */
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const {JSDOM}=require('jsdom');
+(async()=>{
+ const dom=new JSDOM('<main id="main"></main>',{url:'https://quote.example.invalid/',runScripts:'outside-only'});
+ const w=dom.window;w.state={page:'query'};
+ const calls=[];
+ w.fetch=async(url,opts)=>{calls.push({url,body:opts?.body?JSON.parse(opts.body):null});return {ok:true,json:async()=>url.endsWith('status')?{genesis_enabled:true,default_reference_date:'2026-11-08',external_search:{available:false,blocked_reason:'TEST missing search key'},storage_notice:'TEST SQLite storage'}:{status:'clarify',session_id:'a'.repeat(32),query_id:'TEST_QUERY',question:'优先处理？',message:'按什么口径？',clarification_options:['按截止时间'],queried_at:'2026-11-08'}}};
+ w.eval(fs.readFileSync('web/query_center.js','utf8')+'\nwindow.__test={submit:qcSubmit,render:qcRender};');
+ await w.renderQueryCenter();
+ assert.equal(w.document.querySelectorAll('[data-qc-quick]').length,4);
+ w.document.querySelector('#qc-question').value='哪些询价优先？';await w.__test.submit();
+ assert.equal(w.document.querySelector('#qc-result').textContent.includes('按什么口径'),true);
+ w.document.querySelector('[data-qc-answer]').click();
+ await new Promise(resolve=>setTimeout(resolve,20));
+ assert.equal(calls.at(-1).body.question,'按截止时间');
+ assert.equal(calls.at(-1).body.session_id,'a'.repeat(32));
+ w.__test.render({status:'completed',title:'TEST chart',rows:[{'月份':'2026-06','数量':3},{'月份':'2026-07','数量':5}],returned_records:2,source_tables:['historical'],chart:'line',analysis:{summary:'TEST fixture',findings:[]}});
+ assert.equal(w.document.querySelectorAll('#qc-result svg circle').length,2);
+ assert.equal(w.document.querySelectorAll('#qc-result tbody tr').length,2);
+ w.__test.render({status:'completed',title:'TEST ranking',rows:[{id:999,'客户':'A','询价份数':4},{id:555,'客户':'B','询价份数':2}],returned_records:2,chart:'ranking',analysis:{summary:'TEST',findings:[]}});
+ assert.equal(w.document.querySelector('.chart-row-value').textContent,'4');
+ w.__test.render({status:'completed',title:'TEST escape',rows:[{value:'<img src=x onerror=alert(1)>'}],returned_records:1,chart:'table',sources:[{url:'javascript:alert(1)',title:'<script>bad()</script>',source_id:'S1',snippet:'TEST'}],analysis:{summary:'<b>untrusted</b>',findings:[]}});
+ assert.equal(w.document.querySelectorAll('#qc-result img,#qc-result script').length,0);
+ assert.equal(w.document.querySelectorAll('#qc-result a').length,0);
+ assert.equal(w.document.querySelector('#qc-result').textContent.includes('<img'),true);
+ w.__test.render({status:'blocked',message:'TEST no API key',sources:[],live_search:false});
+ assert.equal(w.document.querySelectorAll('#qc-result tbody tr,#qc-result svg').length,0);
+ console.log('UI checks: 11 assertions passed (mocked HTTP / DOM only).');
+ dom.window.close();
+})().catch(error=>{console.error(error);process.exit(1)});

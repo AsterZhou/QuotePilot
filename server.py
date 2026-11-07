@@ -242,7 +242,8 @@ def questions():
 @app.get('/api/analytics')
 def analytics(q:str='每月询价趋势',asof:date=date(2026,9,1)):
     if q not in QUESTIONS:raise HTTPException(400,'仅支持已验证的统计问题')
-    with database() as con:
+    from quotepilot.query_sql import readonly
+    with readonly(DB) as con:
         rows=run_query(con,q,asof.isoformat())
         s=summary(con)
     return {'question':q,'query_mode':'allowlist_sql_offline','model_connected':False,'rows':rows,
@@ -486,3 +487,122 @@ def native_workflow_status():
     except ValueError as ex:raise HTTPException(409,str(ex))
     except Exception:raise HTTPException(502,'MOI工作流状态读取失败；不能判定运行成功')
 
+
+# Batch one: independent read-only AI query center. Existing business APIs remain intact.
+def center_today():
+    from zoneinfo import ZoneInfo
+    return datetime.now(ZoneInfo('Asia/Shanghai')).date()
+
+
+class CenterQuestion(BaseModel):
+    question:str=Field(min_length=2,max_length=1000)
+    asof:date=Field(default_factory=center_today)
+    session_id:str|None=Field(default=None,pattern=r'^[a-f0-9]{32}$')
+
+class CenterQuick(BaseModel):
+    question:str=Field(min_length=2,max_length=100)
+    asof:date=Field(default_factory=center_today)
+    session_id:str|None=Field(default=None,pattern=r'^[a-f0-9]{32}$')
+
+class PublicSearch(CenterQuestion):
+    pass
+
+class JointQuestion(CenterQuestion):
+    public_query:str=Field(min_length=2,max_length=500)
+
+
+def center_owner(request):
+    from quotepilot.query_center import owner_hash
+    from quotepilot.security import COOKIE
+    return owner_hash(request.cookies.get(COOKIE,'local-development'))
+
+
+def center_provider():
+    from quotepilot.providers import get_provider
+    if os.environ.get('QUOTEPILOT_PROVIDER','mock')!='genesis':raise HTTPException(503,'尚未启用真实Genesis；快捷统计仍可使用。')
+    return get_provider()
+
+
+from fastapi import Request
+
+@app.get('/api/query-center/status')
+def center_status():
+    from quotepilot.search_service import config
+    return {'genesis_enabled':os.environ.get('QUOTEPILOT_PROVIDER','mock')=='genesis','external_search':config(),
+            'default_reference_date':datetime.now(__import__('zoneinfo').ZoneInfo('Asia/Shanghai')).date().isoformat(),'database':'SQLite','read_only_queries':True,'max_rows':100,'query_timeout_seconds':1,
+            'storage_notice':'沿用当前SQLite存储；本批次未迁移数据库。免费临时部署的新增记录仍可能随重新部署丢失。'}
+
+@app.get('/api/query-center/schema')
+def center_schema():
+    from quotepilot.query_sql import discover
+    return discover(DB)
+
+@app.get('/api/query-center/sessions/{sid}')
+def center_history(sid:str,request:Request):
+    from quotepilot.query_center import history
+    try:return {'turns':history(DB,center_owner(request),sid)}
+    except PermissionError:raise HTTPException(403,'无法访问该查询会话')
+
+@app.post('/api/query-center/ask')
+def center_ask(req:CenterQuestion,request:Request):
+    from quotepilot.query_center import run
+    if not req.question.strip():raise HTTPException(422,'问题不能为空')
+    try:return run(DB,center_provider(),req.question.strip(),req.asof.isoformat(),center_owner(request),req.session_id)
+    except PermissionError:raise HTTPException(403,'无法访问该查询会话')
+
+@app.post('/api/query-center/quick')
+def center_quick(req:CenterQuick,request:Request):
+    from datetime import timedelta
+    from quotepilot.query_center import session,save
+    from quotepilot.query_sql import execute
+    if req.question not in QUESTIONS:raise HTTPException(422,'未知快捷统计')
+    try:sid,_=session(DB,center_owner(request),req.session_id)
+    except PermissionError:raise HTTPException(403,'无法访问该查询会话')
+    params=[req.asof.isoformat(),req.asof.isoformat()] if req.question=='即将截止的询价' else []
+    result=execute(DB,QUESTIONS[req.question],params)
+    return save(DB,sid,req.question,{**result,'status':'completed','question':req.question,'title':req.question,
+       'reference_date':req.asof.isoformat(),'interpretation':'历史询价示例；询价份数按RFQ No计，物料明细分别统计；非实时订单。',
+       'statistics_scope':'历史询价示例 / 固定快捷统计 / 日期按所选基准日',
+       'chart':'line' if req.question=='每月询价趋势' else 'ranking' if req.question!='即将截止的询价' else 'table',
+       'analysis':{'status':'not_requested','summary':'已直接执行只读快捷统计，本次未调用AI。','findings':[],'caveats':[]}})
+
+@app.post('/api/query-center/external')
+def center_external(req:PublicSearch,request:Request):
+    from quotepilot.query_center import session,save
+    from quotepilot.search_service import SearchService,SearchUnavailable,record,config,claim_budget
+    try:sid,_=session(DB,center_owner(request),req.session_id)
+    except PermissionError:raise HTTPException(403,'无法访问该查询会话')
+    try:
+        if len(req.question.strip())<2:raise HTTPException(422,'请填写公开检索关键词')
+        if not config()['available']:raise SearchUnavailable(config()['blocked_reason'])
+        claim_budget(DB)
+        result=record(DB,sid,SearchService().search(req.question.strip()))
+        return save(DB,sid,req.question,{**result,'status':'completed','mode':'external','message':'已取得公开搜索来源；网页价格不等于正式报价或实时库存。'})
+    except SearchUnavailable as error:
+        return save(DB,sid,req.question,{'status':'blocked','mode':'external','message':str(error),'sources':[],'live_search':False})
+
+@app.post('/api/query-center/joint')
+def center_joint(req:JointQuestion,request:Request):
+    from quotepilot.query_center import run,save
+    from quotepilot.search_service import SearchService,SearchUnavailable,record,config,claim_budget
+    from quotepilot.joint_analysis import extract_public,compare,verify_internal
+    provider=center_provider()
+    instruction=req.question+'（联合分析内部查询：如可提供报价参考，请逐条返回part_number,specification,unit,condition,currency,unit_price,price_date,price_basis,source_id字段。缺失字段返回NULL；price_basis只能按实际依据为approved_quote或supplier_reference。没有真实成交字段时仍须追问，不得冒充成交。）'
+    try:internal=run(DB,provider,instruction,req.asof.isoformat(),center_owner(request),req.session_id)
+    except PermissionError:raise HTTPException(403,'无法访问该查询会话')
+    if internal['status']!='completed':return internal
+    sid=internal['session_id']
+    try:
+        if not config()['available']:raise SearchUnavailable(config()['blocked_reason'])
+        claim_budget(DB)
+        external=record(DB,sid,SearchService().search(req.public_query.strip(),3))
+    except SearchUnavailable as error:
+        return save(DB,sid,req.question,{**internal,'status':'partial','mode':'joint','message':'内部查询完成；'+str(error),'sources':[],'comparisons':[],'live_search':False})
+    try:observations,receipt=extract_public(provider,external)
+    except Exception:
+        return save(DB,sid,req.question,{**internal,'status':'partial','mode':'joint','message':'外部来源已保存，但公开价格提取未通过证据校验，未计算价差。','sources':external['sources'],'comparisons':[],'live_search':True})
+    verified_internal=verify_internal(DB,internal['rows'])
+    aligned=compare(verified_internal,observations,external['sources'])
+    return save(DB,sid,req.question,{**internal,'status':'completed','mode':'joint','sources':external['sources'],
+        'comparisons':aligned,'live_search':True,'public_extraction_response_id':receipt['response_id'],
+        'message':'仅对型号、规格、件状、单位、币种及价格日期均可核对的记录计算参考价差；不代表成交机会或可采购库存。'})

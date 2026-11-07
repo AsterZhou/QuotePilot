@@ -83,8 +83,10 @@ class DemoAccessMiddleware(BaseHTTPMiddleware):
                 response=JSONResponse({'detail':'请先登录'},401) if path.startswith('/api/') else RedirectResponse('/login',303)
             elif path=='/auth/logout' and request.method=='POST':
                 response=JSONResponse({'ok':True});response.delete_cookie(COOKIE,path='/',secure=True,httponly=True,samesite='strict')
-            elif path.endswith('/extract') or path=='/api/extraction/preview':
+            elif path.endswith('/extract') or path in ('/api/extraction/preview','/api/analytics/ask','/api/query-center/ask','/api/query-center/joint'):
                 if not self.limiter.allow('ai-global',30,3600):response=JSONResponse({'detail':'演示模型调用已达每小时30次上限，请稍后再试'},429)
+            elif path=='/api/query-center/external':
+                if not self.limiter.allow('external-search-global',20,3600):response=JSONResponse({'detail':'公开搜索达到每小时20次上限，未自动购买额度'},429)
             if response is None:response=await call_next(request)
         response.headers['Cache-Control']='no-store'
         response.headers['X-Content-Type-Options']='nosniff'
