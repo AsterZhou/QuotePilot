@@ -255,6 +255,27 @@ class NaturalQuery(BaseModel):
 @app.post('/api/analytics/ask')
 def ask(req:NaturalQuery):
     text=req.question.strip()
+    if not text:raise HTTPException(422,'请填写业务问题')
+    if os.environ.get('QUOTEPILOT_PROVIDER','mock')=='genesis':
+        from quotepilot.providers import get_provider
+        from quotepilot.query_planner import interpret,execute_plan
+        try:
+            plan,receipt=interpret(get_provider(),text,req.asof.isoformat())
+            if not plan.supported:
+                return {'supported':False,'question':text,'message':plan.explanation,'query_mode':'genesis_structured_plan',
+                        'model_connected':True,'response_id':receipt['response_id'],'model':receipt['model'],'suggestions':list(QUESTIONS)}
+            with database() as con:
+                result=execute_plan(con,plan)
+                audit(con,'analytics_genesis_query',receipt['response_id'],{'question':text,'plan':plan.model_dump(mode='json'),
+                      'model':receipt['model'],'response_id':receipt['response_id'],'usage':receipt.get('usage',{}),'result_rows':len(result['rows'])})
+                con.commit()
+            return {**result,'supported':True,'question':text,'interpreted_as':plan.explanation,'query_mode':'genesis_structured_plan',
+                    'model_connected':True,'model':receipt['model'],'response_id':receipt['response_id'],'plan':plan.model_dump(mode='json'),
+                    'usage':receipt.get('usage',{})}
+        except ValueError:
+            raise HTTPException(422,'AI未生成可执行的业务查询，请明确数据范围、筛选条件或统计指标；未执行不受支持的查询。')
+        except Exception:
+            raise HTTPException(502,'AI查询暂时未完成，请稍后重试或使用上方快捷统计；未生成查询结果。')
     if re.search(r'截止|到期|几天|快到',text): q='即将截止的询价'
     elif re.search(r'紧急|客户|航空公司',text): q='客户紧急询价排名'
     elif re.search(r'件号|零件|物料|热门|频繁',text):q='热门询价件号'
