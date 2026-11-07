@@ -1,4 +1,10 @@
-# QuotePilot · 报价室 v0.7（上线准备补丁）
+# QuotePilot · 报价室 v0.7.1
+
+## 2026-11-07 工作台可用性更新
+
+首页四项统计可打开对应明细：邮件、全部需求、历史询价、供应商价格。新增历史/价格/成本的只读检索、分页、完整字段详情和原始工作簿下载；来件标记赛事示例或后续导入。平台接入页展示当前服务实际配置及本数据库成功记录，未启用 Genesis 时不再显示可执行的 AI 提取按钮。管理员访问控制保留，无公众注册。
+
+当前公网仍为 Free + 临时 SQLite，Genesis 仍为 Mock；尚无 Supabase 连接与持久化迁移。本轮没有配置新密钥、购买资源或宣称原生工作流成功。开发环境历史真实调用与当前线上配置分开呈现。
 
 2026-11-07 免费演示：https://quotepilot-demo.onrender.com 。管理员密码仅保存在 Render 服务环境变量 `QUOTEPILOT_LOGIN_PASSWORD`，无公众注册。Free实例不挂持久盘，休眠、重启和重部署会丢失上传、报价和审计数据；仅使用赛事/合成文件，及时下载导出。当前公开实例使用明确Mock，不调用Genesis，不代表MOI原生工作流成功。
 
@@ -8,7 +14,7 @@
 
 **当前验收：受限本地闭环与真实Genesis/MOI报价镜像通过；Render Free临时演示已上线（SQLite不持久化），MOI原生工作流未运行成功。** 不具备完整参赛验收通过结论。详见[本次验收报告](docs/ACCEPTANCE_V07.md)。
 
-## 2026-11-06上线状态
+## 历史记录：2026-11-06上线准备（以下状态为当日记录）
 
 源码已建立本地Git基线tag v0.7.0；GitHub远程备份仍待账号授权，不能将本地SHA当成已推送版本。Render适配见deploy/RENDER.md；付费模板deploy/render.paid.yaml尚未应用，创建前必须由账户所有者确认价格。Docker构建流程见.github/workflows/container-acceptance.yml，仅手动触发；目前没有真实构建成功记录。公网URL仍未产生。
 
@@ -71,7 +77,9 @@ python scripts/accept_deployment.py --url https://YOUR_ACTUAL_DOMAIN
 
 需要演示登录密码，实际发送合成询价并调用真实服务；无Mock。浏览器完整操作仍须独立验证。离线pytest与verify不会调用模型，也不会假装网络已经验证。
 
-## 公网部署
+## 公网部署参考（当前在线状态见文首）
+
+以下缺少托管权限等描述为此前本地阶段的历史限制；当前免费公网版本已上线，仍未完成持久化和线上真实模型接入。
 
 [deploy/README.md](deploy/README.md)提供Dockerfile、Compose、Caddy HTTPS、数据库持久化卷、运行时secret挂载和初始化/部署脚本。当前缺少兼容Python容器运行的服务器/托管权限、域名，且本环境没有Docker。**Docker构建、公网URL、外部浏览器闭环均未验证。** 不会把仅前端可见页面当成真实部署。
 
@@ -110,3 +118,4 @@ docs/                           验收、实际架构、180秒脚本
 ```
 
 旧v0.5/v0.6文档及证据仅作历史记录。以当前README、ACCEPTANCE_V07及v07证据为准。不存在客户端、收入、节省工时或泛化准确率结论。
+

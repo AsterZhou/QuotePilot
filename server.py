@@ -81,7 +81,8 @@ def emails():
     with database() as con:
         return [dict(x) for x in con.execute('''SELECT e.email_id,e.filename,e.subject,e.sender,e.mail_date,
           COUNT(l.id) AS line_count, GROUP_CONCAT(DISTINCT l.source_kind) AS kinds,
-          COUNT(DISTINCT l.source_rfq_no) AS source_rfq_count
+          COUNT(DISTINCT l.source_rfq_no) AS source_rfq_count,
+          (SELECT dataset FROM source_files f WHERE f.email_id=e.email_id AND f.kind='eml' LIMIT 1) AS dataset
           FROM emails e LEFT JOIN rfq_lines l ON l.email_id=e.email_id
           GROUP BY e.email_id ORDER BY e.filename''')]
 
@@ -101,6 +102,29 @@ def lines(email_id:str|None=None, search:str='', source_kind:str='', limit:int=Q
         rows=[dict(r) for r in con.execute('''SELECT l.*,e.subject AS email_subject,e.filename AS email_filename
           FROM rfq_lines l JOIN emails e ON e.email_id=l.email_id'''+wh+' ORDER BY e.filename,l.id LIMIT ? OFFSET ?',args+[limit,offset])]
     return {'total':n,'rows':rows,'offset':offset,'limit':limit}
+
+@app.get('/api/catalog/{kind}')
+def catalog(kind:Literal['historical','prices','costs'], search:str=Query('',max_length=100),
+            limit:int=Query(25,ge=1,le=100), offset:int=Query(0,ge=0)):
+    # Table and column identifiers come only from this fixed map. Values stay bound.
+    specs={
+        'historical':('historical',['rfq_no','inquiry_no','part_number','description','airline'],'id'),
+        'prices':('prices',['resource_id','part_number','supplier','supplier_code'],'resource_id'),
+        'costs':('costs',['part_number','description','warehouse'],'part_number'),
+    }
+    table,columns,order=specs[kind]
+    where='';args=[]
+    if search.strip():
+        needle=search.strip().replace('\\','\\\\').replace('%','\\%').replace('_','\\_')
+        where=' WHERE '+' OR '.join(f"{column} LIKE ? ESCAPE '\\'" for column in columns)
+        args=['%'+needle+'%']*len(columns)
+    with database() as con:
+        total=con.execute(f'SELECT COUNT(*) FROM {table}'+where,args).fetchone()[0]
+        rows=[dict(row) for row in con.execute(f'SELECT * FROM {table}'+where+f' ORDER BY {order} LIMIT ? OFFSET ?',args+[limit,offset])]
+        files=[dict(row) for row in con.execute("SELECT id,filename,dataset FROM source_files WHERE kind='workbook' ORDER BY filename")]
+    expected={'historical':'询价报价清单_看板演示数据.xlsx','prices':'价格资源表_演示数据.xlsx','costs':'内部物料成本表_演示数据.xlsx'}[kind]
+    return {'total':total,'rows':rows,'offset':offset,'limit':limit,'dataset':'official_sample',
+            'source_files':[f for f in files if f['filename']==expected]}
 
 @app.get('/api/lines/{line_id}')
 def line_detail(line_id:int):
@@ -440,3 +464,4 @@ def native_workflow_status():
     try:return MOIWorkflowClient().status(wid)
     except ValueError as ex:raise HTTPException(409,str(ex))
     except Exception:raise HTTPException(502,'MOI工作流状态读取失败；不能判定运行成功')
+

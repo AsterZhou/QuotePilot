@@ -17,9 +17,12 @@ def integration_status(con):
         row=con.execute('SELECT receipt_json,verified_at FROM cloud_quote_receipts WHERE workspace_id=? ORDER BY rowid DESC LIMIT 1',(workspace,)).fetchone()
         if row:cloud={**json.loads(row['receipt_json']),'at':row['verified_at']}
     return {'moi_connected':bool(cloud_configured and cloud),'matrixone_connected':bool(cloud_configured and cloud),'model_connected':bool(configured and verified),
+            'active_provider':os.environ.get('QUOTEPILOT_PROVIDER','mock'),
+            'ephemeral_storage':os.environ.get('QUOTEPILOT_EPHEMERAL_DEMO')=='1',
             'moi_sql_configured':cloud_configured,'last_verified_cloud_snapshot':cloud,'moi_workflow_connected':False,
             'genesis_configured':bool(configured),'last_successful_genesis_call':verified,
             'connection_check':'已保存的最近成功调用证据，不代表持续在线探测',
             'mode':'genesis_assisted_local' if configured else 'local_offline',
             'next_steps':['在来件页明确触发Genesis提取','对照原文人工确认再入库','确认报价后显式同步MOI云端快照','部署并验证评委访问'],
             'disclaimer':'Genesis模型调用与MOI工作区/MatrixOne数据库是独立验收项；当前业务主库仍为SQLite；云端只镜像已确认报价快照，不代表RFQ/成本/供应商表已迁移，也不代表AI Studio工作流已部署。'}
+
