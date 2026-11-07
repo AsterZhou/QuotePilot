@@ -1,0 +1,23 @@
+name: Restore original QuotePilot history
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - name: Verify archive and restore source branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "6b6ef15ed28ac69c0f13361bc6a72b378998a4270f33401aaa144220b91c99c0  QuotePilot_v0.7_all_history.bundle" | sha256sum --check
+          git bundle verify QuotePilot_v0.7_all_history.bundle
+          git fetch ./QuotePilot_v0.7_all_history.bundle refs/heads/main:refs/heads/release-v0.7
+          test "$(git rev-parse release-v0.7)" = "98dedf0023b914b6367535b52562d45457e55b46"
+          git fetch ./QuotePilot_v0.7_all_history.bundle 'refs/tags/*:refs/tags/*'
+          git push origin refs/heads/release-v0.7:refs/heads/release-v0.7
+          git push origin --tags
+          git ls-remote origin refs/heads/release-v0.7 'refs/tags/*'
