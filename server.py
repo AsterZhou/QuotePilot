@@ -50,7 +50,8 @@ def database():
 
 @app.get('/', response_class=HTMLResponse)
 def index():
-    return (WEB / 'index.html').read_text(encoding='utf-8')
+    from quotepilot.security import deployment_notice
+    return (WEB / 'index.html').read_text(encoding='utf-8').replace('<body>','<body>'+deployment_notice(),1)
 
 @app.get('/healthz')
 def readiness():return {'ok':True,'service':'QuotePilot'}

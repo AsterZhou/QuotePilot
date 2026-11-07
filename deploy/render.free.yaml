@@ -1,0 +1,25 @@
+# Free temporary demo only. No disk, paid compute, or paid data services.
+services:
+  - type: web
+    name: quotepilot-demo
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: release-v0.7
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    autoDeployTrigger: "off"
+    envVars:
+      - key: QUOTEPILOT_ENV
+        value: production
+      - key: QUOTEPILOT_PROVIDER
+        value: mock
+      - key: QUOTEPILOT_EPHEMERAL_DEMO
+        value: "1"
+      - key: QUOTEPILOT_DB
+        value: /data/quotepilot.db
+      - key: QUOTEPILOT_LOGIN_PASSWORD
+        sync: false
+      - key: QUOTEPILOT_SESSION_SECRET
+        generateValue: true
