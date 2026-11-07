@@ -1,0 +1,18 @@
+{
+  "url": "https://quotepilot-demo.onrender.com",
+  "external": true,
+  "passed": true,
+  "synthetic": true,
+  "model": "mock; no Genesis call",
+  "persistence": "ephemeral; not durable",
+  "steps": {
+    "anonymous_and_registration_blocked": true,
+    "admin_login_and_explicit_mock_notice": true,
+    "input_and_origin_rejected": true,
+    "upload_and_duplicate_protection": true,
+    "unpriced_approval_blocked": true,
+    "pricing_approval_and_export_database_agreement": "49.89 CNY",
+    "unconfigured_cloud_not_claimed": true
+  },
+  "quote_id": "QP-54833EE65340"
+}

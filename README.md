@@ -1,8 +1,12 @@
 # QuotePilot · 报价室 v0.7（上线准备补丁）
 
+2026-11-07 免费演示：https://quotepilot-demo.onrender.com 。管理员密码仅保存在 Render 服务环境变量 `QUOTEPILOT_LOGIN_PASSWORD`，无公众注册。Free实例不挂持久盘，休眠、重启和重部署会丢失上传、报价和审计数据；仅使用赛事/合成文件，及时下载导出。当前公开实例使用明确Mock，不调用Genesis，不代表MOI原生工作流成功。
+
+公网HTTP闭环验收：`python scripts/accept_free_deployment.py --url https://quotepilot-demo.onrender.com`，通过记录见 `evidence/free_deployment/result.json`。Supabase尚未连接或迁移；现有9个文件84处数据库调用依赖SQLite，迁移涉及SQL方言、自增ID/返回值、事务以及附件BLOB改私有对象存储，需单独验证。
+
 面向报价专员的RFQ处理工作台。输入EML及Excel/PDF附件，保留原文件，提取需求，匹配价格，执行Decimal规则，人工复核，审批后导出Excel并可镜像至MOI云端。
 
-**当前验收：受限本地闭环与真实Genesis/MOI报价镜像通过；公网部署未完成，MOI原生工作流未运行成功。** 不具备完整参赛验收通过结论。详见[本次验收报告](docs/ACCEPTANCE_V07.md)。
+**当前验收：受限本地闭环与真实Genesis/MOI报价镜像通过；Render Free临时演示已上线（SQLite不持久化），MOI原生工作流未运行成功。** 不具备完整参赛验收通过结论。详见[本次验收报告](docs/ACCEPTANCE_V07.md)。
 
 ## 2026-11-06上线状态
 
