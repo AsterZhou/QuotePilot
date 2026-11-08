@@ -1,0 +1,38 @@
+{
+  "file": "tmp/final-video/QuotePilot_v2_Opening_18s.mp4",
+  "duration_seconds": 18.048,
+  "width": 1920,
+  "height": 1080,
+  "fps": "24/1",
+  "sha256": "fd2c8adeac69a38395941a1a4495155af200adaa513c9bc0cc3f93e437f6789f",
+  "bytes": 1086840,
+  "all_product_backgrounds": "actual browser screencasts, not screenshot pans",
+  "voice": "synthesized Mandarin Chinese zh-CN-XiaoxiaoNeural",
+  "voice_present": true,
+  "synthetic_business_data": true,
+  "public_acceptance": false,
+  "timeline": [
+    {
+      "scene": "hook",
+      "sources": [
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@024b02b088639e919047e7e9baeb1755.webm",
+          "start": 12.485,
+          "length": 3,
+          "target": 4
+        },
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@024b02b088639e919047e7e9baeb1755.webm",
+          "start": 2,
+          "length": 13,
+          "target": 14
+        }
+      ],
+      "footage_kind": "real_browser_video",
+      "target_duration": 18,
+      "voice_seconds": 11.16,
+      "voice_tempo": 1
+    }
+  ],
+  "complete_playback_review": false
+}

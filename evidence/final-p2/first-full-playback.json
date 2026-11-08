@@ -1,0 +1,16 @@
+{
+  "url": "https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/video/",
+  "sha256": "5d045ff86500f7eaa067a79cdd944dd647a8b2869e01b5a38ab7d4978f4073aa",
+  "observed_times": [
+    0.104328,
+    33.161588,
+    97.66482,
+    137.487527,
+    175.083
+  ],
+  "ended": true,
+  "muted": false,
+  "error": null,
+  "finding": "Intake narration and footage were misaligned; corrected cut must be played fully again",
+  "seek_used": false
+}

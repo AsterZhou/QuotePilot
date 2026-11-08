@@ -1,0 +1,11 @@
+{
+  "sha256": "d710aa5de4e3704b0298cfa2707469264479ec6ff253cb7558a80cfb24afb29b",
+  "full_decode_exit_code": 0,
+  "full_decode_log_empty": true,
+  "audio_levels_db": {
+    "mean_volume": "-20.6",
+    "max_volume": "-2.8"
+  },
+  "subjective_listening_verified": false,
+  "note": "Browser full-duration playback checked separately; levels/decoding alone do not prove subjective voice quality"
+}

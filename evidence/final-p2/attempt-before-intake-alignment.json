@@ -1,0 +1,203 @@
+{
+  "file": "tmp/final-video/QuotePilot_v2_175s.mp4",
+  "duration_seconds": 175.083,
+  "width": 1920,
+  "height": 1080,
+  "fps": "24/1",
+  "sha256": "5d045ff86500f7eaa067a79cdd944dd647a8b2869e01b5a38ab7d4978f4073aa",
+  "bytes": 9137170,
+  "all_product_backgrounds": "actual browser screencasts, not screenshot pans",
+  "voice": "synthesized Mandarin Chinese zh-CN-XiaoxiaoNeural",
+  "voice_present": true,
+  "synthetic_business_data": true,
+  "public_acceptance": false,
+  "timeline": [
+    {
+      "scene": "hook",
+      "sources": [
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@024b02b088639e919047e7e9baeb1755.webm",
+          "start": 12.485,
+          "length": 3,
+          "target": 4
+        },
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@024b02b088639e919047e7e9baeb1755.webm",
+          "start": 2,
+          "length": 13,
+          "target": 14
+        }
+      ],
+      "footage_kind": "real_browser_video",
+      "target_duration": 18,
+      "voice_seconds": 11.16,
+      "voice_tempo": 1
+    },
+    {
+      "scene": "intake",
+      "sources": [
+        {
+          "path": "tmp/final-video/raw/page@63d2789b90dde5bb6c1777998b25058b.webm",
+          "start": 0.75,
+          "length": 0.65,
+          "target": 5
+        },
+        {
+          "path": "tmp/final-video/raw/page@63d2789b90dde5bb6c1777998b25058b.webm",
+          "start": 1.4,
+          "length": 2,
+          "target": 4
+        },
+        {
+          "path": "tmp/final-video/raw/page@63d2789b90dde5bb6c1777998b25058b.webm",
+          "start": 18.3,
+          "length": 1.4,
+          "target": 11
+        }
+      ],
+      "footage_kind": "real_browser_video",
+      "target_duration": 20,
+      "voice_seconds": 15.408,
+      "voice_tempo": 1
+    },
+    {
+      "scene": "evidence",
+      "sources": [
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@024b02b088639e919047e7e9baeb1755.webm",
+          "start": 15.865,
+          "length": 8.05,
+          "target": 17
+        }
+      ],
+      "footage_kind": "real_browser_video",
+      "target_duration": 17,
+      "voice_seconds": 14.424,
+      "voice_tempo": 1
+    },
+    {
+      "scene": "supplier",
+      "sources": [
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@7f1f3ff22b642c16ec29ebcae6de90d4.webm",
+          "start": 22.904,
+          "length": 10.836,
+          "target": 20
+        }
+      ],
+      "footage_kind": "real_browser_video",
+      "target_duration": 20,
+      "voice_seconds": 15.6,
+      "voice_tempo": 1
+    },
+    {
+      "scene": "pricing",
+      "sources": [
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@7f1f3ff22b642c16ec29ebcae6de90d4.webm",
+          "start": 33.74,
+          "length": 5.856,
+          "target": 20
+        }
+      ],
+      "footage_kind": "real_browser_video",
+      "target_duration": 20,
+      "voice_seconds": 16.848,
+      "voice_tempo": 1
+    },
+    {
+      "scene": "change",
+      "sources": [
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@024b02b088639e919047e7e9baeb1755.webm",
+          "start": 40.608,
+          "length": 7.154,
+          "target": 23
+        }
+      ],
+      "footage_kind": "real_browser_video",
+      "target_duration": 23,
+      "voice_seconds": 14.208,
+      "voice_tempo": 1
+    },
+    {
+      "scene": "reprice",
+      "sources": [
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@7f1f3ff22b642c16ec29ebcae6de90d4.webm",
+          "start": 46.768,
+          "length": 4.323,
+          "target": 4
+        },
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@7f1f3ff22b642c16ec29ebcae6de90d4.webm",
+          "start": 51.091,
+          "length": 8.325,
+          "target": 8
+        },
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@7f1f3ff22b642c16ec29ebcae6de90d4.webm",
+          "start": 59.416,
+          "length": 3.576,
+          "target": 4
+        },
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@024b02b088639e919047e7e9baeb1755.webm",
+          "start": 64.003,
+          "length": 5.343,
+          "target": 5
+        }
+      ],
+      "footage_kind": "real_browser_video",
+      "target_duration": 21,
+      "voice_seconds": 15.552,
+      "voice_tempo": 1
+    },
+    {
+      "scene": "export",
+      "sources": [
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@024b02b088639e919047e7e9baeb1755.webm",
+          "start": 69.346,
+          "length": 4.872,
+          "target": 15
+        }
+      ],
+      "footage_kind": "real_browser_video",
+      "target_duration": 15,
+      "voice_seconds": 14.952,
+      "voice_tempo": 1.0241095890410958
+    },
+    {
+      "scene": "platform",
+      "sources": [
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@024b02b088639e919047e7e9baeb1755.webm",
+          "start": 74.218,
+          "length": 5.38,
+          "target": 14
+        }
+      ],
+      "footage_kind": "real_browser_video",
+      "target_duration": 14,
+      "voice_seconds": 14.52,
+      "voice_tempo": 1.0676470588235294
+    },
+    {
+      "scene": "close",
+      "sources": [
+        {
+          "path": "/workspace/scratch/e6c4347b11ee/sprint/tmp/final-video/take4/page@024b02b088639e919047e7e9baeb1755.webm",
+          "start": 64.003,
+          "length": 5.343,
+          "target": 7
+        }
+      ],
+      "footage_kind": "real_browser_video",
+      "target_duration": 7,
+      "voice_seconds": 7.368,
+      "voice_tempo": 1.1163636363636364
+    }
+  ],
+  "complete_playback_review": false
+}

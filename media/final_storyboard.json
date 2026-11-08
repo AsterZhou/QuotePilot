@@ -1,0 +1,12 @@
+{"duration":175,"title":"QuotePilot · 数量一改，报价需要重新判断","synthetic_only":true,"voice":"zh-CN-XiaoxiaoNeural","scenes":[
+{"id":"hook","start":0,"duration":18,"title":"100 → 500，原报价还能发吗？","narration":"客户只改了一个数字。报价，还能直接发出去吗？从一百件到五百件，QuotePilot帮你看清变化，重新核价，再走审批。"},
+{"id":"intake","start":18,"duration":20,"title":"真实来件，真实Genesis提取","narration":"先从客户来件开始。这封自然语言邮件，固定规则没有提取出需求行。点击Genesis补充提取，模型从原文识别件号、数量和单位。建议不会直接进入正式报价。"},
+{"id":"evidence","start":38,"duration":17,"title":"模型建议，保留原文依据","narration":"这里能看到模型、真实调用编号、输入原文和证据片段。业务人员逐项核对并确认，才把一百件需求写入数据库。模型建议和人工确认分别留痕。"},
+{"id":"supplier","start":55,"duration":20,"title":"供应商原件 → 提取 → 人工核验","narration":"供应商报价从原文件录入。当前采用规则提取，把单价、币种、规格和交期整理为候选字段。对照原件人工核验后，报价才参与成本计算。没有凭空生成价格。"},
+{"id":"pricing","start":75,"duration":20,"title":"成本 ¥1,102.00 / 报价 ¥1,378.00","narration":"采购、加工、运费、税费和其他费用逐项展开，再比较最低成本、最快交付与综合平衡方案。这个合成案例总成本一千一百零二元。单价舍入后，销售总额一千三百七十八元。"},
+{"id":"change","start":95,"duration":23,"title":"客户更新：100 EA → 500 EA","narration":"现在客户把数量改成五百件。版本对比定位到数量变化，并指出已审批报价受到影响。旧报价仍保留原来的一百件，不能把旧审批直接套到新需求上。"},
+{"id":"reprice","start":118,"duration":21,"title":"重新核价，重新走两角色审批","narration":"核对新版本需求后，重新选择供应商并计算。相同单价条件下，总成本变为五千五百零二元，销售总额六千八百八十元。业务复核、管理员审批，两步重新完成。"},
+{"id":"export","start":139,"duration":15,"title":"正式导出来自已审批版本","narration":"审批完成，再下载PDF和Excel。件号、数量、金额和报价版本保持一致，计算依据与修改历史随时可查。AI不会绕过审批自动向客户发送。"},
+{"id":"platform","start":154,"duration":14,"title":"真实平台回执，可核验","narration":"Genesis已进入实际用户提取流程。已审批商业报价通过页面操作写入MatrixOne隔离表，并完整读回校验。它是应用层镜像，技术文档会明确集成范围。"},
+{"id":"close","start":168,"duration":7,"title":"QuotePilot / 每份报价，都有依据","narration":"QuotePilot，为工业报价团队保留判断依据。所有演示价格均为合成数据。"}
+]}

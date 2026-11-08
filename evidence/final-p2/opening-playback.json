@@ -1,0 +1,11 @@
+{
+  "url": "http://terminal.local:4173/video/",
+  "duration_seconds": 18.048,
+  "observed_playing_at": 5.284087,
+  "observed_ended_at": 18.048,
+  "ended": true,
+  "muted": false,
+  "error": null,
+  "method": "actual browser playback from start to ended, no seek",
+  "subjective_human_listening_claimed": false
+}

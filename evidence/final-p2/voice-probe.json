@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "tls_verified": true,
+  "uses_environment_CA": true,
+  "api_key_required": false
+}

@@ -1,0 +1,47 @@
+{
+  "url": "https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/video/",
+  "video_sha256": "d710aa5de4e3704b0298cfa2707469264479ec6ff253cb7558a80cfb24afb29b",
+  "method": "Actual external browser played from start to ended; no seeking",
+  "checks": [
+    {
+      "time": 0.120576,
+      "paused": false,
+      "ended": false,
+      "muted": false,
+      "duration": 175.083,
+      "error": null
+    },
+    {
+      "time": 47.601787,
+      "paused": false,
+      "ended": false,
+      "muted": false,
+      "duration": 175.083,
+      "error": null
+    },
+    {
+      "time": 100.913361,
+      "paused": false,
+      "ended": false,
+      "muted": false,
+      "duration": 175.083,
+      "error": null
+    },
+    {
+      "time": 175.083,
+      "paused": true,
+      "ended": true,
+      "muted": false,
+      "duration": 175.083,
+      "error": null
+    }
+  ],
+  "complete_playback": true,
+  "screens_observed": [
+    "model input/evidence",
+    "version impact",
+    "reapproval and final frame"
+  ],
+  "subjective_human_listening_claimed": false,
+  "review_limit": "Observed browser playback/visual checkpoints plus decoded voice track; not a claim that a human voice actor or human listener certified the narration"
+}

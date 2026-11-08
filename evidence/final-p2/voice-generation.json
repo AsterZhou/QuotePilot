@@ -1,0 +1,68 @@
+{
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "tls_verified": true,
+  "api_key_required": false,
+  "synthesized_voice": true,
+  "results": [
+    {
+      "scene": "hook",
+      "success": true,
+      "duration_seconds": 11.16,
+      "sha256": "d98bc8fc727c21d6bebb43a3dfe44e6cc2cbae5b693e995ab7afd65d7b285404"
+    },
+    {
+      "scene": "intake",
+      "success": true,
+      "duration_seconds": 15.408,
+      "sha256": "220ae965e0e6083b3ea147bc3d0648ea4b17444d2ade967bf9f78f212ef5cf76"
+    },
+    {
+      "scene": "evidence",
+      "success": true,
+      "duration_seconds": 14.424,
+      "sha256": "912eed70c23bac79b19769e6989e2778d0f60d91c017a414cb5c3ec3262407a2"
+    },
+    {
+      "scene": "supplier",
+      "success": true,
+      "duration_seconds": 15.6,
+      "sha256": "0d79ab48320943c51544c10e271b054fc085242617cb8fafd599f2c114cb56d9"
+    },
+    {
+      "scene": "pricing",
+      "success": true,
+      "duration_seconds": 16.848,
+      "sha256": "052561071ec493af2baf78bf236aff70232a1919f52d63ff900f9db15d7fe67c"
+    },
+    {
+      "scene": "change",
+      "success": true,
+      "duration_seconds": 14.208,
+      "sha256": "2f9c7257ead5cc31792c3d0871f5a76e0a29221f87ceec44561b494b0f6b1b85"
+    },
+    {
+      "scene": "reprice",
+      "success": true,
+      "duration_seconds": 15.552,
+      "sha256": "e74a448a42937a85794576879e711da46f5fcddb9f91761ffe8e66ba5036e9fe"
+    },
+    {
+      "scene": "export",
+      "success": true,
+      "duration_seconds": 14.952,
+      "sha256": "fb36fc7de57fd061a2a8fd13e060ffe1088d220c6612edcb4d8a8c5271397922"
+    },
+    {
+      "scene": "platform",
+      "success": true,
+      "duration_seconds": 14.52,
+      "sha256": "d4663d7505ac2ad73629f952147590f09325a3f4675ad385f31d5c6e88bd5828"
+    },
+    {
+      "scene": "close",
+      "success": true,
+      "duration_seconds": 7.368,
+      "sha256": "b668833892c0d1f3ed85e979562d5aca40c0e0f189771b49f65976ab480009b3"
+    }
+  ]
+}

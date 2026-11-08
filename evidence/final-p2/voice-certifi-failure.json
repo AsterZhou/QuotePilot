@@ -1,0 +1,6 @@
+{
+  "success": false,
+  "error_type": "ClientConnectorCertificateError",
+  "reason": "Cannot connect to host speech.platform.bing.com:443 ssl:True [SSLCertVerificationError: (1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1010)')]",
+  "tls_verified": true
+}
