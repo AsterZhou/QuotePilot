@@ -1,0 +1,72 @@
+{
+  "sha256": "63c6490934273668118ad7191c44a3677eb49a949497702ccdf509bb8e6ce653",
+  "full_file_decode_exit_code": 0,
+  "sampled_frames": [
+    {
+      "scene": "opening",
+      "time_seconds": 6.0,
+      "nonblack_stddev": 108.55,
+      "frame_sha256": "17545b73b88640f47f777bfbe0ad71f58985916c8a84cc6b2187394a1065144b"
+    },
+    {
+      "scene": "upload",
+      "time_seconds": 20.5,
+      "nonblack_stddev": 110.83,
+      "frame_sha256": "50cd0bc4b9a12564dcc6d13cc3971c3aef70a83b084aaaf88d3e77a1dd7403d9"
+    },
+    {
+      "scene": "supplier",
+      "time_seconds": 41.5,
+      "nonblack_stddev": 111.89,
+      "frame_sha256": "d8cf18bd97e21505fd363ba62866376d52c64ce694d455f4b029073ce3141d18"
+    },
+    {
+      "scene": "review",
+      "time_seconds": 63.0,
+      "nonblack_stddev": 112.61,
+      "frame_sha256": "4a351388d8f0ce549f164a2818513eee2e81aa8a2cecc8a6341e1196ce70bf8a"
+    },
+    {
+      "scene": "cost",
+      "time_seconds": 83.5,
+      "nonblack_stddev": 111.74,
+      "frame_sha256": "b50f56200593d843848129f14aa7f03ef47dd5d5c908c522050256e0572d8da7"
+    },
+    {
+      "scene": "approval",
+      "time_seconds": 106.0,
+      "nonblack_stddev": 110.04,
+      "frame_sha256": "d41a72ca3dea1340a5463e238aa456d01612f1ef594bb8a00f2164c31a17d6d4"
+    },
+    {
+      "scene": "export",
+      "time_seconds": 126.0,
+      "nonblack_stddev": 112.43,
+      "frame_sha256": "b9d97cc4a66a31e06ba0b8aaa495d16c08846a2c2f798f376b59941864324447"
+    },
+    {
+      "scene": "version",
+      "time_seconds": 142.5,
+      "nonblack_stddev": 112.9,
+      "frame_sha256": "4da09c02f55ebb65701b3c60139f1546c01f3ea77af71c3325e4c4374c0b28ac"
+    },
+    {
+      "scene": "platform",
+      "time_seconds": 161.0,
+      "nonblack_stddev": 103.77,
+      "frame_sha256": "07f28a67bcc1a03662f3268c37bd29e11f2a291e11b39399b9211824910e8064"
+    },
+    {
+      "scene": "closing",
+      "time_seconds": 176.0,
+      "nonblack_stddev": 107.75,
+      "frame_sha256": "ded773e4b5434beaef9530471a20f06b3807d1edc1d480f8ac8a7e6a126d09a7"
+    }
+  ],
+  "all_decoded": true,
+  "audio_db": {
+    "mean_volume": "-38.2",
+    "max_volume": "-31.5"
+  },
+  "note": "Technical checks; final Chinese glyph/layout inspection performed on decoded frames separately"
+}

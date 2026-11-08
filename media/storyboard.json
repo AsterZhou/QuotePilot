@@ -1,0 +1,17 @@
+{
+  "title": "QuotePilot｜每份报价，都有依据",
+  "duration_seconds": 180,
+  "case": "合成RFQ与供应商数据；本地真实运行实录；镜头经过剪辑加速",
+  "scenes": [
+    {"id":"opening","start":0,"duration":12,"title":"每份报价，都有依据。","kicker":"QUOTEPILOT / RFQ OPERATIONS","bullets":["工业零部件询价与报价工作台","原件 → 核验 → 成本 → 审批 → 报价单"],"narration":"一封询价，可能要跨越邮件、附件、供应商报价和多次核对。QuotePilot，把这些环节放进一条有来源、可复核的报价流程。"},
+    {"id":"upload","start":12,"duration":17,"title":"从真实文件开始。","kicker":"01 / INTAKE","bullets":["原始邮件与附件保留","型号、数量、单位回到来源"],"narration":"先导入一封合成询价邮件。系统保留原件，拆出型号、数量和单位。这里的一百件需求有明确原文，不靠模型猜测。上传、解析与后续操作都留下记录。"},
+    {"id":"supplier","start":29,"duration":25,"title":"原报价，自动变成待核对字段。","kicker":"02 / SUPPLIER EVIDENCE","bullets":["文字PDF / Excel / EML / TXT","逐字段定位；不确定就留空","提取建议不能直接参与报价"],"narration":"接着上传三家供应商的合成报价PDF。规则解析器自动提取价格、币种、最小起订量、交期和有效期，并保留每个字段的原文位置。缺失值保持空白，扫描件转人工。自动提取完成，业务确认才刚刚开始。"},
+    {"id":"review","start":54,"duration":18,"title":"人来确认，原值不被覆盖。","kicker":"03 / HUMAN REVIEW","bullets":["原始提取值与人工改值并存","未复核报价不能进入核算"],"narration":"业务人员逐项对照来源，必要时修改，并写明原因。原始提取值和改值同时保留。只有核对确认的供应商报价，才能进入成本计算，提取结果不会自动变成正式承诺。"},
+    {"id":"cost","start":72,"duration":23,"title":"透明核算，再比较三种方案。","kicker":"04 / TRANSPARENT COST","bullets":["采购 + 加工 + 运费 + 税费 + 其他","最低成本 / 最快交付 / 综合平衡","成本 ¥1,102.00 / 报价 ¥1,378.00"],"narration":"采购、加工、运费、税费和其他成本逐项列出，再按规则比较最低成本、最快交付和综合平衡方案。本例总成本一千一百零二元，目标毛利率百分之二十。销售单价按分舍入后，总额为一千三百七十八元；公式和舍入口径都能查看。"},
+    {"id":"approval","start":95,"duration":22,"title":"先业务审核，再管理审批。","kicker":"05 / TWO-ROLE APPROVAL","bullets":["两个独立共享角色账户","禁止跳过审核、同账户自批","风险确认后，才允许正式导出"],"narration":"报价先由业务账户审核，再交给不同的管理员账户审批。系统禁止跳过审核和同账户自批，成本缺失也会阻塞审批。这里是两个共享角色账户，尚未宣称企业单点登录或多租户。"},
+    {"id":"export","start":117,"duration":18,"title":"报价单，来自已审批版本。","kicker":"06 / VERIFIED EXPORT","bullets":["PDF 与 Excel 实际下载","件号、数量与金额读回一致","保留版本及文件 SHA256"],"narration":"审批通过后，实际下载PDF和Excel报价单。两个文件重新打开，件号、数量和合计金额与审批快照一致。版本和文件摘要留下记录，系统不会绕过人工审批自动发送给客户。"},
+    {"id":"version","start":135,"duration":15,"title":"客户一改，影响立即显现。","kicker":"07 / RFQ CHANGE IMPACT","bullets":["数量 100 → 500","标记重新询价与核算影响","旧审批快照仍保持 100 件"],"narration":"客户把数量从一百件改成五百件，版本对比会标出变化和重新核价影响。旧审批快照仍保持一百件，历史结果不会悄悄改变。"},
+    {"id":"platform","start":150,"duration":22,"title":"平台能力，按真实回执说话。","kicker":"08 / GENESIS + MATRIXONE","bullets":["Genesis 真实推理：1,083 Token","MatrixOne 报价镜像：读回 SHA256 一致","MOI 原生工作流：400，尚未运行"],"narration":"平台方面，Genesis已真实返回提取结果和一千零八十三个Token用量。已审批商业报价写入MatrixOne隔离表，读回摘要一致。MOI原生工作流目前启动返回四百，没有执行ID，我们把它明确列为未完成。"},
+    {"id":"closing","start":172,"duration":8,"title":"让核对有依据，让审批有责任。","kicker":"QUOTEPILOT / BUILT TO BE REVIEWED","bullets":["面向零部件经销商与采购报价团队","价值主张待真实客户验证；不编造 ROI"],"narration":"面向零部件报价团队，让核对有依据，让成本看得见，让每次审批可追溯。QuotePilot。"}
+  ]
+}

@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/e6c4347b11ee/sprint/scripts/build_product_video.py", line 116, in <module>
+    if __name__=='__main__':build()
+                            ^^^^^^^
+  File "/workspace/scratch/e6c4347b11ee/sprint/scripts/build_product_video.py", line 99, in build
+    run(cmd,OUT/(scene['id']+'.log'));clips.append(target)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/e6c4347b11ee/sprint/scripts/build_product_video.py", line 75, in run
+    with open(log,'w') as file:subprocess.run(cmd,stdout=file,stderr=subprocess.STDOUT,check=True)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['ffmpeg', '-v', 'error', '-y', '-loop', '1', '-i', 'tmp/product-video/render/opening-base.png', '-loop', '1', '-i', 'tmp/product-video/render/opening-screen.png', '-filter_complex', "[1:v]crop=1090:660:0:'min(ih-660,0+(0-0)*t/12)',fps=24[screen];[0:v][screen]overlay=750:190,fade=t=in:st=0:d=0.45,fade=t=out:st=11.55:d=.45,format=yuv420p[v]", '-map', '[v]', '-t', '12', '-r', '24', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '22', '-threads', '2', '-an', 'tmp/product-video/render/opening.mp4']' returned non-zero exit status 234.

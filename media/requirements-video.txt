@@ -1,0 +1,4 @@
+# Optional offline media toolchain; does not alter the web service dependency set.
+pillow==13.0.0
+fonttools>=4.50,<5
+# Also requires system FFmpeg with libx264/libass and the existing PyMuPDF dependency.

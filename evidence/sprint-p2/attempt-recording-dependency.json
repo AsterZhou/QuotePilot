@@ -1,0 +1,15 @@
+{
+  "synthetic_only": true,
+  "transport": "real desktop Chrome over local HTTPS; no HTTP mocks",
+  "public_acceptance": false,
+  "url": "https://127.0.0.1:8877",
+  "steps": [],
+  "http": [],
+  "failures": [
+    {
+      "type": "acceptance_failure",
+      "message": "browserContext.newPage: Executable doesn't exist at /root/.cache/ms-playwright/ffmpeg-1011/ffmpeg-linux\n╔═════════════════════════════════════════════════════════════════╗\n║ Video rendering requires ffmpeg binary.                         ║\n║ Downloading it will not affect any of the system-wide settings. ║\n║ Please run the following command:                               ║\n║                                                                 ║\n║     npx playwright install ffmpeg                               ║\n║                                                                 ║\n║ <3 Playwright Team                                              ║\n╚═════════════════════════════════════════════════════════════════╝\n    at /workspace/scratch/e6c4347b11ee/sprint/scripts/independent_browser.cjs:18:337"
+    }
+  ],
+  "passed": false
+}

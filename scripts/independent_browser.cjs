@@ -1,8 +1,8 @@
 /* Real desktop browser -> local HTTPS server. No HTTP mocks or synthetic success IDs. */
 const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),crypto=require('crypto'),assert=require('node:assert/strict');
 const root=path.resolve('tmp/local-acceptance'),out=path.resolve(process.env.QUOTEPILOT_BROWSER_OUTPUT||'evidence/independent/browser');fs.mkdirSync(out,{recursive:true});
-const url=process.env.QUOTEPILOT_TEST_URL||'https://127.0.0.1:8877',http=[],failures=[],steps=[],starts=new Map();let browser,admin,review,service;
-const logstep=(name,details={})=>steps.push({name,...details});
+const url=process.env.QUOTEPILOT_TEST_URL||'https://127.0.0.1:8877',http=[],failures=[],steps=[],starts=new Map();let browser,admin,review,service;const contexts=[];const clockStart=performance.now();
+const logstep=(name,details={})=>steps.push({name,elapsed_ms:Math.round(performance.now()-clockStart),...details});
 async function responseFor(page,method,needle,action){const wait=page.waitForResponse(r=>r.request().method()===method&&new URL(r.url()).pathname===needle);await action();const r=await wait;assert.equal(r.status(),200,`${method} ${needle}: ${r.status()} ${await r.text()}`);return r.json()}
 async function nav(page,name,selector){await page.locator(`[data-page="${name}"]`).click();await page.locator(selector).waitFor()}
 async function shot(page,name){await page.evaluate(()=>document.fonts.ready);await page.screenshot({path:path.join(out,name+'.png'),fullPage:true})}
@@ -14,8 +14,8 @@ async function version(page,n){await nav(page,'versions','#rfq-version-form');aw
  const {spawn}=require('child_process'),https=require('https');const logfile=fs.openSync(path.join(out,'server.log'),'w');if(process.env.QUOTEPILOT_SKIP_START_SERVER!=='1')service=spawn(process.env.QUOTEPILOT_TEST_PYTHON||path.resolve('../.audit-venv/bin/python'),['scripts/acceptance_server.py'],{env:{...process.env,QUOTEPILOT_ACCEPTANCE_RUN:String(Date.now())},stdio:['ignore',logfile,logfile]});
  for(let attempt=0;attempt<100;attempt++){const ready=await new Promise(resolve=>{https.get(url+'/healthz',{rejectUnauthorized:false},res=>{res.resume();resolve(res.statusCode===200)}).on('error',()=>resolve(false))});if(ready)break;if(attempt===99)throw Error('Local HTTPS server did not become ready');await new Promise(r=>setTimeout(r,100))}
  browser=await chromium.launch({executablePath:process.env.CHROMIUM_EXECUTABLE||path.resolve('../browser-runtime/headless/chrome-headless-shell-linux64/chrome-headless-shell'),headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--no-zygote']});
- const contexts=[];
- for(const role of ['admin','reviewer']){const context=await browser.newContext({ignoreHTTPSErrors:true,acceptDownloads:true,viewport:{width:1440,height:1000}});contexts.push(context);const p=await context.newPage();if(role==='admin')admin=p;else review=p;
+
+ for(const role of ['admin','reviewer']){const context=await browser.newContext({ignoreHTTPSErrors:true,acceptDownloads:true,viewport:{width:1440,height:1000},recordVideo:process.env.QUOTEPILOT_RECORD_VIDEO?{dir:process.env.QUOTEPILOT_RECORD_VIDEO,size:{width:1440,height:1000}}:undefined});contexts.push(context);const p=await context.newPage();if(role==='admin')admin=p;else review=p;
  p.on('request',req=>starts.set(req,performance.now()));p.on('response',r=>{const pathname=new URL(r.url()).pathname;if(pathname.startsWith('/api/')||pathname.startsWith('/auth/'))http.push({role,method:r.request().method(),path:pathname,status:r.status(),elapsed_ms:Math.round((performance.now()-(starts.get(r.request())||performance.now()))*100)/100})});
  p.on('pageerror',e=>failures.push({role,type:'pageerror',message:e.message}));await login(p,role);
  }
@@ -40,5 +40,5 @@ async function version(page,n){await nav(page,'versions','#rfq-version-form');aw
  const q=await (await admin.request.get(url+`/api/commercial-quotes/${qid}`)).json();assert.equal(q.lines[0].quantity,100);logstep('approved_snapshot_unchanged',{quantity:q.lines[0].quantity,total:q.suggested_total_cny});
  if(failures.length)throw new Error('Browser runtime errors: '+JSON.stringify(failures));
  }catch(e){failures.push({type:'acceptance_failure',message:e.stack});if(admin)await shot(admin,'FAILED-admin').catch(()=>{});if(review)await shot(review,'FAILED-reviewer').catch(()=>{});process.exitCode=1}
- finally{fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({synthetic_only:true,transport:process.env.QUOTEPILOT_SKIP_START_SERVER==='1'?'real desktop Chrome over requested external HTTPS; no HTTP mocks':'real desktop Chrome over local HTTPS; no HTTP mocks',public_acceptance:process.env.QUOTEPILOT_SKIP_START_SERVER==='1',url,steps,http,failures,passed:failures.length===0},null,2));if(browser)await browser.close();if(service){service.kill('SIGTERM');await new Promise(r=>service.once('exit',r))}console.log(JSON.stringify({steps:steps.length,requests:http.length,failures:failures.length,report:path.join(out,'result.json')}))}
+ finally{fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({synthetic_only:true,transport:process.env.QUOTEPILOT_SKIP_START_SERVER==='1'?'real desktop Chrome over requested external HTTPS; no HTTP mocks':'real desktop Chrome over local HTTPS; no HTTP mocks',public_acceptance:process.env.QUOTEPILOT_SKIP_START_SERVER==='1',url,steps,http,failures,passed:failures.length===0},null,2));for(const context of contexts){await context.close().catch(()=>{})}if(browser)await browser.close();if(service){service.kill('SIGTERM');await new Promise(r=>service.once('exit',r))}console.log(JSON.stringify({steps:steps.length,requests:http.length,failures:failures.length,report:path.join(out,'result.json')}))}
 })();

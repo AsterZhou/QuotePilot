@@ -1,0 +1,17 @@
+{
+  "duration_seconds": 180.0,
+  "width": 1920,
+  "height": 1080,
+  "fps": "24/1",
+  "sha256": "e66971635db5373ab2071a7c8af4f33216590b076151f7ac457198a084b55208",
+  "bytes": 5336232,
+  "synthetic_business_data": true,
+  "product_ui_sources": "real local browser screenshots and two actual screencasts",
+  "native_workflow_claim": "not executed: HTTP400 / no execution ID",
+  "public_preview_claim": "not deployed",
+  "voiceover": false,
+  "voice_blocker": "Edge TTS certificate validation failed; no TLS verification disabled, no paid voice service used",
+  "audio": "original low-volume synthesized tones; no third-party song",
+  "subtitle_file": "narration.srt",
+  "scenes": 10
+}
