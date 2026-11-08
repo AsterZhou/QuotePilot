@@ -8,12 +8,16 @@ COOKIE='qp_session'
 
 def production():return os.environ.get('QUOTEPILOT_ENV')=='production'
 
+def local_interactive_preview():
+    # Only the owned cloud-browser preview origin; never an arbitrary HTTP public host.
+    return os.environ.get('QUOTEPILOT_LOCAL_PREVIEW')=='1' and os.environ.get('QUOTEPILOT_PUBLIC_URL')=='http://terminal.local:4173'
+
 def validate_production():
     if not production():return
     if len(os.environ.get('QUOTEPILOT_LOGIN_PASSWORD',''))<12:raise ValueError('production requires a login password of at least 12 characters')
     if len(os.environ.get('QUOTEPILOT_SESSION_SECRET',''))<32:raise ValueError('production requires a session secret of at least 32 characters')
     url=urlsplit(os.environ.get('QUOTEPILOT_PUBLIC_URL',''))
-    if url.scheme!='https' or not url.hostname or url.path not in ('','/') or url.query or url.fragment or url.username:raise ValueError('production requires an HTTPS public origin')
+    if (url.scheme!='https' and not local_interactive_preview()) or not url.hostname or url.path not in ('','/') or url.query or url.fragment or url.username:raise ValueError('production requires an HTTPS public origin')
     if os.environ.get('QUOTEPILOT_PROVIDER')=='genesis' and not(os.environ.get('GENESIS_ACCESS_TOKEN') or os.environ.get('GENESIS_API_KEY')):raise ValueError('Genesis credentials missing')
     reviewer=os.environ.get('QUOTEPILOT_REVIEWER_PASSWORD','')
     if reviewer and (len(reviewer)<12 or reviewer==os.environ['QUOTEPILOT_LOGIN_PASSWORD']):raise ValueError('reviewer password must be distinct and at least 12 characters')
@@ -102,11 +106,11 @@ class DemoAccessMiddleware(BaseHTTPMiddleware):
                             ok=hmac.compare_digest(hashlib.sha256(password.encode()).digest(),hashlib.sha256(os.environ['QUOTEPILOT_REVIEWER_PASSWORD'].encode()).digest());role='reviewer'
                     except (ValueError,TypeError,AttributeError):ok=False
                     response=JSONResponse({'ok':True} if ok else {'detail':'访问密码错误'},200 if ok else 401)
-                    if ok:response.set_cookie(COOKIE,signed_session(role),max_age=8*3600,secure=True,httponly=True,samesite='strict',path='/')
+                    if ok:response.set_cookie(COOKIE,signed_session(role),max_age=8*3600,secure=not local_interactive_preview(),httponly=True,samesite='strict',path='/')
             elif not valid_session(request.cookies.get(COOKIE,'')):
                 response=JSONResponse({'detail':'请先登录'},401) if path.startswith('/api/') else RedirectResponse('/login',303)
             elif path=='/auth/logout' and request.method=='POST':
-                response=JSONResponse({'ok':True});response.delete_cookie(COOKIE,path='/',secure=True,httponly=True,samesite='strict')
+                response=JSONResponse({'ok':True});response.delete_cookie(COOKIE,path='/',secure=not local_interactive_preview(),httponly=True,samesite='strict')
             elif session_role(request.cookies.get(COOKIE,''))=='reviewer' and not reviewer_allowed(path,request.method):
                 response=JSONResponse({'detail':'当前复核角色无此权限'},403)
             elif __import__('re').fullmatch(r'/api/supplier-offers/sources/[^/]+/extract',path):

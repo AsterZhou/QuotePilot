@@ -1,0 +1,25 @@
+{
+  "source_commit": "0c45316df283243c655bcd7c50c70c815ae9c2df",
+  "synthetic_only": true,
+  "public_acceptance": false,
+  "checks": [
+    {
+      "name": "anonymous_denied",
+      "status": 401
+    },
+    {
+      "name": "admin_login",
+      "status": 200
+    },
+    {
+      "name": "three_actual_quotes",
+      "status": 200,
+      "count": 3
+    },
+    {
+      "name": "reviewer_admin_denied",
+      "status": 403
+    }
+  ],
+  "external_http_rejected": true
+}

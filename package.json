@@ -1,0 +1,7 @@
+{
+  "name": "quotepilot-interactive-preview",
+  "private": true,
+  "scripts": {
+    "dev": "python3 -u scripts/preview_boot.py"
+  }
+}
