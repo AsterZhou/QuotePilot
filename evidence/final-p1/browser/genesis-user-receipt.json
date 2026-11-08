@@ -1,0 +1,53 @@
+{
+  "provider": "genesis",
+  "simulated": false,
+  "model": "qwen3.8-flash",
+  "api_style": "responses",
+  "response_id": "resp_3ab8674d-f97f-9395-ae7c-2340793e7764",
+  "usage": {
+    "input_tokens": 446,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 573,
+    "output_tokens_details": {
+      "reasoning_tokens": 473
+    },
+    "total_tokens": 1019,
+    "x_details": [
+      {
+        "input_tokens": 446,
+        "output_tokens": 573,
+        "output_tokens_details": {
+          "reasoning_tokens": 473
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 1019,
+        "x_billing_type": "response_api"
+      }
+    ]
+  },
+  "elapsed_seconds": 17.192,
+  "review_required": true,
+  "lines": [
+    {
+      "part_number": "PN-0001",
+      "quantity": 100,
+      "unit": "EA",
+      "condition": "FN",
+      "evidence": "Regarding BROWSER-RFQ, could you quote one hundred pieces of PN-0001? We need factory new (FN), ordered in EA."
+    }
+  ],
+  "message": "仅为模型建议，未写入询价；必须对照证据人工确认。",
+  "source_ids": [
+    "7b419949ea9aaf2f05cdbddc287fe5ab35b840713ed7faad82447659351b223c"
+  ],
+  "source_notes": [],
+  "run_id": "EX-7724EC820BE8",
+  "email_id": "<browser-v1@example.invalid>",
+  "input_text": "FILE body.txt\nSYNTHETIC ONLY. Regarding BROWSER-RFQ, could you quote one hundred pieces of PN-0001? We need factory new (FN), ordered in EA. Description: Synthetic valve spec A. No real purchase is authorized.\n",
+  "input_sha256": "56284cf789deaf64c543dbf60737ad4ced316e8256fec50a689380db4f34f508"
+}

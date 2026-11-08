@@ -1,0 +1,289 @@
+{
+  "synthetic_only": true,
+  "transport": "real desktop Chrome over HTTPS; real Genesis and MatrixOne via user actions; no HTTP mocks",
+  "public_acceptance": false,
+  "url": "https://127.0.0.1:8877",
+  "steps": [
+    {
+      "name": "browser_login",
+      "elapsed_ms": 343,
+      "role": "admin"
+    },
+    {
+      "name": "browser_login",
+      "elapsed_ms": 686,
+      "role": "reviewer"
+    },
+    {
+      "name": "upload_preview_import",
+      "elapsed_ms": 1122,
+      "version": 1,
+      "new_lines": 0
+    },
+    {
+      "name": "real_genesis_user_confirmation",
+      "elapsed_ms": 27432,
+      "response_id": "resp_ae597491-4bcd-9fe7-bcf1-4a95a7f60609",
+      "run_id": "EX-11B44CEDF688",
+      "new_lines": 1,
+      "usage": {
+        "input_tokens": 446,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 963,
+        "output_tokens_details": {
+          "reasoning_tokens": 869
+        },
+        "total_tokens": 1409,
+        "x_details": [
+          {
+            "input_tokens": 446,
+            "output_tokens": 963,
+            "output_tokens_details": {
+              "reasoning_tokens": 869
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 1409,
+            "x_billing_type": "response_api"
+          }
+        ]
+      }
+    },
+    {
+      "name": "register_version",
+      "elapsed_ms": 27831,
+      "id": "RFQV-601eb6a19767492b",
+      "version": 1
+    }
+  ],
+  "http": [
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/auth/login.js",
+      "status": 200,
+      "elapsed_ms": 15.47
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "path": "/auth/login",
+      "status": 200,
+      "elapsed_ms": 8.99
+    },
+    {
+      "role": "reviewer",
+      "method": "GET",
+      "path": "/auth/login.js",
+      "status": 200,
+      "elapsed_ms": 12.29
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/overview",
+      "status": 200,
+      "elapsed_ms": 101.52
+    },
+    {
+      "role": "reviewer",
+      "method": "POST",
+      "path": "/auth/login",
+      "status": 200,
+      "elapsed_ms": 23.81
+    },
+    {
+      "role": "reviewer",
+      "method": "GET",
+      "path": "/api/overview",
+      "status": 200,
+      "elapsed_ms": 25.65
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/auth/me",
+      "status": 200,
+      "elapsed_ms": 14.63
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/integration",
+      "status": 200,
+      "elapsed_ms": 15.41
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/emails",
+      "status": 200,
+      "elapsed_ms": 6.58
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "path": "/api/emails/preview",
+      "status": 200,
+      "elapsed_ms": 11.53
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "path": "/api/emails/import",
+      "status": 200,
+      "elapsed_ms": 13.64
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/auth/me",
+      "status": 200,
+      "elapsed_ms": 2.03
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/integration",
+      "status": 200,
+      "elapsed_ms": 2.26
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/emails",
+      "status": 200,
+      "elapsed_ms": 5.65
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/lines",
+      "status": 200,
+      "elapsed_ms": 8.04
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/lines",
+      "status": 200,
+      "elapsed_ms": 11.91
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "path": "/api/emails/%3Cbrowser-v1%40example.invalid%3E/extract",
+      "status": 200,
+      "elapsed_ms": 25937.28
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "path": "/api/extractions/EX-11B44CEDF688/confirm",
+      "status": 200,
+      "elapsed_ms": 8.81
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/rules",
+      "status": 200,
+      "elapsed_ms": 6.51
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/emails",
+      "status": 200,
+      "elapsed_ms": 3.14
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/lines",
+      "status": 200,
+      "elapsed_ms": 4.4
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/rfq-versions",
+      "status": 200,
+      "elapsed_ms": 9.48
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/emails",
+      "status": 200,
+      "elapsed_ms": 6.16
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/emails/%3Cbrowser-v1%40example.invalid%3E/sources",
+      "status": 200,
+      "elapsed_ms": 7.9
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/emails/%3Cbrowser-v1%40example.invalid%3E/sources",
+      "status": 200,
+      "elapsed_ms": 13.72
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "path": "/api/rfq-versions",
+      "status": 200,
+      "elapsed_ms": 150.99
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/rfq-versions",
+      "status": 200,
+      "elapsed_ms": 1.86
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/emails",
+      "status": 200,
+      "elapsed_ms": 5.26
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "path": "/api/emails/%3Cbrowser-v1%40example.invalid%3E/sources",
+      "status": 200,
+      "elapsed_ms": 3.44
+    },
+    {
+      "role": "reviewer",
+      "method": "GET",
+      "path": "/api/review-queue",
+      "status": 200,
+      "elapsed_ms": 11.55
+    },
+    {
+      "role": "reviewer",
+      "method": "GET",
+      "path": "/api/auth/me",
+      "status": 200,
+      "elapsed_ms": 1.99
+    }
+  ],
+  "failures": [
+    {
+      "type": "acceptance_failure",
+      "message": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-review-line]').first()\u001b[22m\n\n    at /workspace/scratch/e6c4347b11ee/sprint/scripts/final_browser.cjs:32:98"
+    }
+  ],
+  "passed": false
+}

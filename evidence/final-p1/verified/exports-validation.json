@@ -1,0 +1,13 @@
+{
+  "approved-500.pdf": {
+    "sha256": "905d96ce04fee11000277c3a3b412089f857c785ec1b3266f5d4524377442476",
+    "bytes": 7576
+  },
+  "approved-500.xlsx": {
+    "sha256": "c6ee8130cfa44f06d94b055b624edfac7fd703c2187abc632b5fd957970c7e92",
+    "bytes": 5916
+  },
+  "pdf_readback": "PN-0001 / 6880.00 verified",
+  "xlsx_readback": "6880.00 verified",
+  "synthetic_only": true
+}

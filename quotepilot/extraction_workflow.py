@@ -60,13 +60,13 @@ def create_run(con,email_id,result,text,refs,notes):
         con.execute('INSERT INTO extraction_runs(id,email_id,input_text,input_sha256,result_json,status,model,provider) VALUES(?,?,?,?,?,?,?,?)',
                     (rid,email_id,text,hashlib.sha256(text.encode()).hexdigest(),json.dumps(result,ensure_ascii=False),'pending',result.get('model'),result['provider']))
         audit(con,'ai_suggestions_created',rid,{'email_id':email_id,'provider':result['provider'],'simulated':result['simulated'],'model':result.get('model'),'response_id':result.get('response_id'),'usage':result.get('usage'),'candidate_count':len(result['lines']),'source_notes':notes})
-    return result
+    return {**result,'input_text':text,'input_sha256':hashlib.sha256(text.encode()).hexdigest()}
 
 def load_run(con,rid):
     ensure_schema(con)
     r=con.execute('SELECT * FROM extraction_runs WHERE id=?',(rid,)).fetchone()
     if not r:raise KeyError('提取复核记录不存在')
-    return {**json.loads(r['result_json']),'status':r['status'],'confirmed':json.loads(r['confirmation_json']) if r['confirmation_json'] else None}
+    return {**json.loads(r['result_json']),'input_text':r['input_text'],'input_sha256':r['input_sha256'],'status':r['status'],'confirmed':json.loads(r['confirmation_json']) if r['confirmation_json'] else None}
 
 def confirm_run(con,rid,lines,actor,reason):
     ensure_schema(con);con.execute('BEGIN IMMEDIATE')

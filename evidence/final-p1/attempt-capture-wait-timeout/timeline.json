@@ -1,0 +1,62 @@
+[
+  {
+    "id": "hook",
+    "role": "admin",
+    "start_seconds": 9.066,
+    "duration_seconds": 6.667
+  },
+  {
+    "id": "evidence",
+    "role": "admin",
+    "start_seconds": 15.733,
+    "duration_seconds": 8.012
+  },
+  {
+    "id": "supplier",
+    "role": "reviewer",
+    "start_seconds": 22.749,
+    "duration_seconds": 10.774
+  },
+  {
+    "id": "pricing",
+    "role": "reviewer",
+    "start_seconds": 33.523,
+    "duration_seconds": 5.775
+  },
+  {
+    "id": "change",
+    "role": "admin",
+    "start_seconds": 40.294,
+    "duration_seconds": 7.095
+  },
+  {
+    "id": "reprice_review",
+    "role": "reviewer",
+    "start_seconds": 46.411,
+    "duration_seconds": 4.225
+  },
+  {
+    "id": "reprice_calculate",
+    "role": "reviewer",
+    "start_seconds": 50.636,
+    "duration_seconds": 8.28
+  },
+  {
+    "id": "reprice_business",
+    "role": "reviewer",
+    "start_seconds": 58.916,
+    "duration_seconds": 3.488
+  },
+  {
+    "id": "reprice_approve",
+    "role": "admin",
+    "start_seconds": 63.4,
+    "duration_seconds": 5.346
+  },
+  {
+    "id": "export",
+    "role": "admin",
+    "start_seconds": 68.746,
+    "duration_seconds": 4.885
+  }
+]

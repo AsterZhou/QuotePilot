@@ -1,0 +1,454 @@
+{
+  "clips": [
+    {
+      "id": "hook",
+      "role": "admin",
+      "start_seconds": 9.066,
+      "duration_seconds": 6.667
+    },
+    {
+      "id": "evidence",
+      "role": "admin",
+      "start_seconds": 15.733,
+      "duration_seconds": 8.012
+    },
+    {
+      "id": "supplier",
+      "role": "reviewer",
+      "start_seconds": 22.749,
+      "duration_seconds": 10.774
+    },
+    {
+      "id": "pricing",
+      "role": "reviewer",
+      "start_seconds": 33.523,
+      "duration_seconds": 5.775
+    },
+    {
+      "id": "change",
+      "role": "admin",
+      "start_seconds": 40.294,
+      "duration_seconds": 7.095
+    },
+    {
+      "id": "reprice_review",
+      "role": "reviewer",
+      "start_seconds": 46.411,
+      "duration_seconds": 4.225
+    },
+    {
+      "id": "reprice_calculate",
+      "role": "reviewer",
+      "start_seconds": 50.636,
+      "duration_seconds": 8.28
+    },
+    {
+      "id": "reprice_business",
+      "role": "reviewer",
+      "start_seconds": 58.916,
+      "duration_seconds": 3.488
+    },
+    {
+      "id": "reprice_approve",
+      "role": "admin",
+      "start_seconds": 63.4,
+      "duration_seconds": 5.346
+    },
+    {
+      "id": "export",
+      "role": "admin",
+      "start_seconds": 68.746,
+      "duration_seconds": 4.885
+    }
+  ],
+  "http": [
+    {
+      "role": "admin",
+      "path": "/api/overview",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/overview",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/auth/me",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/integration",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/lines",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails/preview",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails/import",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/auth/me",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/integration",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/lines",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/rfq-versions",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails/%3Cbrowser-v1%40example.invalid%3E/sources",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails/%3Cbrowser-v2%40example.invalid%3E/sources",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/rfq-versions",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/rfq-versions",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails/%3Cbrowser-v1%40example.invalid%3E/sources",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/rfq-versions",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails/%3Cbrowser-v1%40example.invalid%3E/sources",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/rfq-versions/compare",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/auth/me",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/integration",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/lines",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/lines",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails/%3Cbrowser-v1%40example.invalid%3E/extractions",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/extractions/EX-7724EC820BE8",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/auth/me",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/lines",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/commercial-quotes",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/supplier-offers",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/supplier-offers/sources",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/supplier-offers/sources/SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338/extract",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/auth/me",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/commercial-quotes",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/supplier-offers",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/lines",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/commercial-quotes/CQ-75F95FEFAA1747F5",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/rfq-versions",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails/%3Cbrowser-v1%40example.invalid%3E/sources",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/rfq-versions/compare",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/review-queue",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/auth/me",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/lines/2/field-evidence",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/lines/2/review-fields",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/lines/2/field-evidence",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/auth/me",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/lines",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/supplier-offers",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/commercial-quotes",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/commercial-quotes",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/commercial-quotes",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/commercial-quotes",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/commercial-quotes/CQ-4C87D2E69FA84F09/review",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/commercial-quotes/CQ-4C87D2E69FA84F09",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/auth/me",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/lines",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/supplier-offers",
+      "status": 200
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/commercial-quotes",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/auth/me",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/supplier-offers",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/commercial-quotes",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/lines",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/commercial-quotes/CQ-4C87D2E69FA84F09",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/commercial-quotes/CQ-4C87D2E69FA84F09/approve",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/commercial-quotes/CQ-4C87D2E69FA84F09",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/auth/me",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/lines",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/supplier-offers",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/commercial-quotes",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/commercial-quotes/CQ-4C87D2E69FA84F09/export/pdf",
+      "status": 200
+    },
+    {
+      "role": "admin",
+      "path": "/api/commercial-quotes/CQ-4C87D2E69FA84F09/export/xlsx",
+      "status": 200
+    }
+  ],
+  "failures": [
+    {
+      "type": "TimeoutError",
+      "message": "page.waitForResponse: Timeout 30000ms exceeded while waiting for event \"response\"\n    at /workspace/scratch/e6c4347b11ee/sprint/scripts/record_final_demo.cjs:31:55\n    at segment (/workspace/scratch/e6c4347b11ee/sprint/scripts/record_final_demo.cjs:9:65)\n    at /workspace/scratch/e6c4347b11ee/sprint/scripts/record_final_demo.cjs:31:8"
+    }
+  ],
+  "passed": false,
+  "public_acceptance": false
+}

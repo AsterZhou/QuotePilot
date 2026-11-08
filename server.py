@@ -427,6 +427,14 @@ class ConfirmExtraction(BaseModel):
     lines:list[ConfirmSuggestion]=Field(min_length=1,max_length=100)
     confirm_source:bool=False
 
+@app.get('/api/emails/{email_id}/extractions')
+def stored_extraction_runs(email_id:str):
+    from quotepilot.extraction_workflow import ensure_schema
+    with database() as con:
+        ensure_schema(con)
+        return {'rows':[dict(r) for r in con.execute('SELECT id,status,model,provider,created_at FROM extraction_runs WHERE email_id=? ORDER BY created_at DESC,id DESC LIMIT 10',(email_id,))]}
+
+
 @app.get('/api/extractions/{rid}')
 def extraction_detail(rid:str):
     from quotepilot.extraction_workflow import load_run
@@ -695,6 +703,39 @@ def export_commercial_quote(qid:str,kind:Literal['pdf','xlsx'],final:bool=True):
             con.execute('INSERT INTO commercial_exports VALUES(?,?,?,?,?,?,?)',(eid,qid,version,kind,hashlib.sha256(raw).hexdigest(),int(final),stamp()))
             audit(con,'commercial_quote_exported',qid,{'export_id':eid,'version':version,'format':kind,'final':final,'sha256':hashlib.sha256(raw).hexdigest()})
     return Response(raw,media_type=media,headers={'Content-Disposition':f'attachment; filename="{qid}_v{version}.{kind}"','X-Content-Type-Options':'nosniff'})
+
+
+@app.get('/api/commercial-quotes/{qid}/matrixone-receipt')
+def commercial_cloud_receipt(qid:str):
+    from quotepilot.commercial import load
+    with database() as con:
+        try:q=load(con,qid)
+        except KeyError:raise HTTPException(404,'报价不存在')
+        if not con.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='cloud_quote_receipts'").fetchone():return {'verified':False,'scope':'no_saved_receipt'}
+        row=con.execute('SELECT receipt_json,verified_at FROM cloud_quote_receipts WHERE quote_id=? AND version=? AND workspace_id=?',(qid,q['version'],os.environ.get('MOI_WORKSPACE_ID',''))).fetchone()
+        return {**json.loads(row['receipt_json']),'verified_at':row['verified_at'],'evidence_type':'saved_successful_readback_not_live_ping'} if row else {'verified':False,'scope':'no_saved_receipt'}
+
+
+@app.post('/api/commercial-quotes/{qid}/sync-matrixone')
+def sync_commercial_snapshot(qid:str):
+    from quotepilot.commercial import load
+    from quotepilot.platform_quotes import mirror_commercial_quote
+    from quotepilot.moi_sql import MOISQLClient,ensure_receipts
+    with database() as con:
+        try:quote=load(con,qid)
+        except KeyError:raise HTTPException(404,'报价不存在')
+        if quote['status']!='approved':raise HTTPException(409,'仅同步已双角色审批的商业报价')
+        try:
+            client=MOISQLClient();receipt=mirror_commercial_quote(client,quote)
+            ensure_receipts(con)
+            with con:
+                con.execute('INSERT OR REPLACE INTO cloud_quote_receipts(quote_id,version,workspace_id,receipt_json) VALUES(?,?,?,?)',(qid,quote['version'],client.workspace,json.dumps(receipt,ensure_ascii=False)))
+                audit(con,'commercial_matrixone_snapshot_verified',qid,receipt)
+            return receipt
+        except ValueError as ex:raise HTTPException(409,str(ex))
+        except Exception as ex:
+            with con:audit(con,'commercial_matrixone_sync_failed',qid,{'error_type':type(ex).__name__,'http_status':getattr(getattr(ex,'response',None),'status_code',None),'message':str(ex)[:500]})
+            raise HTTPException(502,'MatrixOne同步未确认成功；本地审批保留，未记录云端成功')
 
 
 @app.post('/api/commercial-quotes/{qid}/{action}')

@@ -1,0 +1,1949 @@
+{
+  "before": {
+    "approval_blockers": [],
+    "asof": "2026-11-08",
+    "balanced_formula": "逐行评分0.5×成本/最低成本 + 0.5×交期/最短交期；运输批次在选定后分摊，不承诺组合全局最优",
+    "company_contact": "QA only",
+    "company_name": "合成测试公司",
+    "currency": "CNY",
+    "customer_contact": "browser@example.invalid",
+    "customer_name": "合成测试客户",
+    "decision_method": "确定性成本/交期规则，非AI凭空生成供应商数据",
+    "delivery_deadline": null,
+    "delivery_terms": "EXW synthetic",
+    "freight_allocations": [],
+    "id": "CQ-75F95FEFAA1747F5",
+    "line_costs": {
+      "1": {
+        "other_total_cny": "2",
+        "processing_per_unit_cny": "1"
+      }
+    },
+    "line_ids": [
+      1
+    ],
+    "lines": [
+      {
+        "candidates": [
+          {
+            "balanced_score": "2.340744101633393829401088929",
+            "calculation": {
+              "actual_margin": "0.2002457002457002457002457002457002457002457002457002457002457002",
+              "formula": "(采购原币单价×数量×汇率 + 加工单价×数量 + 运费原币×汇率 + 采购成本×税率 + 其他成本) ÷ (1−目标毛利率)",
+              "freight_cny": "0.00",
+              "other_cny": "2.00",
+              "processing_cny": "100.00",
+              "purchase_cny": "1200.00",
+              "risks": [
+                "未提供目标交付日，交期匹配须人工核对"
+              ],
+              "rounding": "各成本项ROUND_HALF_UP至分后相加；销售单价至分后乘数量，实际毛利率按已入账成本计算",
+              "suggested_total_cny": "1628.00",
+              "suggested_unit_price_cny": "16.28",
+              "target_margin": "0.200000",
+              "tax_basis": "采购成本（CNY），不把税率当加价率",
+              "tax_cny": "0.00",
+              "total_cost_cny": "1302.00",
+              "unit_cost_cny": "13.02"
+            },
+            "offer": {
+              "condition": "FN",
+              "currency": "CNY",
+              "dataset": "user_upload",
+              "extraction": {
+                "candidate_index": 2,
+                "field_evidence": {
+                  "condition": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "FN",
+                    "locator": "suppliers.pdf / page 3 / line 6",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Condition: FN",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "currency": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "CNY",
+                    "locator": "suppliers.pdf / page 3 / line 7",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Currency: CNY",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "fx_source": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "CNY nominal synthetic",
+                    "locator": "suppliers.pdf / page 3 / line 10",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "FX source: CNY nominal synthetic",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "fx_to_cny": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "1",
+                    "locator": "suppliers.pdf / page 3 / line 9",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "FX to CNY: 1",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "lead_days": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": 7,
+                    "locator": "suppliers.pdf / page 3 / line 12",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Lead days: 7",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "moq": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": 1,
+                    "locator": "suppliers.pdf / page 3 / line 11",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "MOQ: 1",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "part_number": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "PN-0001",
+                    "locator": "suppliers.pdf / page 3 / line 3",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Part Number: PN-0001",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "payment_terms": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "Net 30",
+                    "locator": "suppliers.pdf / page 3 / line 17",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Payment terms: Net 30",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "quote_date": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "2026-11-08",
+                    "locator": "suppliers.pdf / page 3 / line 15",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Quote date: 2026-11-08",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "shipping_total": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "0",
+                    "locator": "suppliers.pdf / page 3 / line 13",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Shipping total: 0",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "specification": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "Synthetic valve spec A",
+                    "locator": "suppliers.pdf / page 3 / line 4",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Specification: Synthetic valve spec A",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "supplier": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "SYN-Balanced",
+                    "locator": "suppliers.pdf / page 3 / line 2",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Supplier: SYN-Balanced",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "tax_rate": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "0",
+                    "locator": "suppliers.pdf / page 3 / line 14",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Tax rate: 0%",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "unit": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "EA",
+                    "locator": "suppliers.pdf / page 3 / line 5",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Unit: EA",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "unit_price": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "12",
+                    "locator": "suppliers.pdf / page 3 / line 8",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Unit Price: 12",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "valid_until": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "2027-01-07",
+                    "locator": "suppliers.pdf / page 3 / line 16",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Valid until: 2027-01-07",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  }
+                },
+                "human_changed_fields": {},
+                "method": "local_extraction_then_human_confirmation",
+                "original_values": {
+                  "condition": "FN",
+                  "currency": "CNY",
+                  "fx_source": "CNY nominal synthetic",
+                  "fx_to_cny": "1",
+                  "lead_days": 7,
+                  "moq": 1,
+                  "part_number": "PN-0001",
+                  "payment_terms": "Net 30",
+                  "quote_date": "2026-11-08",
+                  "shipping_total": "0",
+                  "specification": "Synthetic valve spec A",
+                  "supplier": "SYN-Balanced",
+                  "tax_rate": "0",
+                  "unit": "EA",
+                  "unit_price": "12",
+                  "valid_until": "2027-01-07"
+                },
+                "run_id": "SUPX-deafc1780f1b4e6e"
+              },
+              "extraction_candidate": 2,
+              "extraction_run_id": "SUPX-deafc1780f1b4e6e",
+              "fx_notice": "人工维护的报价换算汇率，不是实时市场汇率",
+              "fx_source": "CNY nominal synthetic",
+              "fx_to_cny": "1",
+              "id": "OFFER-6998e83486864112",
+              "lead_days": 7,
+              "moq": 1,
+              "part_number": "PN-0001",
+              "payment_terms": "Net 30",
+              "quote_date": "2026-11-08",
+              "review_status": "confirmed",
+              "shipping_group": "",
+              "shipping_scope": "line",
+              "shipping_total": "0",
+              "source_excerpt": "Supplier: SYN-BalancedPart Number: PN-0001Specification: Synthetic valve spec AUnit: EACondition: FNCurrency: CNYUnit Price: 12FX to CNY: 1FX source: CNY nominal syntheticMOQ: 1Lead days: 7Shipping total: 0Tax rate: 0%Quote date: 2026-11-08Valid until: 2027-01-07Payment terms: Net 30",
+              "source_file": {
+                "dataset": "user_upload",
+                "filename": "suppliers.pdf",
+                "id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                "sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+              },
+              "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+              "source_locator": "suppliers.pdf / page 3 / line 2; suppliers.pdf / page 3 / line 3; suppliers.pdf / page 3 / line 4; suppliers.pdf / page 3 / line 5; suppliers.pdf / page 3 / line 6; suppliers.pdf / page 3 / line 7; suppliers.pdf / page 3 / line 8; suppliers.pdf / page 3 / line 9; suppliers.pdf / page 3 / line 10; suppliers.pdf / page 3 / line 11; suppliers.pdf / page 3 / line 12; suppliers.pdf / page 3 / line 13; suppliers.pdf / page 3 / line 14; suppliers.pdf / page 3 / line 15; suppliers.pdf / page 3 / line 16; suppliers.pdf / page 3 / line 17",
+              "specification": "Synthetic valve spec A",
+              "supplier": "SYN-Balanced",
+              "tax_rate": "0",
+              "unit": "EA",
+              "unit_price": "12",
+              "valid_until": "2027-01-07"
+            },
+            "offer_id": "OFFER-6998e83486864112"
+          },
+          {
+            "balanced_score": "1.226860254083484573502722323",
+            "calculation": {
+              "actual_margin": "0.2001997004493260109835247129306040938592111832251622566150773839",
+              "formula": "(采购原币单价×数量×汇率 + 加工单价×数量 + 运费原币×汇率 + 采购成本×税率 + 其他成本) ÷ (1−目标毛利率)",
+              "freight_cny": "0.00",
+              "other_cny": "2.00",
+              "processing_cny": "100.00",
+              "purchase_cny": "1500.00",
+              "risks": [
+                "未提供目标交付日，交期匹配须人工核对"
+              ],
+              "rounding": "各成本项ROUND_HALF_UP至分后相加；销售单价至分后乘数量，实际毛利率按已入账成本计算",
+              "suggested_total_cny": "2003.00",
+              "suggested_unit_price_cny": "20.03",
+              "target_margin": "0.200000",
+              "tax_basis": "采购成本（CNY），不把税率当加价率",
+              "tax_cny": "0.00",
+              "total_cost_cny": "1602.00",
+              "unit_cost_cny": "16.02"
+            },
+            "offer": {
+              "condition": "FN",
+              "currency": "CNY",
+              "dataset": "user_upload",
+              "extraction": {
+                "candidate_index": 1,
+                "field_evidence": {
+                  "condition": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "FN",
+                    "locator": "suppliers.pdf / page 2 / line 6",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Condition: FN",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "currency": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "CNY",
+                    "locator": "suppliers.pdf / page 2 / line 7",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Currency: CNY",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "fx_source": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "CNY nominal synthetic",
+                    "locator": "suppliers.pdf / page 2 / line 10",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "FX source: CNY nominal synthetic",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "fx_to_cny": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "1",
+                    "locator": "suppliers.pdf / page 2 / line 9",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "FX to CNY: 1",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "lead_days": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": 2,
+                    "locator": "suppliers.pdf / page 2 / line 12",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Lead days: 2",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "moq": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": 1,
+                    "locator": "suppliers.pdf / page 2 / line 11",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "MOQ: 1",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "part_number": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "PN-0001",
+                    "locator": "suppliers.pdf / page 2 / line 3",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Part Number: PN-0001",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "payment_terms": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "Net 30",
+                    "locator": "suppliers.pdf / page 2 / line 17",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Payment terms: Net 30",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "quote_date": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "2026-11-08",
+                    "locator": "suppliers.pdf / page 2 / line 15",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Quote date: 2026-11-08",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "shipping_total": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "0",
+                    "locator": "suppliers.pdf / page 2 / line 13",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Shipping total: 0",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "specification": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "Synthetic valve spec A",
+                    "locator": "suppliers.pdf / page 2 / line 4",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Specification: Synthetic valve spec A",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "supplier": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "SYN-Fast",
+                    "locator": "suppliers.pdf / page 2 / line 2",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Supplier: SYN-Fast",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "tax_rate": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "0",
+                    "locator": "suppliers.pdf / page 2 / line 14",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Tax rate: 0%",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "unit": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "EA",
+                    "locator": "suppliers.pdf / page 2 / line 5",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Unit: EA",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "unit_price": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "15",
+                    "locator": "suppliers.pdf / page 2 / line 8",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Unit Price: 15",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "valid_until": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "2027-01-07",
+                    "locator": "suppliers.pdf / page 2 / line 16",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Valid until: 2027-01-07",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  }
+                },
+                "human_changed_fields": {},
+                "method": "local_extraction_then_human_confirmation",
+                "original_values": {
+                  "condition": "FN",
+                  "currency": "CNY",
+                  "fx_source": "CNY nominal synthetic",
+                  "fx_to_cny": "1",
+                  "lead_days": 2,
+                  "moq": 1,
+                  "part_number": "PN-0001",
+                  "payment_terms": "Net 30",
+                  "quote_date": "2026-11-08",
+                  "shipping_total": "0",
+                  "specification": "Synthetic valve spec A",
+                  "supplier": "SYN-Fast",
+                  "tax_rate": "0",
+                  "unit": "EA",
+                  "unit_price": "15",
+                  "valid_until": "2027-01-07"
+                },
+                "run_id": "SUPX-2f931f2095844e83"
+              },
+              "extraction_candidate": 1,
+              "extraction_run_id": "SUPX-2f931f2095844e83",
+              "fx_notice": "人工维护的报价换算汇率，不是实时市场汇率",
+              "fx_source": "CNY nominal synthetic",
+              "fx_to_cny": "1",
+              "id": "OFFER-a60652952bbe49f5",
+              "lead_days": 2,
+              "moq": 1,
+              "part_number": "PN-0001",
+              "payment_terms": "Net 30",
+              "quote_date": "2026-11-08",
+              "review_status": "confirmed",
+              "shipping_group": "",
+              "shipping_scope": "line",
+              "shipping_total": "0",
+              "source_excerpt": "Supplier: SYN-FastPart Number: PN-0001Specification: Synthetic valve spec AUnit: EACondition: FNCurrency: CNYUnit Price: 15FX to CNY: 1FX source: CNY nominal syntheticMOQ: 1Lead days: 2Shipping total: 0Tax rate: 0%Quote date: 2026-11-08Valid until: 2027-01-07Payment terms: Net 30",
+              "source_file": {
+                "dataset": "user_upload",
+                "filename": "suppliers.pdf",
+                "id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                "sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+              },
+              "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+              "source_locator": "suppliers.pdf / page 2 / line 2; suppliers.pdf / page 2 / line 3; suppliers.pdf / page 2 / line 4; suppliers.pdf / page 2 / line 5; suppliers.pdf / page 2 / line 6; suppliers.pdf / page 2 / line 7; suppliers.pdf / page 2 / line 8; suppliers.pdf / page 2 / line 9; suppliers.pdf / page 2 / line 10; suppliers.pdf / page 2 / line 11; suppliers.pdf / page 2 / line 12; suppliers.pdf / page 2 / line 13; suppliers.pdf / page 2 / line 14; suppliers.pdf / page 2 / line 15; suppliers.pdf / page 2 / line 16; suppliers.pdf / page 2 / line 17",
+              "specification": "Synthetic valve spec A",
+              "supplier": "SYN-Fast",
+              "tax_rate": "0",
+              "unit": "EA",
+              "unit_price": "15",
+              "valid_until": "2027-01-07"
+            },
+            "offer_id": "OFFER-a60652952bbe49f5"
+          },
+          {
+            "balanced_score": "5.5",
+            "calculation": {
+              "actual_margin": "0.2002902757619738751814223512336719883889695210449927431059506531",
+              "formula": "(采购原币单价×数量×汇率 + 加工单价×数量 + 运费原币×汇率 + 采购成本×税率 + 其他成本) ÷ (1−目标毛利率)",
+              "freight_cny": "0.00",
+              "other_cny": "2.00",
+              "processing_cny": "100.00",
+              "purchase_cny": "1000.00",
+              "risks": [
+                "未提供目标交付日，交期匹配须人工核对"
+              ],
+              "rounding": "各成本项ROUND_HALF_UP至分后相加；销售单价至分后乘数量，实际毛利率按已入账成本计算",
+              "suggested_total_cny": "1378.00",
+              "suggested_unit_price_cny": "13.78",
+              "target_margin": "0.200000",
+              "tax_basis": "采购成本（CNY），不把税率当加价率",
+              "tax_cny": "0.00",
+              "total_cost_cny": "1102.00",
+              "unit_cost_cny": "11.02"
+            },
+            "offer": {
+              "condition": "FN",
+              "currency": "CNY",
+              "dataset": "user_upload",
+              "extraction": {
+                "candidate_index": 0,
+                "field_evidence": {
+                  "condition": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "FN",
+                    "locator": "suppliers.pdf / page 1 / line 6",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Condition: FN",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "currency": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "CNY",
+                    "locator": "suppliers.pdf / page 1 / line 7",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Currency: CNY",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "fx_source": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "CNY nominal synthetic",
+                    "locator": "suppliers.pdf / page 1 / line 10",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "FX source: CNY nominal synthetic",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "fx_to_cny": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "1",
+                    "locator": "suppliers.pdf / page 1 / line 9",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "FX to CNY: 1",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "lead_days": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": 20,
+                    "locator": "suppliers.pdf / page 1 / line 12",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Lead days: 20",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "moq": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": 1,
+                    "locator": "suppliers.pdf / page 1 / line 11",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "MOQ: 1",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "part_number": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "PN-0001",
+                    "locator": "suppliers.pdf / page 1 / line 3",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Part Number: PN-0001",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "payment_terms": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "Net 30",
+                    "locator": "suppliers.pdf / page 1 / line 17",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Payment terms: Net 30",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "quote_date": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "2026-11-08",
+                    "locator": "suppliers.pdf / page 1 / line 15",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Quote date: 2026-11-08",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "shipping_total": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "0",
+                    "locator": "suppliers.pdf / page 1 / line 13",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Shipping total: 0",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "specification": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "Synthetic valve spec A",
+                    "locator": "suppliers.pdf / page 1 / line 4",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Specification: Synthetic valve spec A",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "supplier": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "SYN-Cheap",
+                    "locator": "suppliers.pdf / page 1 / line 2",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Supplier: SYN-Cheap",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "tax_rate": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "0",
+                    "locator": "suppliers.pdf / page 1 / line 14",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Tax rate: 0%",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "unit": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "EA",
+                    "locator": "suppliers.pdf / page 1 / line 5",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Unit: EA",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "unit_price": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "10",
+                    "locator": "suppliers.pdf / page 1 / line 8",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Unit Price: 10",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "valid_until": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "2027-01-07",
+                    "locator": "suppliers.pdf / page 1 / line 16",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Valid until: 2027-01-07",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  }
+                },
+                "human_changed_fields": {},
+                "method": "local_extraction_then_human_confirmation",
+                "original_values": {
+                  "condition": "FN",
+                  "currency": "CNY",
+                  "fx_source": "CNY nominal synthetic",
+                  "fx_to_cny": "1",
+                  "lead_days": 20,
+                  "moq": 1,
+                  "part_number": "PN-0001",
+                  "payment_terms": "Net 30",
+                  "quote_date": "2026-11-08",
+                  "shipping_total": "0",
+                  "specification": "Synthetic valve spec A",
+                  "supplier": "SYN-Cheap",
+                  "tax_rate": "0",
+                  "unit": "EA",
+                  "unit_price": "10",
+                  "valid_until": "2027-01-07"
+                },
+                "run_id": "SUPX-f0e505bccda34d0e"
+              },
+              "extraction_candidate": 0,
+              "extraction_run_id": "SUPX-f0e505bccda34d0e",
+              "fx_notice": "人工维护的报价换算汇率，不是实时市场汇率",
+              "fx_source": "CNY nominal synthetic",
+              "fx_to_cny": "1",
+              "id": "OFFER-3a6210a30d5a4d4d",
+              "lead_days": 20,
+              "moq": 1,
+              "part_number": "PN-0001",
+              "payment_terms": "Net 30",
+              "quote_date": "2026-11-08",
+              "review_status": "confirmed",
+              "shipping_group": "",
+              "shipping_scope": "line",
+              "shipping_total": "0",
+              "source_excerpt": "Supplier: SYN-CheapPart Number: PN-0001Specification: Synthetic valve spec AUnit: EACondition: FNCurrency: CNYUnit Price: 10FX to CNY: 1FX source: CNY nominal syntheticMOQ: 1Lead days: 20Shipping total: 0Tax rate: 0%Quote date: 2026-11-08Valid until: 2027-01-07Payment terms: Net 30",
+              "source_file": {
+                "dataset": "user_upload",
+                "filename": "suppliers.pdf",
+                "id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                "sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+              },
+              "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+              "source_locator": "suppliers.pdf / page 1 / line 2; suppliers.pdf / page 1 / line 3; suppliers.pdf / page 1 / line 4; suppliers.pdf / page 1 / line 5; suppliers.pdf / page 1 / line 6; suppliers.pdf / page 1 / line 7; suppliers.pdf / page 1 / line 8; suppliers.pdf / page 1 / line 9; suppliers.pdf / page 1 / line 10; suppliers.pdf / page 1 / line 11; suppliers.pdf / page 1 / line 12; suppliers.pdf / page 1 / line 13; suppliers.pdf / page 1 / line 14; suppliers.pdf / page 1 / line 15; suppliers.pdf / page 1 / line 16; suppliers.pdf / page 1 / line 17",
+              "specification": "Synthetic valve spec A",
+              "supplier": "SYN-Cheap",
+              "tax_rate": "0",
+              "unit": "EA",
+              "unit_price": "10",
+              "valid_until": "2027-01-07"
+            },
+            "offer_id": "OFFER-3a6210a30d5a4d4d"
+          }
+        ],
+        "field_review_version": 2,
+        "line_id": 1,
+        "part_number": "PN-0001",
+        "quantity": 100,
+        "rejected": [],
+        "selected": {
+          "balanced_score": "5.5",
+          "calculation": {
+            "actual_margin": "0.2002902757619738751814223512336719883889695210449927431059506531",
+            "formula": "(采购原币单价×数量×汇率 + 加工单价×数量 + 运费原币×汇率 + 采购成本×税率 + 其他成本) ÷ (1−目标毛利率)",
+            "freight_cny": "0.00",
+            "other_cny": "2.00",
+            "processing_cny": "100.00",
+            "purchase_cny": "1000.00",
+            "risks": [
+              "未提供目标交付日，交期匹配须人工核对"
+            ],
+            "rounding": "各成本项ROUND_HALF_UP至分后相加；销售单价至分后乘数量，实际毛利率按已入账成本计算",
+            "suggested_total_cny": "1378.00",
+            "suggested_unit_price_cny": "13.78",
+            "target_margin": "0.200000",
+            "tax_basis": "采购成本（CNY），不把税率当加价率",
+            "tax_cny": "0.00",
+            "total_cost_cny": "1102.00",
+            "unit_cost_cny": "11.02"
+          },
+          "offer": {
+            "condition": "FN",
+            "currency": "CNY",
+            "dataset": "user_upload",
+            "extraction": {
+              "candidate_index": 0,
+              "field_evidence": {
+                "condition": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "FN",
+                  "locator": "suppliers.pdf / page 1 / line 6",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Condition: FN",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "currency": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "CNY",
+                  "locator": "suppliers.pdf / page 1 / line 7",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Currency: CNY",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "fx_source": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "CNY nominal synthetic",
+                  "locator": "suppliers.pdf / page 1 / line 10",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "FX source: CNY nominal synthetic",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "fx_to_cny": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "1",
+                  "locator": "suppliers.pdf / page 1 / line 9",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "FX to CNY: 1",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "lead_days": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": 20,
+                  "locator": "suppliers.pdf / page 1 / line 12",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Lead days: 20",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "moq": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": 1,
+                  "locator": "suppliers.pdf / page 1 / line 11",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "MOQ: 1",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "part_number": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "PN-0001",
+                  "locator": "suppliers.pdf / page 1 / line 3",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Part Number: PN-0001",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "payment_terms": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "Net 30",
+                  "locator": "suppliers.pdf / page 1 / line 17",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Payment terms: Net 30",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "quote_date": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "2026-11-08",
+                  "locator": "suppliers.pdf / page 1 / line 15",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Quote date: 2026-11-08",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "shipping_total": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "0",
+                  "locator": "suppliers.pdf / page 1 / line 13",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Shipping total: 0",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "specification": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "Synthetic valve spec A",
+                  "locator": "suppliers.pdf / page 1 / line 4",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Specification: Synthetic valve spec A",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "supplier": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "SYN-Cheap",
+                  "locator": "suppliers.pdf / page 1 / line 2",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Supplier: SYN-Cheap",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "tax_rate": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "0",
+                  "locator": "suppliers.pdf / page 1 / line 14",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Tax rate: 0%",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "unit": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "EA",
+                  "locator": "suppliers.pdf / page 1 / line 5",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Unit: EA",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "unit_price": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "10",
+                  "locator": "suppliers.pdf / page 1 / line 8",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Unit Price: 10",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "valid_until": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "2027-01-07",
+                  "locator": "suppliers.pdf / page 1 / line 16",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Valid until: 2027-01-07",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                }
+              },
+              "human_changed_fields": {},
+              "method": "local_extraction_then_human_confirmation",
+              "original_values": {
+                "condition": "FN",
+                "currency": "CNY",
+                "fx_source": "CNY nominal synthetic",
+                "fx_to_cny": "1",
+                "lead_days": 20,
+                "moq": 1,
+                "part_number": "PN-0001",
+                "payment_terms": "Net 30",
+                "quote_date": "2026-11-08",
+                "shipping_total": "0",
+                "specification": "Synthetic valve spec A",
+                "supplier": "SYN-Cheap",
+                "tax_rate": "0",
+                "unit": "EA",
+                "unit_price": "10",
+                "valid_until": "2027-01-07"
+              },
+              "run_id": "SUPX-f0e505bccda34d0e"
+            },
+            "extraction_candidate": 0,
+            "extraction_run_id": "SUPX-f0e505bccda34d0e",
+            "fx_notice": "人工维护的报价换算汇率，不是实时市场汇率",
+            "fx_source": "CNY nominal synthetic",
+            "fx_to_cny": "1",
+            "id": "OFFER-3a6210a30d5a4d4d",
+            "lead_days": 20,
+            "moq": 1,
+            "part_number": "PN-0001",
+            "payment_terms": "Net 30",
+            "quote_date": "2026-11-08",
+            "review_status": "confirmed",
+            "shipping_group": "",
+            "shipping_scope": "line",
+            "shipping_total": "0",
+            "source_excerpt": "Supplier: SYN-CheapPart Number: PN-0001Specification: Synthetic valve spec AUnit: EACondition: FNCurrency: CNYUnit Price: 10FX to CNY: 1FX source: CNY nominal syntheticMOQ: 1Lead days: 20Shipping total: 0Tax rate: 0%Quote date: 2026-11-08Valid until: 2027-01-07Payment terms: Net 30",
+            "source_file": {
+              "dataset": "user_upload",
+              "filename": "suppliers.pdf",
+              "id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+              "sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+            },
+            "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+            "source_locator": "suppliers.pdf / page 1 / line 2; suppliers.pdf / page 1 / line 3; suppliers.pdf / page 1 / line 4; suppliers.pdf / page 1 / line 5; suppliers.pdf / page 1 / line 6; suppliers.pdf / page 1 / line 7; suppliers.pdf / page 1 / line 8; suppliers.pdf / page 1 / line 9; suppliers.pdf / page 1 / line 10; suppliers.pdf / page 1 / line 11; suppliers.pdf / page 1 / line 12; suppliers.pdf / page 1 / line 13; suppliers.pdf / page 1 / line 14; suppliers.pdf / page 1 / line 15; suppliers.pdf / page 1 / line 16; suppliers.pdf / page 1 / line 17",
+            "specification": "Synthetic valve spec A",
+            "supplier": "SYN-Cheap",
+            "tax_rate": "0",
+            "unit": "EA",
+            "unit_price": "10",
+            "valid_until": "2027-01-07"
+          },
+          "offer_id": "OFFER-3a6210a30d5a4d4d"
+        },
+        "specification": "Synthetic valve spec A",
+        "unit": "EA"
+      }
+    ],
+    "payment_terms": "Net 30",
+    "remarks": "SYNTHETIC ONLY - 非真实报价",
+    "scheme": "lowest_cost",
+    "specification_basis": "现有RFQ description字段经人工复核后作规格键；不做语义相似自动认定",
+    "suggested_total_cny": "1378.00",
+    "target_margin": "0.200000",
+    "total_cost_cny": "1102.00",
+    "valid_until": "2026-11-22",
+    "status": "approved",
+    "version": 3,
+    "reviewer_account": "reviewer",
+    "approver_account": "admin",
+    "approval_history": [
+      {
+        "id": 1,
+        "quote_id": "CQ-75F95FEFAA1747F5",
+        "from_status": "draft",
+        "to_status": "business_reviewed",
+        "version": 2,
+        "account": "reviewer",
+        "actor": "Synthetic Reviewer",
+        "reason": "核对原件成本毛利交期并业务审核",
+        "at": "2026-11-08T10:35:56.896006+00:00"
+      },
+      {
+        "id": 2,
+        "quote_id": "CQ-75F95FEFAA1747F5",
+        "from_status": "business_reviewed",
+        "to_status": "approved",
+        "version": 3,
+        "account": "admin",
+        "actor": "Synthetic Admin",
+        "reason": "独立管理账户复核风险后批准",
+        "at": "2026-11-08T10:35:58.411231+00:00"
+      }
+    ]
+  },
+  "after": {
+    "approval_blockers": [],
+    "asof": "2026-11-08",
+    "balanced_formula": "逐行评分0.5×成本/最低成本 + 0.5×交期/最短交期；运输批次在选定后分摊，不承诺组合全局最优",
+    "company_contact": "DEMO ONLY",
+    "company_name": "合成演示公司",
+    "currency": "CNY",
+    "customer_contact": "demo@example.invalid",
+    "customer_name": "合成客户",
+    "decision_method": "确定性成本/交期规则，非AI凭空生成供应商数据",
+    "delivery_deadline": null,
+    "delivery_terms": "EXW synthetic",
+    "freight_allocations": [],
+    "id": "CQ-4C87D2E69FA84F09",
+    "line_costs": {
+      "2": {
+        "other_total_cny": "2",
+        "processing_per_unit_cny": "1"
+      }
+    },
+    "line_ids": [
+      2
+    ],
+    "lines": [
+      {
+        "candidates": [
+          {
+            "balanced_score": "2.340876045074518356961105053",
+            "calculation": {
+              "actual_margin": "0.2002460024600246002460024600246002460024600246002460024600246002",
+              "formula": "(采购原币单价×数量×汇率 + 加工单价×数量 + 运费原币×汇率 + 采购成本×税率 + 其他成本) ÷ (1−目标毛利率)",
+              "freight_cny": "0.00",
+              "other_cny": "2.00",
+              "processing_cny": "500.00",
+              "purchase_cny": "6000.00",
+              "risks": [
+                "未提供目标交付日，交期匹配须人工核对"
+              ],
+              "rounding": "各成本项ROUND_HALF_UP至分后相加；销售单价至分后乘数量，实际毛利率按已入账成本计算",
+              "suggested_total_cny": "8130.00",
+              "suggested_unit_price_cny": "16.26",
+              "target_margin": "0.200000",
+              "tax_basis": "采购成本（CNY），不把税率当加价率",
+              "tax_cny": "0.00",
+              "total_cost_cny": "6502.00",
+              "unit_cost_cny": "13.00"
+            },
+            "offer": {
+              "condition": "FN",
+              "currency": "CNY",
+              "dataset": "user_upload",
+              "extraction": {
+                "candidate_index": 2,
+                "field_evidence": {
+                  "condition": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "FN",
+                    "locator": "suppliers.pdf / page 3 / line 6",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Condition: FN",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "currency": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "CNY",
+                    "locator": "suppliers.pdf / page 3 / line 7",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Currency: CNY",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "fx_source": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "CNY nominal synthetic",
+                    "locator": "suppliers.pdf / page 3 / line 10",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "FX source: CNY nominal synthetic",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "fx_to_cny": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "1",
+                    "locator": "suppliers.pdf / page 3 / line 9",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "FX to CNY: 1",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "lead_days": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": 7,
+                    "locator": "suppliers.pdf / page 3 / line 12",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Lead days: 7",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "moq": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": 1,
+                    "locator": "suppliers.pdf / page 3 / line 11",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "MOQ: 1",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "part_number": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "PN-0001",
+                    "locator": "suppliers.pdf / page 3 / line 3",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Part Number: PN-0001",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "payment_terms": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "Net 30",
+                    "locator": "suppliers.pdf / page 3 / line 17",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Payment terms: Net 30",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "quote_date": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "2026-11-08",
+                    "locator": "suppliers.pdf / page 3 / line 15",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Quote date: 2026-11-08",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "shipping_total": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "0",
+                    "locator": "suppliers.pdf / page 3 / line 13",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Shipping total: 0",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "specification": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "Synthetic valve spec A",
+                    "locator": "suppliers.pdf / page 3 / line 4",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Specification: Synthetic valve spec A",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "supplier": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "SYN-Balanced",
+                    "locator": "suppliers.pdf / page 3 / line 2",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Supplier: SYN-Balanced",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "tax_rate": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "0",
+                    "locator": "suppliers.pdf / page 3 / line 14",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Tax rate: 0%",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "unit": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "EA",
+                    "locator": "suppliers.pdf / page 3 / line 5",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Unit: EA",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "unit_price": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "12",
+                    "locator": "suppliers.pdf / page 3 / line 8",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Unit Price: 12",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "valid_until": {
+                    "extracted_at": "2026-11-08T10:35:53.419536+00:00",
+                    "extracted_value": "2027-01-07",
+                    "locator": "suppliers.pdf / page 3 / line 16",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Valid until: 2027-01-07",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  }
+                },
+                "human_changed_fields": {},
+                "method": "local_extraction_then_human_confirmation",
+                "original_values": {
+                  "condition": "FN",
+                  "currency": "CNY",
+                  "fx_source": "CNY nominal synthetic",
+                  "fx_to_cny": "1",
+                  "lead_days": 7,
+                  "moq": 1,
+                  "part_number": "PN-0001",
+                  "payment_terms": "Net 30",
+                  "quote_date": "2026-11-08",
+                  "shipping_total": "0",
+                  "specification": "Synthetic valve spec A",
+                  "supplier": "SYN-Balanced",
+                  "tax_rate": "0",
+                  "unit": "EA",
+                  "unit_price": "12",
+                  "valid_until": "2027-01-07"
+                },
+                "run_id": "SUPX-deafc1780f1b4e6e"
+              },
+              "extraction_candidate": 2,
+              "extraction_run_id": "SUPX-deafc1780f1b4e6e",
+              "fx_notice": "人工维护的报价换算汇率，不是实时市场汇率",
+              "fx_source": "CNY nominal synthetic",
+              "fx_to_cny": "1",
+              "id": "OFFER-6998e83486864112",
+              "lead_days": 7,
+              "moq": 1,
+              "part_number": "PN-0001",
+              "payment_terms": "Net 30",
+              "quote_date": "2026-11-08",
+              "review_status": "confirmed",
+              "shipping_group": "",
+              "shipping_scope": "line",
+              "shipping_total": "0",
+              "source_excerpt": "Supplier: SYN-BalancedPart Number: PN-0001Specification: Synthetic valve spec AUnit: EACondition: FNCurrency: CNYUnit Price: 12FX to CNY: 1FX source: CNY nominal syntheticMOQ: 1Lead days: 7Shipping total: 0Tax rate: 0%Quote date: 2026-11-08Valid until: 2027-01-07Payment terms: Net 30",
+              "source_file": {
+                "dataset": "user_upload",
+                "filename": "suppliers.pdf",
+                "id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                "sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+              },
+              "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+              "source_locator": "suppliers.pdf / page 3 / line 2; suppliers.pdf / page 3 / line 3; suppliers.pdf / page 3 / line 4; suppliers.pdf / page 3 / line 5; suppliers.pdf / page 3 / line 6; suppliers.pdf / page 3 / line 7; suppliers.pdf / page 3 / line 8; suppliers.pdf / page 3 / line 9; suppliers.pdf / page 3 / line 10; suppliers.pdf / page 3 / line 11; suppliers.pdf / page 3 / line 12; suppliers.pdf / page 3 / line 13; suppliers.pdf / page 3 / line 14; suppliers.pdf / page 3 / line 15; suppliers.pdf / page 3 / line 16; suppliers.pdf / page 3 / line 17",
+              "specification": "Synthetic valve spec A",
+              "supplier": "SYN-Balanced",
+              "tax_rate": "0",
+              "unit": "EA",
+              "unit_price": "12",
+              "valid_until": "2027-01-07"
+            },
+            "offer_id": "OFFER-6998e83486864112"
+          },
+          {
+            "balanced_score": "1.227190112686295892402762632",
+            "calculation": {
+              "actual_margin": "0.2001999000499750124937531234382808595702148925537231384307846077",
+              "formula": "(采购原币单价×数量×汇率 + 加工单价×数量 + 运费原币×汇率 + 采购成本×税率 + 其他成本) ÷ (1−目标毛利率)",
+              "freight_cny": "0.00",
+              "other_cny": "2.00",
+              "processing_cny": "500.00",
+              "purchase_cny": "7500.00",
+              "risks": [
+                "未提供目标交付日，交期匹配须人工核对"
+              ],
+              "rounding": "各成本项ROUND_HALF_UP至分后相加；销售单价至分后乘数量，实际毛利率按已入账成本计算",
+              "suggested_total_cny": "10005.00",
+              "suggested_unit_price_cny": "20.01",
+              "target_margin": "0.200000",
+              "tax_basis": "采购成本（CNY），不把税率当加价率",
+              "tax_cny": "0.00",
+              "total_cost_cny": "8002.00",
+              "unit_cost_cny": "16.00"
+            },
+            "offer": {
+              "condition": "FN",
+              "currency": "CNY",
+              "dataset": "user_upload",
+              "extraction": {
+                "candidate_index": 1,
+                "field_evidence": {
+                  "condition": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "FN",
+                    "locator": "suppliers.pdf / page 2 / line 6",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Condition: FN",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "currency": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "CNY",
+                    "locator": "suppliers.pdf / page 2 / line 7",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Currency: CNY",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "fx_source": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "CNY nominal synthetic",
+                    "locator": "suppliers.pdf / page 2 / line 10",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "FX source: CNY nominal synthetic",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "fx_to_cny": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "1",
+                    "locator": "suppliers.pdf / page 2 / line 9",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "FX to CNY: 1",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "lead_days": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": 2,
+                    "locator": "suppliers.pdf / page 2 / line 12",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Lead days: 2",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "moq": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": 1,
+                    "locator": "suppliers.pdf / page 2 / line 11",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "MOQ: 1",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "part_number": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "PN-0001",
+                    "locator": "suppliers.pdf / page 2 / line 3",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Part Number: PN-0001",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "payment_terms": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "Net 30",
+                    "locator": "suppliers.pdf / page 2 / line 17",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Payment terms: Net 30",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "quote_date": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "2026-11-08",
+                    "locator": "suppliers.pdf / page 2 / line 15",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Quote date: 2026-11-08",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "shipping_total": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "0",
+                    "locator": "suppliers.pdf / page 2 / line 13",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Shipping total: 0",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "specification": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "Synthetic valve spec A",
+                    "locator": "suppliers.pdf / page 2 / line 4",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Specification: Synthetic valve spec A",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "supplier": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "SYN-Fast",
+                    "locator": "suppliers.pdf / page 2 / line 2",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Supplier: SYN-Fast",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "tax_rate": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "0",
+                    "locator": "suppliers.pdf / page 2 / line 14",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Tax rate: 0%",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "unit": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "EA",
+                    "locator": "suppliers.pdf / page 2 / line 5",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Unit: EA",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "unit_price": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "15",
+                    "locator": "suppliers.pdf / page 2 / line 8",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Unit Price: 15",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "valid_until": {
+                    "extracted_at": "2026-11-08T10:35:50.151215+00:00",
+                    "extracted_value": "2027-01-07",
+                    "locator": "suppliers.pdf / page 2 / line 16",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Valid until: 2027-01-07",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  }
+                },
+                "human_changed_fields": {},
+                "method": "local_extraction_then_human_confirmation",
+                "original_values": {
+                  "condition": "FN",
+                  "currency": "CNY",
+                  "fx_source": "CNY nominal synthetic",
+                  "fx_to_cny": "1",
+                  "lead_days": 2,
+                  "moq": 1,
+                  "part_number": "PN-0001",
+                  "payment_terms": "Net 30",
+                  "quote_date": "2026-11-08",
+                  "shipping_total": "0",
+                  "specification": "Synthetic valve spec A",
+                  "supplier": "SYN-Fast",
+                  "tax_rate": "0",
+                  "unit": "EA",
+                  "unit_price": "15",
+                  "valid_until": "2027-01-07"
+                },
+                "run_id": "SUPX-2f931f2095844e83"
+              },
+              "extraction_candidate": 1,
+              "extraction_run_id": "SUPX-2f931f2095844e83",
+              "fx_notice": "人工维护的报价换算汇率，不是实时市场汇率",
+              "fx_source": "CNY nominal synthetic",
+              "fx_to_cny": "1",
+              "id": "OFFER-a60652952bbe49f5",
+              "lead_days": 2,
+              "moq": 1,
+              "part_number": "PN-0001",
+              "payment_terms": "Net 30",
+              "quote_date": "2026-11-08",
+              "review_status": "confirmed",
+              "shipping_group": "",
+              "shipping_scope": "line",
+              "shipping_total": "0",
+              "source_excerpt": "Supplier: SYN-FastPart Number: PN-0001Specification: Synthetic valve spec AUnit: EACondition: FNCurrency: CNYUnit Price: 15FX to CNY: 1FX source: CNY nominal syntheticMOQ: 1Lead days: 2Shipping total: 0Tax rate: 0%Quote date: 2026-11-08Valid until: 2027-01-07Payment terms: Net 30",
+              "source_file": {
+                "dataset": "user_upload",
+                "filename": "suppliers.pdf",
+                "id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                "sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+              },
+              "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+              "source_locator": "suppliers.pdf / page 2 / line 2; suppliers.pdf / page 2 / line 3; suppliers.pdf / page 2 / line 4; suppliers.pdf / page 2 / line 5; suppliers.pdf / page 2 / line 6; suppliers.pdf / page 2 / line 7; suppliers.pdf / page 2 / line 8; suppliers.pdf / page 2 / line 9; suppliers.pdf / page 2 / line 10; suppliers.pdf / page 2 / line 11; suppliers.pdf / page 2 / line 12; suppliers.pdf / page 2 / line 13; suppliers.pdf / page 2 / line 14; suppliers.pdf / page 2 / line 15; suppliers.pdf / page 2 / line 16; suppliers.pdf / page 2 / line 17",
+              "specification": "Synthetic valve spec A",
+              "supplier": "SYN-Fast",
+              "tax_rate": "0",
+              "unit": "EA",
+              "unit_price": "15",
+              "valid_until": "2027-01-07"
+            },
+            "offer_id": "OFFER-a60652952bbe49f5"
+          },
+          {
+            "balanced_score": "5.5",
+            "calculation": {
+              "actual_margin": "0.2002906976744186046511627906976744186046511627906976744186046512",
+              "formula": "(采购原币单价×数量×汇率 + 加工单价×数量 + 运费原币×汇率 + 采购成本×税率 + 其他成本) ÷ (1−目标毛利率)",
+              "freight_cny": "0.00",
+              "other_cny": "2.00",
+              "processing_cny": "500.00",
+              "purchase_cny": "5000.00",
+              "risks": [
+                "未提供目标交付日，交期匹配须人工核对"
+              ],
+              "rounding": "各成本项ROUND_HALF_UP至分后相加；销售单价至分后乘数量，实际毛利率按已入账成本计算",
+              "suggested_total_cny": "6880.00",
+              "suggested_unit_price_cny": "13.76",
+              "target_margin": "0.200000",
+              "tax_basis": "采购成本（CNY），不把税率当加价率",
+              "tax_cny": "0.00",
+              "total_cost_cny": "5502.00",
+              "unit_cost_cny": "11.00"
+            },
+            "offer": {
+              "condition": "FN",
+              "currency": "CNY",
+              "dataset": "user_upload",
+              "extraction": {
+                "candidate_index": 0,
+                "field_evidence": {
+                  "condition": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "FN",
+                    "locator": "suppliers.pdf / page 1 / line 6",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Condition: FN",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "currency": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "CNY",
+                    "locator": "suppliers.pdf / page 1 / line 7",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Currency: CNY",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "fx_source": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "CNY nominal synthetic",
+                    "locator": "suppliers.pdf / page 1 / line 10",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "FX source: CNY nominal synthetic",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "fx_to_cny": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "1",
+                    "locator": "suppliers.pdf / page 1 / line 9",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "FX to CNY: 1",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "lead_days": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": 20,
+                    "locator": "suppliers.pdf / page 1 / line 12",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Lead days: 20",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "moq": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": 1,
+                    "locator": "suppliers.pdf / page 1 / line 11",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "MOQ: 1",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "part_number": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "PN-0001",
+                    "locator": "suppliers.pdf / page 1 / line 3",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Part Number: PN-0001",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "payment_terms": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "Net 30",
+                    "locator": "suppliers.pdf / page 1 / line 17",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Payment terms: Net 30",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "quote_date": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "2026-11-08",
+                    "locator": "suppliers.pdf / page 1 / line 15",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Quote date: 2026-11-08",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "shipping_total": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "0",
+                    "locator": "suppliers.pdf / page 1 / line 13",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Shipping total: 0",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "specification": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "Synthetic valve spec A",
+                    "locator": "suppliers.pdf / page 1 / line 4",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Specification: Synthetic valve spec A",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "supplier": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "SYN-Cheap",
+                    "locator": "suppliers.pdf / page 1 / line 2",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Supplier: SYN-Cheap",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "tax_rate": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "0",
+                    "locator": "suppliers.pdf / page 1 / line 14",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Tax rate: 0%",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "unit": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "EA",
+                    "locator": "suppliers.pdf / page 1 / line 5",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Unit: EA",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "unit_price": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "10",
+                    "locator": "suppliers.pdf / page 1 / line 8",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Unit Price: 10",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  },
+                  "valid_until": {
+                    "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                    "extracted_value": "2027-01-07",
+                    "locator": "suppliers.pdf / page 1 / line 16",
+                    "method": "local_label_or_table_parser",
+                    "raw_text": "Valid until: 2027-01-07",
+                    "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                    "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                  }
+                },
+                "human_changed_fields": {},
+                "method": "local_extraction_then_human_confirmation",
+                "original_values": {
+                  "condition": "FN",
+                  "currency": "CNY",
+                  "fx_source": "CNY nominal synthetic",
+                  "fx_to_cny": "1",
+                  "lead_days": 20,
+                  "moq": 1,
+                  "part_number": "PN-0001",
+                  "payment_terms": "Net 30",
+                  "quote_date": "2026-11-08",
+                  "shipping_total": "0",
+                  "specification": "Synthetic valve spec A",
+                  "supplier": "SYN-Cheap",
+                  "tax_rate": "0",
+                  "unit": "EA",
+                  "unit_price": "10",
+                  "valid_until": "2027-01-07"
+                },
+                "run_id": "SUPX-f0e505bccda34d0e"
+              },
+              "extraction_candidate": 0,
+              "extraction_run_id": "SUPX-f0e505bccda34d0e",
+              "fx_notice": "人工维护的报价换算汇率，不是实时市场汇率",
+              "fx_source": "CNY nominal synthetic",
+              "fx_to_cny": "1",
+              "id": "OFFER-3a6210a30d5a4d4d",
+              "lead_days": 20,
+              "moq": 1,
+              "part_number": "PN-0001",
+              "payment_terms": "Net 30",
+              "quote_date": "2026-11-08",
+              "review_status": "confirmed",
+              "shipping_group": "",
+              "shipping_scope": "line",
+              "shipping_total": "0",
+              "source_excerpt": "Supplier: SYN-CheapPart Number: PN-0001Specification: Synthetic valve spec AUnit: EACondition: FNCurrency: CNYUnit Price: 10FX to CNY: 1FX source: CNY nominal syntheticMOQ: 1Lead days: 20Shipping total: 0Tax rate: 0%Quote date: 2026-11-08Valid until: 2027-01-07Payment terms: Net 30",
+              "source_file": {
+                "dataset": "user_upload",
+                "filename": "suppliers.pdf",
+                "id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                "sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+              },
+              "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+              "source_locator": "suppliers.pdf / page 1 / line 2; suppliers.pdf / page 1 / line 3; suppliers.pdf / page 1 / line 4; suppliers.pdf / page 1 / line 5; suppliers.pdf / page 1 / line 6; suppliers.pdf / page 1 / line 7; suppliers.pdf / page 1 / line 8; suppliers.pdf / page 1 / line 9; suppliers.pdf / page 1 / line 10; suppliers.pdf / page 1 / line 11; suppliers.pdf / page 1 / line 12; suppliers.pdf / page 1 / line 13; suppliers.pdf / page 1 / line 14; suppliers.pdf / page 1 / line 15; suppliers.pdf / page 1 / line 16; suppliers.pdf / page 1 / line 17",
+              "specification": "Synthetic valve spec A",
+              "supplier": "SYN-Cheap",
+              "tax_rate": "0",
+              "unit": "EA",
+              "unit_price": "10",
+              "valid_until": "2027-01-07"
+            },
+            "offer_id": "OFFER-3a6210a30d5a4d4d"
+          }
+        ],
+        "field_review_version": 2,
+        "line_id": 2,
+        "part_number": "PN-0001",
+        "quantity": 500,
+        "rejected": [],
+        "selected": {
+          "balanced_score": "5.5",
+          "calculation": {
+            "actual_margin": "0.2002906976744186046511627906976744186046511627906976744186046512",
+            "formula": "(采购原币单价×数量×汇率 + 加工单价×数量 + 运费原币×汇率 + 采购成本×税率 + 其他成本) ÷ (1−目标毛利率)",
+            "freight_cny": "0.00",
+            "other_cny": "2.00",
+            "processing_cny": "500.00",
+            "purchase_cny": "5000.00",
+            "risks": [
+              "未提供目标交付日，交期匹配须人工核对"
+            ],
+            "rounding": "各成本项ROUND_HALF_UP至分后相加；销售单价至分后乘数量，实际毛利率按已入账成本计算",
+            "suggested_total_cny": "6880.00",
+            "suggested_unit_price_cny": "13.76",
+            "target_margin": "0.200000",
+            "tax_basis": "采购成本（CNY），不把税率当加价率",
+            "tax_cny": "0.00",
+            "total_cost_cny": "5502.00",
+            "unit_cost_cny": "11.00"
+          },
+          "offer": {
+            "condition": "FN",
+            "currency": "CNY",
+            "dataset": "user_upload",
+            "extraction": {
+              "candidate_index": 0,
+              "field_evidence": {
+                "condition": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "FN",
+                  "locator": "suppliers.pdf / page 1 / line 6",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Condition: FN",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "currency": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "CNY",
+                  "locator": "suppliers.pdf / page 1 / line 7",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Currency: CNY",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "fx_source": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "CNY nominal synthetic",
+                  "locator": "suppliers.pdf / page 1 / line 10",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "FX source: CNY nominal synthetic",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "fx_to_cny": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "1",
+                  "locator": "suppliers.pdf / page 1 / line 9",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "FX to CNY: 1",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "lead_days": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": 20,
+                  "locator": "suppliers.pdf / page 1 / line 12",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Lead days: 20",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "moq": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": 1,
+                  "locator": "suppliers.pdf / page 1 / line 11",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "MOQ: 1",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "part_number": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "PN-0001",
+                  "locator": "suppliers.pdf / page 1 / line 3",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Part Number: PN-0001",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "payment_terms": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "Net 30",
+                  "locator": "suppliers.pdf / page 1 / line 17",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Payment terms: Net 30",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "quote_date": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "2026-11-08",
+                  "locator": "suppliers.pdf / page 1 / line 15",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Quote date: 2026-11-08",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "shipping_total": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "0",
+                  "locator": "suppliers.pdf / page 1 / line 13",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Shipping total: 0",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "specification": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "Synthetic valve spec A",
+                  "locator": "suppliers.pdf / page 1 / line 4",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Specification: Synthetic valve spec A",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "supplier": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "SYN-Cheap",
+                  "locator": "suppliers.pdf / page 1 / line 2",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Supplier: SYN-Cheap",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "tax_rate": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "0",
+                  "locator": "suppliers.pdf / page 1 / line 14",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Tax rate: 0%",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "unit": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "EA",
+                  "locator": "suppliers.pdf / page 1 / line 5",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Unit: EA",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "unit_price": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "10",
+                  "locator": "suppliers.pdf / page 1 / line 8",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Unit Price: 10",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                },
+                "valid_until": {
+                  "extracted_at": "2026-11-08T10:35:48.063629+00:00",
+                  "extracted_value": "2027-01-07",
+                  "locator": "suppliers.pdf / page 1 / line 16",
+                  "method": "local_label_or_table_parser",
+                  "raw_text": "Valid until: 2027-01-07",
+                  "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+                  "source_sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+                }
+              },
+              "human_changed_fields": {},
+              "method": "local_extraction_then_human_confirmation",
+              "original_values": {
+                "condition": "FN",
+                "currency": "CNY",
+                "fx_source": "CNY nominal synthetic",
+                "fx_to_cny": "1",
+                "lead_days": 20,
+                "moq": 1,
+                "part_number": "PN-0001",
+                "payment_terms": "Net 30",
+                "quote_date": "2026-11-08",
+                "shipping_total": "0",
+                "specification": "Synthetic valve spec A",
+                "supplier": "SYN-Cheap",
+                "tax_rate": "0",
+                "unit": "EA",
+                "unit_price": "10",
+                "valid_until": "2027-01-07"
+              },
+              "run_id": "SUPX-f0e505bccda34d0e"
+            },
+            "extraction_candidate": 0,
+            "extraction_run_id": "SUPX-f0e505bccda34d0e",
+            "fx_notice": "人工维护的报价换算汇率，不是实时市场汇率",
+            "fx_source": "CNY nominal synthetic",
+            "fx_to_cny": "1",
+            "id": "OFFER-3a6210a30d5a4d4d",
+            "lead_days": 20,
+            "moq": 1,
+            "part_number": "PN-0001",
+            "payment_terms": "Net 30",
+            "quote_date": "2026-11-08",
+            "review_status": "confirmed",
+            "shipping_group": "",
+            "shipping_scope": "line",
+            "shipping_total": "0",
+            "source_excerpt": "Supplier: SYN-CheapPart Number: PN-0001Specification: Synthetic valve spec AUnit: EACondition: FNCurrency: CNYUnit Price: 10FX to CNY: 1FX source: CNY nominal syntheticMOQ: 1Lead days: 20Shipping total: 0Tax rate: 0%Quote date: 2026-11-08Valid until: 2027-01-07Payment terms: Net 30",
+            "source_file": {
+              "dataset": "user_upload",
+              "filename": "suppliers.pdf",
+              "id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+              "sha256": "64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338"
+            },
+            "source_id": "SUPSRC-64afddb92d054073dd5d6f18d5cd4082f777c13d9cea72ae0322cbbed97be338",
+            "source_locator": "suppliers.pdf / page 1 / line 2; suppliers.pdf / page 1 / line 3; suppliers.pdf / page 1 / line 4; suppliers.pdf / page 1 / line 5; suppliers.pdf / page 1 / line 6; suppliers.pdf / page 1 / line 7; suppliers.pdf / page 1 / line 8; suppliers.pdf / page 1 / line 9; suppliers.pdf / page 1 / line 10; suppliers.pdf / page 1 / line 11; suppliers.pdf / page 1 / line 12; suppliers.pdf / page 1 / line 13; suppliers.pdf / page 1 / line 14; suppliers.pdf / page 1 / line 15; suppliers.pdf / page 1 / line 16; suppliers.pdf / page 1 / line 17",
+            "specification": "Synthetic valve spec A",
+            "supplier": "SYN-Cheap",
+            "tax_rate": "0",
+            "unit": "EA",
+            "unit_price": "10",
+            "valid_until": "2027-01-07"
+          },
+          "offer_id": "OFFER-3a6210a30d5a4d4d"
+        },
+        "specification": "Synthetic valve spec A",
+        "unit": "EA"
+      }
+    ],
+    "payment_terms": "Net 30",
+    "remarks": "SYNTHETIC ONLY - 500件新版本重新核价",
+    "scheme": "lowest_cost",
+    "specification_basis": "现有RFQ description字段经人工复核后作规格键；不做语义相似自动认定",
+    "suggested_total_cny": "6880.00",
+    "target_margin": "0.200000",
+    "total_cost_cny": "5502.00",
+    "valid_until": "2026-11-22",
+    "status": "draft",
+    "version": 1,
+    "reviewer_account": null,
+    "approver_account": null,
+    "approval_history": []
+  }
+}

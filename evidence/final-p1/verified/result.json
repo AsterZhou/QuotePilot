@@ -1,0 +1,441 @@
+{
+  "synthetic_only": true,
+  "public_acceptance": false,
+  "steps": [
+    "real_genesis_confirmed_record",
+    "saved_real_matrixone_readback",
+    "download_pdf",
+    "download_xlsx",
+    "reviewer_admin_denied_403"
+  ],
+  "http": [
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc.css",
+      "status": 200,
+      "elapsed_ms": 7
+    },
+    {
+      "role": "admin",
+      "path": "/assets/style.css",
+      "status": 200,
+      "elapsed_ms": 19
+    },
+    {
+      "role": "admin",
+      "path": "/assets/operations.js",
+      "status": 200,
+      "elapsed_ms": 17
+    },
+    {
+      "role": "admin",
+      "path": "/assets/review_center.js",
+      "status": 200,
+      "elapsed_ms": 27
+    },
+    {
+      "role": "admin",
+      "path": "/assets/app.js",
+      "status": 200,
+      "elapsed_ms": 30
+    },
+    {
+      "role": "admin",
+      "path": "/assets/query_center.js",
+      "status": 200,
+      "elapsed_ms": 33
+    },
+    {
+      "role": "admin",
+      "path": "/assets/rfq_versions.js",
+      "status": 200,
+      "elapsed_ms": 30
+    },
+    {
+      "role": "admin",
+      "path": "/assets/commercial.js",
+      "status": 200,
+      "elapsed_ms": 30
+    },
+    {
+      "role": "admin",
+      "path": "/api/overview",
+      "status": 200,
+      "elapsed_ms": 28
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-87-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 16
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-116-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 16
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-118-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 17
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-115-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 17
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-117-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 17
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-latin-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 63
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-90-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 62
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-114-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 67
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-88-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 69
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-113-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 70
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-101-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 70
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-119-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 70
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-112-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 70
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-110-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 70
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-107-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 70
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-109-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 19
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-111-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 20
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-103-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 21
+    },
+    {
+      "role": "admin",
+      "path": "/api/auth/me",
+      "status": 200,
+      "elapsed_ms": 9
+    },
+    {
+      "role": "admin",
+      "path": "/api/integration",
+      "status": 200,
+      "elapsed_ms": 8
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails",
+      "status": 200,
+      "elapsed_ms": 3
+    },
+    {
+      "role": "admin",
+      "path": "/api/lines",
+      "status": 200,
+      "elapsed_ms": 12
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-104-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 10
+    },
+    {
+      "role": "admin",
+      "path": "/api/lines",
+      "status": 200,
+      "elapsed_ms": 12
+    },
+    {
+      "role": "admin",
+      "path": "/api/emails/%3Cbrowser-v1%40example.invalid%3E/extractions",
+      "status": 200,
+      "elapsed_ms": 9
+    },
+    {
+      "role": "admin",
+      "path": "/api/extractions/EX-7724EC820BE8",
+      "status": 200,
+      "elapsed_ms": 6
+    },
+    {
+      "role": "admin",
+      "path": "/api/auth/me",
+      "status": 200,
+      "elapsed_ms": 12
+    },
+    {
+      "role": "admin",
+      "path": "/api/lines",
+      "status": 200,
+      "elapsed_ms": 13
+    },
+    {
+      "role": "admin",
+      "path": "/api/supplier-offers",
+      "status": 200,
+      "elapsed_ms": 15
+    },
+    {
+      "role": "admin",
+      "path": "/api/commercial-quotes",
+      "status": 200,
+      "elapsed_ms": 17
+    },
+    {
+      "role": "admin",
+      "path": "/api/commercial-quotes/CQ-4C87D2E69FA84F09",
+      "status": 200,
+      "elapsed_ms": 10
+    },
+    {
+      "role": "admin",
+      "path": "/api/commercial-quotes/CQ-4C87D2E69FA84F09/matrixone-receipt",
+      "status": 200,
+      "elapsed_ms": 5
+    },
+    {
+      "role": "admin",
+      "path": "/assets/fonts/noto-sans-sc-106-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 9
+    },
+    {
+      "role": "admin",
+      "path": "/api/commercial-quotes/CQ-4C87D2E69FA84F09/export/pdf",
+      "status": 200,
+      "elapsed_ms": 46
+    },
+    {
+      "role": "admin",
+      "path": "/api/commercial-quotes/CQ-4C87D2E69FA84F09/export/xlsx",
+      "status": 200,
+      "elapsed_ms": 22
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc.css",
+      "status": 200,
+      "elapsed_ms": 10
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/style.css",
+      "status": 200,
+      "elapsed_ms": 22
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/operations.js",
+      "status": 200,
+      "elapsed_ms": 60
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/rfq_versions.js",
+      "status": 200,
+      "elapsed_ms": 60
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/commercial.js",
+      "status": 200,
+      "elapsed_ms": 60
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/app.js",
+      "status": 200,
+      "elapsed_ms": 60
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/query_center.js",
+      "status": 200,
+      "elapsed_ms": 62
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/review_center.js",
+      "status": 200,
+      "elapsed_ms": 63
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-117-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 11
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-118-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 11
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-latin-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 12
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-115-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 12
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-87-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 19
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-116-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 19
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-113-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 29
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-119-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 31
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-90-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 36
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-88-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 38
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-101-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 37
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-114-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 40
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-110-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 40
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-107-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 41
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-112-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 42
+    },
+    {
+      "role": "reviewer",
+      "path": "/api/overview",
+      "status": 200,
+      "elapsed_ms": 48
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-103-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 17
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-109-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 17
+    },
+    {
+      "role": "reviewer",
+      "path": "/assets/fonts/noto-sans-sc-111-400-normal.woff2",
+      "status": 200,
+      "elapsed_ms": 17
+    }
+  ],
+  "failures": [],
+  "passed": true
+}

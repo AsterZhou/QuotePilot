@@ -1,0 +1,18 @@
+{
+  "verified": true,
+  "quote_id": "CQ-4C87D2E69FA84F09",
+  "version": 3,
+  "payload_sha256": "ef989456b0783c0a4d7b74d0af8de00d80a69936bac885715780df068519ce1a",
+  "table": "quotepilot_sprint.commercial_quote_snapshots_v1",
+  "query_ids": [
+    "01a1babf-4e70-7448-a493-6aa27365bd28",
+    "01a1babf-6eb4-754f-a864-8a1d6d3dcef3",
+    "01a1babf-929a-7407-9500-4d547a82535f",
+    "01a1babf-b277-7241-98be-4d799200f163"
+  ],
+  "scope": "application_orchestrated_approved_commercial_snapshot",
+  "native_workflow_execution": false,
+  "primary_store": "SQLite",
+  "verified_at": "2026-11-08 10:41:37",
+  "evidence_type": "saved_successful_readback_not_live_ping"
+}
