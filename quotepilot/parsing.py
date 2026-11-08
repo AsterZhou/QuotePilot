@@ -71,6 +71,8 @@ def parse_pdf(raw: bytes, filename: str) -> list[dict[str, str]]:
                             result.append({'询价单号':match.group(1),'Part Number':part,'Description':' '.join(description),
                                            'Quantity':q.group(1),'Unit Of Measure':'EA' if q.group(2).lower()=='each' else q.group(2).upper(),
                                            '_source_row':f'page {page_idx} / item {token}'})
+                            result[-1]['_source_page']=page_idx
+                            result[-1]['_source_snippets']={'Unit Of Measure':q.group(2),'Quantity':q.group(1)}
                         break
                     if re.fullmatch(r'\d{4}',candidate):break
                     description.append(candidate)
@@ -234,6 +236,7 @@ def parse_eml(raw:bytes, filename:str) -> dict:
                 email_record['parse_notes'].append(f'Unsupported attachment: {part_name}')
                 continue
             for row in items:
+                row['_source_file']=part_name;row['_source_sha256']=hashlib.sha256(data).hexdigest()
                 if any(str(v).strip() for k,v in row.items() if not k.startswith('_')):append_record(row,f'{filename} / {part_name}',kind)
         except Exception as ex:
             email_record['parse_notes'].append(f'{part_name}: {type(ex).__name__}: {ex}')
@@ -243,3 +246,4 @@ def parse_eml(raw:bytes, filename:str) -> dict:
 
 def file_preview(path:Path) -> dict:
     return parse_eml(path.read_bytes(),path.name)
+

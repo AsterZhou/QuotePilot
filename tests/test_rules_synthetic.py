@@ -113,6 +113,10 @@ def client(tmp_path,monkeypatch):
 def good_request(c):
     rows=c.get('/api/lines',params={'search':'PN-0001'}).json()['rows']
     good=next(x for x in rows if x['quantity']==8 and x['part_condition']=='FN' and x['unit']=='EA')
+    evidence=c.get('/api/lines/'+str(good['id'])+'/field-evidence').json()
+    if evidence['review']['status']!='confirmed':
+        checked=c.post('/api/lines/'+str(good['id'])+'/review-fields',json={'version':evidence['review']['version'],'changes':{},'actor':'SYNTHETIC REVIEWER','reason':'合成素材字段核对','confirm_source':True})
+        assert checked.status_code==200,checked.text
     return {'line_ids':[good['id']],'asof':'2026-09-20','method':'markup','rate':20}
 
 def test_saved_review_exports(client):
@@ -223,3 +227,4 @@ def test_cross_customer_draft_cannot_be_approved(client):
     assert report['approval_blockers']
     response=client.patch('/api/quotes/'+report['quote_id'],json={'version':1,'actor':'TEST','reason':'跨客户草案不能审批','approve':True,'confirm_constraints':True})
     assert response.status_code==409 and '跨客户' in response.json()['detail']
+

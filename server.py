@@ -10,7 +10,7 @@ import re
 import sqlite3
 from typing import Literal
 
-from fastapi import FastAPI, File, HTTPException, Query, UploadFile
+from fastapi import FastAPI, File, HTTPException, Query, UploadFile, Request
 from fastapi.responses import HTMLResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -188,6 +188,8 @@ def make_quote(con, req:QuoteRequest)->dict:
     feed=[{'part_number':r['part_number'],'quantity':r['quantity'],'unit':r['unit'],'condition':r['part_condition'] or ''} for r in source]
     report=batch_quote(con,feed,req.asof.isoformat(),str(Decimal(str(req.rate))/100),req.method)
     for x,orig in zip(report['lines'],source):
+        from quotepilot.provenance import quote_review_snapshot
+        x['field_review_version']=quote_review_snapshot(con,orig['id'])
         x['line_id']=orig['id']
         x['source_rfq_no']=orig['source_rfq_no']
         x['source_ref']=orig['source_ref']
@@ -518,6 +520,53 @@ class CenterQuestion(BaseModel):
     question:str=Field(min_length=2,max_length=1000)
     asof:date=Field(default_factory=center_today)
     session_id:str|None=Field(default=None,pattern=r'^[a-f0-9]{32}$')
+
+
+class FieldReviewRequest(BaseModel):
+    version:int=Field(ge=1)
+    changes:dict[str,str|int]=Field(default_factory=dict)
+    actor:str=Field(min_length=1,max_length=100)
+    reason:str=Field(min_length=3,max_length=1000)
+    confirm_source:bool=False
+
+
+@app.get('/api/review-queue')
+def field_review_queue(limit:int=Query(50,ge=1,le=200),offset:int=Query(0,ge=0)):
+    from quotepilot.provenance import capture
+    with database() as con:
+        missing=con.execute('SELECT id FROM rfq_lines WHERE id NOT IN (SELECT line_id FROM line_review_state)').fetchall()
+        for row in missing:capture(con,row['id'])
+        con.commit()
+        total=con.execute("SELECT COUNT(*) FROM line_review_state WHERE status='pending'").fetchone()[0]
+        rows=[dict(r) for r in con.execute("SELECT l.id,l.part_number,l.source_rfq_no,l.source_ref,s.version,s.status FROM rfq_lines l JOIN line_review_state s ON s.line_id=l.id WHERE s.status='pending' ORDER BY l.id LIMIT ? OFFSET ?",(limit,offset))]
+        return {'total':total,'rows':rows,'offset':offset,'limit':limit}
+
+
+@app.get('/api/lines/{line_id}/field-evidence')
+def field_evidence_detail(line_id:int):
+    from quotepilot.provenance import detail,verify_field
+    with database() as con:
+        try:
+            result=detail(con,line_id)
+            for field in result['fields']:field['source_check']=verify_field(con,field)
+            con.commit();return result
+        except KeyError:raise HTTPException(404,'询价行不存在')
+
+
+@app.post('/api/lines/{line_id}/review-fields')
+def review_fields(line_id:int,req:FieldReviewRequest,request:Request):
+    from quotepilot.provenance import review
+    identity='admin_session:'+center_owner(request)[:12]
+    with database() as con:
+        try:return review(con,line_id,req.version,req.changes,identity+' / '+req.actor,req.reason,req.confirm_source)
+        except KeyError:raise HTTPException(404,'询价行不存在')
+        except ValueError as ex:raise HTTPException(409,str(ex))
+
+
+@app.get('/api/audit/verify')
+def audit_integrity():
+    from quotepilot.provenance import verify_audit
+    with database() as con:return verify_audit(con)
 
 class CenterQuick(BaseModel):
     question:str=Field(min_length=2,max_length=100)

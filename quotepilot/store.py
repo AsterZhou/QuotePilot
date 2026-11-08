@@ -158,6 +158,8 @@ def open_db(path):
     con.execute('PRAGMA foreign_keys=ON')
     con.execute('PRAGMA busy_timeout=5000')
     con.executescript(EXT_SCHEMA)
+    from .provenance import install
+    install(con)
     return con
 
 
@@ -165,6 +167,8 @@ def audit(con, action, entity_id, detail, actor='local_operator'):
     import json
     con.execute('INSERT INTO audit_events(action,entity_id,actor,detail_json) VALUES(?,?,?,?)',
                 (action,str(entity_id),actor,json.dumps(detail,ensure_ascii=False)))
+    from .provenance import seal_audit
+    seal_audit(con)
 
 
 def ingest_eml(con, raw, filename, dataset='user_upload'):
@@ -201,6 +205,8 @@ def ingest_eml(con, raw, filename, dataset='user_upload'):
              (o['message_id'],item['source_rfq_no'],item['part_number'],item['description'],item['quantity'],item['unit'],item['urgency'],
               item['condition'],item['mpn'],item['deadline'],item['product_scope'],item['customer'],item['source_kind'],item['source']))
             con.execute('INSERT INTO line_evidence VALUES(?,?,?)',(cur.lastrowid,json.dumps(item['raw_record'],ensure_ascii=False),item['extraction_status']))
+            from .provenance import capture
+            capture(con,cur.lastrowid,item['raw_record'])
             con.execute('INSERT OR IGNORE INTO rfq_headers(email_id,source_rfq_no,customer) VALUES(?,?,?)',
                         (o['message_id'],item['source_rfq_no'] or '待确认',item['customer']))
         for issue in o['rejected_rows']:
@@ -211,3 +217,4 @@ def ingest_eml(con, raw, filename, dataset='user_upload'):
                         (o['message_id'],filename,'{}',note))
         audit(con,'import',o['message_id'],{'dataset':dataset,'sha256':o['sha256'],'lines':len(o['lines']),'notes':o['parse_notes']})
     return o
+

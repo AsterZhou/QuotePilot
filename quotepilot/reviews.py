@@ -55,6 +55,8 @@ def change_quote(con,qid,version,actor,reason,patches,approve=False,confirm=Fals
         obj['quoted_count']=sum(bool(x['unit_quote_cny']) for x in obj['lines']);obj['pending_count']=len(obj['lines'])-obj['quoted_count']
         if approve:
             if obj.get('approval_blockers'):raise ValueError('；'.join(obj['approval_blockers']))
+            from .provenance import assert_ready
+            for line in obj['lines']:assert_ready(con,line['line_id'],line.get('field_review_version'))
             if not confirm:raise ValueError('必须明确确认单位、件状、证书、交期、税费和来源')
             if obj['pending_count']:raise ValueError('仍有待核价行；请补全价格或新建仅含可报价行的草案')
             if any(not x['condition'] for x in obj['lines']):raise ValueError('需求件状未确认，请填写后再审批')
@@ -65,3 +67,4 @@ def change_quote(con,qid,version,actor,reason,patches,approve=False,confirm=Fals
         con.commit();return obj
     except Exception:
         con.rollback();raise
+

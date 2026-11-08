@@ -98,8 +98,14 @@ def confirm_run(con,rid,lines,actor,reason):
             lid=cur.lastrowid;ids.append(lid);added+=1
             evidence={'run_id':rid,'original_model_suggestion':suggested,'confirmed_fields':patch,'actor':actor,'reason':reason,'source_ids':original['source_ids']}
             con.execute('INSERT INTO line_evidence VALUES(?,?,?)',(lid,json.dumps(evidence,ensure_ascii=False),'人工确认'))
+            from .provenance import capture,locate_snippet,FIELDS
+            sid,location=locate_snippet(con,r['email_id'],suggested.get('evidence',''))
+            original_values={k:suggested.get('condition' if k=='part_condition' else k) for k in FIELDS}
+            capture(con,lid,suggested,method='genesis:'+str(original.get('model') or 'unknown'),source_id=sid,locator=location,
+                confirmed=True,actor=actor,reason=reason,original_values=original_values)
             con.execute('INSERT OR IGNORE INTO rfq_headers(email_id,source_rfq_no,customer) VALUES(?,?,?)',(r['email_id'],rfq,customer))
         receipt={'run_id':rid,'line_ids':ids,'new_lines':added,'actor':actor,'reason':reason,'selected_indices':indices,'unselected_indices':[i for i in range(len(original['lines'])) if i not in indices]}
         con.execute('UPDATE extraction_runs SET status=?,confirmation_json=? WHERE id=?',('confirmed',json.dumps(receipt,ensure_ascii=False),rid))
         audit(con,'ai_suggestions_confirmed',rid,receipt,actor);con.commit();return {**receipt,'idempotent':False}
     except Exception:con.rollback();raise
+

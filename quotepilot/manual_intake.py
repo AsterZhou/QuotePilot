@@ -23,8 +23,11 @@ def create_manual_line(con,email_id,body):
         cur=con.execute('''INSERT INTO rfq_lines(email_id,source_rfq_no,part_number,description,quantity,unit,urgency,part_condition,mpn,deadline,product_scope,customer,source_kind,source_ref) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',values)
         evidence={'provider':'human','simulated':False,'confirmed_fields':body,'source_id':source['id'],'source_sha256':source['sha256'],'locator_verification':'human_entered_not_automatically_verified'}
         con.execute('INSERT INTO line_evidence VALUES(?,?,?)',(cur.lastrowid,json.dumps(evidence,ensure_ascii=False),'人工核对'))
+        from .provenance import capture
+        capture(con,cur.lastrowid,body,method='human_transcription',source_id=source['id'],locator={'human_locator':body['source_locator'],'verification':'human_entered'},confirmed=True,actor=body['actor'],reason=body['reason'])
         con.execute('INSERT OR IGNORE INTO rfq_headers(email_id,source_rfq_no,customer) VALUES(?,?,?)',(email_id,body['source_rfq_no'].strip(),customer))
         result={'line_ids':[cur.lastrowid],'new_lines':1,'provider':'human','source_id':source['id']}
         con.execute('INSERT INTO manual_intakes VALUES(?,?,?)',(body['entry_key'],sha,json.dumps(result)))
         audit(con,'rfq_manual_transcribed',str(cur.lastrowid),evidence,body['actor']);con.commit();return {**result,'idempotent':False}
     except Exception:con.rollback();raise
+
