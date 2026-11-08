@@ -26,3 +26,14 @@ class MOIWorkflowClient:
         current=self.status(wid)
         if current['status']!='ready':raise ValueError('工作流未就绪：'+current['status']+'；不自动创建资源或重复提交')
         return self.request('POST',self.workflow_path(wid)+'/executions',{'values':{'vars_run_ref':run_ref},'trigger_now':True})
+
+    def execution(self,wid,eid):
+        if not re.fullmatch(r'[A-Za-z0-9_-]{1,100}',eid):raise ValueError('无效执行ID')
+        data=self.request('GET',self.workflow_path(wid)+'/executions/'+quote(eid,safe=''))
+        obj=data.get('execution',{})
+        if obj.get('execution_id')!=eid or obj.get('workflow_id')!=wid:raise ValueError('执行回执ID不匹配')
+        return obj
+
+    def result(self,wid,eid):
+        if not re.fullmatch(r'[A-Za-z0-9_-]{1,100}',eid):raise ValueError('无效执行ID')
+        return self.request('GET',self.workflow_path(wid)+'/executions/'+quote(eid,safe='')+'/result')

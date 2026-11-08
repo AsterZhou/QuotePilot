@@ -11,7 +11,7 @@ from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 
 
-def run_cycle():
+def run_cycle(approved_sink=None):
     import server
     from fastapi.testclient import TestClient
     from quotepilot.query_sql import execute
@@ -77,6 +77,7 @@ def run_cycle():
         metrics=call(admin,'GET','/api/operations/metrics').json();assert metrics['recorded_model_call_count']==0
         backup=call(admin,'GET','/api/admin/backup/download');backup_path=root/'download.db';backup_path.write_bytes(backup.content)
         restored=restore(backup_path,root/'restored.db',backup.headers['X-Backup-SHA256']);assert restored['tables']==inspect(db)['tables']
+        if approved_sink is not None:approved_sink(unchanged)
         return {'run_at':datetime.now(timezone.utc).isoformat(),'synthetic_only':True,'transport':'in-process ASGI TestClient, not public HTTP','external_model_calls':0,'native_platform_verified':False,'public_acceptance':False,'calls':calls,'http_checks':len(calls),'rfq_versions':versions,'quote_id':q['id'],'plans':{k:{'supplier':v['lines'][0]['selected']['offer']['supplier'],'cost_cny':v['total_cost_cny'],'selling_total_cny':v['suggested_total_cny']} for k,v in plans.items()},'quantity_change':diff['modified'][0]['changes']['quantity'],'quote_impacts':diff['quote_impacts'],'approved_snapshot_quantity':unchanged['lines'][0]['quantity'],'exports':{'pdf_sha256':hashlib.sha256(pdf).hexdigest(),'xlsx_sha256':hashlib.sha256(xlsx).hexdigest(),'readback_verified':True},'sql':{**sql,'generation':'script-authored SELECT, not natural language/model'},'audit_valid':health['audit']['valid'],'backup_restore_verified':True,'synthetic_rfq_lines':metrics['rfq_line_count'],'remaining':'No native platform, live model, public network, multitenancy or production deployment verified'}
 
 if __name__=='__main__':
