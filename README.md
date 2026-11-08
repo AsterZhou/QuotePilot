@@ -126,3 +126,7 @@ docs/                           验收、实际架构、180秒脚本
 
 旧v0.5/v0.6文档及证据仅作历史记录。以当前README、ACCEPTANCE_V07及v07证据为准。不存在客户端、收入、节省工时或泛化准确率结论。
 
+# 批次一收尾进度
+
+本轮修复和真实复测记录见 [docs/BATCH1_CLOSEOUT.md](docs/BATCH1_CLOSEOUT.md)，整库备份与恢复边界见 [docs/SQLITE_BACKUP.md](docs/SQLITE_BACKUP.md)。现网备份尚未取得，未覆盖部署。
+

@@ -122,10 +122,51 @@ def test_sqlite_connection_itself_is_readonly(db):
         with pytest.raises(sqlite3.OperationalError):con.execute("INSERT INTO historical(part_number) VALUES('SHOULD_NOT_EXIST')")
 
 
+def test_parameter_shape_has_one_bounded_repair(db):
+    class Repair(ModelContract):
+        def complete_json(self,instructions,text):
+            if 'evidence_rows' not in instructions and json.loads(text).get('validation_feedback'):
+                self.intent['parameters']=['UNKNOWN']
+            return super().complete_json(instructions,text)
+    model=Repair({'action':'query','title':'筛选','explanation':'明确件号','sql':'SELECT part_number FROM historical WHERE part_number=?','parameters':[]})
+    result=run(db,model,'查询UNKNOWN件号','2026-09-01','TEST_REPAIR')
+    assert result['status']=='completed' and result['rows']==[]
+    assert len(model.calls)==2 and len(result['validation_attempts'])==1
+
+
+def test_failed_repair_is_not_retried_forever(db):
+    model=ModelContract({'action':'query','title':'筛选','explanation':'无效参数','sql':'SELECT part_number FROM historical WHERE part_number=?','parameters':[]})
+    result=run(db,model,'查询件号','2026-09-01','TEST_REPAIR')
+    assert result['status']=='rejected' and len(model.calls)==2
+    assert result['proposed_sql'] and result['repair_response_id']=='TEST_ONLY_2'
+
+
+def test_security_rejection_does_not_trigger_repair(db):
+    model=ModelContract({'action':'query','title':'禁止','explanation':'恶意结构','sql':'DELETE FROM historical'})
+    result=run(db,model,'删除全部','2026-09-01','TEST_REPAIR')
+    assert result['status']=='rejected' and len(model.calls)==1
+
+
 def test_result_limits_and_timeouts(db):
     r=execute(db,'SELECT part_number FROM historical',max_rows=7)
     assert len(r['rows'])==7 and r['truncated']
     with pytest.raises(QueryRejected):execute(db,'SELECT COUNT(*) FROM historical a CROSS JOIN historical b CROSS JOIN historical c',timeout_seconds=.00001)
+
+
+def test_sqlglot_normalized_sqlite_strftime_is_allowed(db):
+    result=execute(db,"SELECT strftime('%Y-%m',inquiry_date) AS month,COUNT(*) AS n FROM historical GROUP BY 1")
+    assert result['rows'] and result['readonly']
+
+
+def test_supplier_names_can_be_aggregated_without_widening_table_access(db):
+    result=execute(db,'SELECT part_number,GROUP_CONCAT(DISTINCT supplier) AS suppliers FROM prices GROUP BY part_number')
+    assert result['rows'] and result['source_tables']==['prices']
+
+
+def test_analysis_dates_include_only_executed_date_literals_and_parameters():
+    from quotepilot.query_center import analysis_dates
+    dates=analysis_dates({'sql':"SELECT * FROM historical WHERE inquiry_date>='2026-06-01' AND inquiry_date<? AND part_number='MS-777'",'sql_parameters':['2026-07-01']})
+    assert dates==['2026-06-01','2026-07-01']
 
 
 def test_bound_injection_is_only_a_value(db):

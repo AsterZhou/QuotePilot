@@ -494,6 +494,26 @@ def center_today():
     return datetime.now(ZoneInfo('Asia/Shanghai')).date()
 
 
+@app.get('/api/admin/backup/download')
+def download_sqlite_backup():
+    # Existing production middleware requires the same administrator session.
+    # No path input, no secret environment export, no restore-through-web endpoint.
+    import tempfile
+    from starlette.background import BackgroundTask
+    from fastapi.responses import FileResponse
+    from quotepilot.backups import snapshot
+    folder=Path(tempfile.mkdtemp(prefix='quotepilot-backup-'))
+    target=folder/'quotepilot.sqlite3'
+    def cleanup():
+        target.unlink(missing_ok=True);folder.rmdir()
+    try:meta=snapshot(DB,target)
+    except Exception:
+        cleanup();raise HTTPException(503,'备份未完成；原数据库保持不变')
+    return FileResponse(target,media_type='application/octet-stream',filename='quotepilot-backup.sqlite3',
+        headers={'X-Backup-SHA256':meta['sha256'],'X-Backup-Integrity':'ok','Cache-Control':'no-store'},
+        background=BackgroundTask(cleanup))
+
+
 class CenterQuestion(BaseModel):
     question:str=Field(min_length=2,max_length=1000)
     asof:date=Field(default_factory=center_today)

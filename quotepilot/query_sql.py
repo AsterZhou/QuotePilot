@@ -33,6 +33,10 @@ FUNCTIONS={'count','sum','avg','min','max','coalesce','nullif','substr','substri
 
 class QueryRejected(ValueError):pass
 
+# SQLGlot's SQLite STRFTIME node includes these normalized internal functions.
+# They render back to STRFTIME; SQLite authorizer still checks runtime names.
+FUNCTIONS.update({'time_to_str','ts_or_ds_to_timestamp','group_concat'})
+
 @contextmanager
 def readonly(db):
     con=sqlite3.connect(Path(db).resolve().as_uri()+'?mode=ro',uri=True,timeout=.2)
@@ -57,7 +61,8 @@ def discover(db):
                 if r['table'] in ALLOWED:relations.append({'table':table,'column':r['from'],'target_table':r['table'],'target_column':r['to']})
     # SQLite's existing quote_items FK doesn't declare line_id; this is the application's documented logical join.
     if 'quote_items' in tables and 'rfq_lines' in tables:relations.append({'table':'quote_items','column':'line_id','target_table':'rfq_lines','target_column':'id','kind':'application_logical_join'})
-    return {'tables':tables,'relations':relations,'business_terms':GLOSSARY,'database':'SQLite','orders_table_available':False}
+    return {'tables':tables,'relations':relations,'business_terms':GLOSSARY,'database':'SQLite','orders_table_available':False,
+            'allowed_functions':sorted(FUNCTIONS-{'time_to_str','ts_or_ds_to_timestamp','and','or','exists','like'})}
 
 
 def validate(sql,schema,parameters,max_rows=100):

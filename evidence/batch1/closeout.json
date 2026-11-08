@@ -1,0 +1,796 @@
+{
+  "recorded_at": "2026-11-08T00:03:42.795364+00:00",
+  "base_remote_commit": "00a79a2710d527ce0a391f6ff75d2e31053a6e7d",
+  "dataset": "Official synthetic contest samples in isolated SQLite; no production/customer transactions",
+  "main_query_cases": {
+    "passed": 10,
+    "total": 10,
+    "note": "Latest saved results across several targeted attempts, not one flawless all-case run on the final revision"
+  },
+  "records": [
+    {
+      "name": "recent_clients",
+      "status": "completed",
+      "passed": true,
+      "response_id": "resp_f266b148-f564-9dde-9852-c6655f0aa9c9",
+      "usage": {
+        "input_tokens": 1565,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 483,
+        "output_tokens_details": {
+          "reasoning_tokens": 304
+        },
+        "total_tokens": 2048,
+        "x_details": [
+          {
+            "input_tokens": 1565,
+            "output_tokens": 483,
+            "output_tokens_details": {
+              "reasoning_tokens": 304
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 2048,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "returned_records": 5,
+      "truncated": false,
+      "elapsed_seconds": 34.041,
+      "analysis_status": "unavailable",
+      "analysis_response_id": "resp_7c851e1b-f6e1-951d-828f-5cf45f1d5574",
+      "analysis_failure_type": "ModelOutputError",
+      "analysis_validation_error_type": "ValueError",
+      "analysis_usage": {
+        "input_tokens": 686,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 720,
+        "output_tokens_details": {
+          "reasoning_tokens": 428
+        },
+        "total_tokens": 1406,
+        "x_details": [
+          {
+            "input_tokens": 686,
+            "output_tokens": 720,
+            "output_tokens_details": {
+              "reasoning_tokens": 428
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 1406,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "queried_at": "2026-11-08T00:00:39.860550+00:00"
+    },
+    {
+      "name": "pending_rfq",
+      "status": "completed",
+      "passed": true,
+      "response_id": "resp_174e946d-fde7-99f5-820b-df8dc4847f35",
+      "usage": {
+        "input_tokens": 1665,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 1795,
+        "output_tokens_details": {
+          "reasoning_tokens": 1585
+        },
+        "total_tokens": 3460,
+        "x_details": [
+          {
+            "input_tokens": 1665,
+            "output_tokens": 1795,
+            "output_tokens_details": {
+              "reasoning_tokens": 1585
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 3460,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "returned_records": 100,
+      "truncated": true,
+      "elapsed_seconds": 90.905,
+      "analysis_status": "generated",
+      "analysis_response_id": "resp_b6320869-2983-9ac0-bdfe-e95b74283f62",
+      "analysis_failure_type": null,
+      "analysis_validation_error_type": null,
+      "analysis_usage": {
+        "input_tokens": 2313,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 2473,
+        "output_tokens_details": {
+          "reasoning_tokens": 2093
+        },
+        "total_tokens": 4786,
+        "x_details": [
+          {
+            "input_tokens": 2313,
+            "output_tokens": 2473,
+            "output_tokens_details": {
+              "reasoning_tokens": 2093
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 4786,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "queried_at": "2026-11-07T23:51:39.939299+00:00"
+    },
+    {
+      "name": "increasing_parts",
+      "status": "completed",
+      "passed": true,
+      "response_id": "resp_f0f4f7da-370e-95af-930c-94faa7379695",
+      "usage": {
+        "input_tokens": 1601,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 1024
+        },
+        "output_tokens": 1037,
+        "output_tokens_details": {
+          "reasoning_tokens": 763
+        },
+        "total_tokens": 2638,
+        "x_details": [
+          {
+            "input_tokens": 1601,
+            "output_tokens": 1037,
+            "output_tokens_details": {
+              "reasoning_tokens": 763
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 1024
+            },
+            "total_tokens": 2638,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "returned_records": 7,
+      "truncated": false,
+      "elapsed_seconds": 50.307,
+      "analysis_status": "unavailable",
+      "analysis_response_id": "resp_17790685-5e03-9128-8618-ba1eeba60d3b",
+      "analysis_failure_type": "ModelOutputError",
+      "analysis_validation_error_type": null,
+      "analysis_usage": {
+        "input_tokens": 854,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 1678,
+        "output_tokens_details": {
+          "reasoning_tokens": 1220
+        },
+        "total_tokens": 2532,
+        "x_details": [
+          {
+            "input_tokens": 854,
+            "output_tokens": 1678,
+            "output_tokens_details": {
+              "reasoning_tokens": 1220
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 2532,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "queried_at": "2026-11-07T23:54:14.899165+00:00"
+    },
+    {
+      "name": "missing_orders",
+      "status": "clarify",
+      "passed": true,
+      "response_id": "resp_76d0a66a-cf9c-9dea-a134-38fd6fe9af52",
+      "usage": {
+        "input_tokens": 1908,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 1024
+        },
+        "output_tokens": 620,
+        "output_tokens_details": {
+          "reasoning_tokens": 444
+        },
+        "total_tokens": 2528,
+        "x_details": [
+          {
+            "input_tokens": 1908,
+            "output_tokens": 620,
+            "output_tokens_details": {
+              "reasoning_tokens": 444
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 1024
+            },
+            "total_tokens": 2528,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "returned_records": null,
+      "truncated": null,
+      "elapsed_seconds": null,
+      "analysis_status": null,
+      "analysis_response_id": null,
+      "analysis_failure_type": null,
+      "analysis_validation_error_type": null,
+      "analysis_usage": {},
+      "queried_at": "2026-11-07T17:35:14.103898+00:00"
+    },
+    {
+      "name": "supplier_reference",
+      "status": "completed",
+      "passed": true,
+      "response_id": "resp_7ba4de90-5601-9bdb-aae8-5f5b65338e6a",
+      "usage": {
+        "input_tokens": 1933,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 1024
+        },
+        "output_tokens": 798,
+        "output_tokens_details": {
+          "reasoning_tokens": 552
+        },
+        "total_tokens": 2731,
+        "x_details": [
+          {
+            "input_tokens": 1933,
+            "output_tokens": 798,
+            "output_tokens_details": {
+              "reasoning_tokens": 552
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 1024
+            },
+            "total_tokens": 2731,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "returned_records": 100,
+      "truncated": true,
+      "elapsed_seconds": 44.439,
+      "analysis_status": "generated",
+      "analysis_response_id": "resp_73cb544d-df09-9007-898f-b174ba74877c",
+      "analysis_failure_type": null,
+      "analysis_validation_error_type": null,
+      "analysis_usage": {
+        "input_tokens": 1878,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 1093,
+        "output_tokens_details": {
+          "reasoning_tokens": 748
+        },
+        "total_tokens": 2971,
+        "x_details": [
+          {
+            "input_tokens": 1878,
+            "output_tokens": 1093,
+            "output_tokens_details": {
+              "reasoning_tokens": 748
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 2971,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "queried_at": "2026-11-08T00:01:54.101514+00:00"
+    },
+    {
+      "name": "month_comparison",
+      "status": "completed",
+      "passed": true,
+      "response_id": "resp_23aed453-4455-9205-86b1-539e12bba2da",
+      "usage": {
+        "input_tokens": 1544,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 1024
+        },
+        "output_tokens": 795,
+        "output_tokens_details": {
+          "reasoning_tokens": 606
+        },
+        "total_tokens": 2339,
+        "x_details": [
+          {
+            "input_tokens": 1544,
+            "output_tokens": 795,
+            "output_tokens_details": {
+              "reasoning_tokens": 606
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 1024
+            },
+            "total_tokens": 2339,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "returned_records": 2,
+      "truncated": false,
+      "elapsed_seconds": 48.296,
+      "analysis_status": "generated",
+      "analysis_response_id": "resp_fbb748be-2be3-9ffb-8b00-81807216413f",
+      "analysis_failure_type": null,
+      "analysis_validation_error_type": null,
+      "analysis_usage": {
+        "input_tokens": 643,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 2317,
+        "output_tokens_details": {
+          "reasoning_tokens": 2022
+        },
+        "total_tokens": 2960,
+        "x_details": [
+          {
+            "input_tokens": 643,
+            "output_tokens": 2317,
+            "output_tokens_details": {
+              "reasoning_tokens": 2022
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 2960,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "queried_at": "2026-11-07T23:52:28.239320+00:00"
+    },
+    {
+      "name": "ambiguous_priority",
+      "status": "clarify",
+      "passed": true,
+      "response_id": "resp_87d21202-f79d-9be8-858b-dbb5833be86d",
+      "usage": {
+        "input_tokens": 1910,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 1024
+        },
+        "output_tokens": 305,
+        "output_tokens_details": {
+          "reasoning_tokens": 132
+        },
+        "total_tokens": 2215,
+        "x_details": [
+          {
+            "input_tokens": 1910,
+            "output_tokens": 305,
+            "output_tokens_details": {
+              "reasoning_tokens": 132
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 1024
+            },
+            "total_tokens": 2215,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "returned_records": null,
+      "truncated": null,
+      "elapsed_seconds": null,
+      "analysis_status": null,
+      "analysis_response_id": null,
+      "analysis_failure_type": null,
+      "analysis_validation_error_type": null,
+      "analysis_usage": {},
+      "queried_at": "2026-11-07T17:36:21.035689+00:00"
+    },
+    {
+      "name": "missing_sales",
+      "status": "clarify",
+      "passed": true,
+      "response_id": "resp_90b77e84-4500-99c3-953d-d7927eb70a45",
+      "usage": {
+        "input_tokens": 1913,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 1024
+        },
+        "output_tokens": 588,
+        "output_tokens_details": {
+          "reasoning_tokens": 445
+        },
+        "total_tokens": 2501,
+        "x_details": [
+          {
+            "input_tokens": 1913,
+            "output_tokens": 588,
+            "output_tokens_details": {
+              "reasoning_tokens": 445
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 1024
+            },
+            "total_tokens": 2501,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "returned_records": null,
+      "truncated": null,
+      "elapsed_seconds": null,
+      "analysis_status": null,
+      "analysis_response_id": null,
+      "analysis_failure_type": null,
+      "analysis_validation_error_type": null,
+      "analysis_usage": {},
+      "queried_at": "2026-11-07T17:36:38.423747+00:00"
+    },
+    {
+      "name": "malicious",
+      "status": "unsupported",
+      "passed": true,
+      "response_id": "resp_57800852-8ffb-906f-8078-494ec4d4b488",
+      "usage": {
+        "input_tokens": 1920,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 1024
+        },
+        "output_tokens": 206,
+        "output_tokens_details": {
+          "reasoning_tokens": 109
+        },
+        "total_tokens": 2126,
+        "x_details": [
+          {
+            "input_tokens": 1920,
+            "output_tokens": 206,
+            "output_tokens_details": {
+              "reasoning_tokens": 109
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 1024
+            },
+            "total_tokens": 2126,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "returned_records": null,
+      "truncated": null,
+      "elapsed_seconds": null,
+      "analysis_status": null,
+      "analysis_response_id": null,
+      "analysis_failure_type": null,
+      "analysis_validation_error_type": null,
+      "analysis_usage": {},
+      "queried_at": "2026-11-07T17:36:55.863541+00:00"
+    },
+    {
+      "name": "empty_result",
+      "status": "completed",
+      "passed": true,
+      "response_id": "resp_45c6b143-cf68-947a-9049-8fb7d2117a62",
+      "usage": {
+        "input_tokens": 1926,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 1024
+        },
+        "output_tokens": 500,
+        "output_tokens_details": {
+          "reasoning_tokens": 303
+        },
+        "total_tokens": 2426,
+        "x_details": [
+          {
+            "input_tokens": 1926,
+            "output_tokens": 500,
+            "output_tokens_details": {
+              "reasoning_tokens": 303
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 1024
+            },
+            "total_tokens": 2426,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "returned_records": 0,
+      "truncated": false,
+      "elapsed_seconds": 20.844,
+      "analysis_status": "no_rows",
+      "analysis_response_id": null,
+      "analysis_failure_type": null,
+      "analysis_validation_error_type": null,
+      "analysis_usage": {},
+      "queried_at": "2026-11-07T17:37:06.620747+00:00"
+    },
+    {
+      "name": "followup",
+      "status": "completed",
+      "passed": true,
+      "response_id": "resp_1855e4ab-8fb9-930e-b37c-2e7d1e6f8a31",
+      "usage": {
+        "input_tokens": 1789,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 1024
+        },
+        "output_tokens": 409,
+        "output_tokens_details": {
+          "reasoning_tokens": 202
+        },
+        "total_tokens": 2198,
+        "x_details": [
+          {
+            "input_tokens": 1789,
+            "output_tokens": 409,
+            "output_tokens_details": {
+              "reasoning_tokens": 202
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 1024
+            },
+            "total_tokens": 2198,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "returned_records": 1,
+      "truncated": false,
+      "elapsed_seconds": 21.262,
+      "analysis_status": "unavailable",
+      "analysis_response_id": "resp_32f9cdf1-c559-9609-9be7-5edc3195588c",
+      "analysis_failure_type": "ModelOutputError",
+      "analysis_validation_error_type": "ValueError",
+      "analysis_usage": {
+        "input_tokens": 622,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 448,
+        "output_tokens_details": {
+          "reasoning_tokens": 282
+        },
+        "total_tokens": 1070,
+        "x_details": [
+          {
+            "input_tokens": 622,
+            "output_tokens": 448,
+            "output_tokens_details": {
+              "reasoning_tokens": 282
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 1070,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "queried_at": "2026-11-08T00:01:01.127938+00:00"
+    }
+  ],
+  "separate_analysis_rechecks": [
+    {
+      "name": "followup",
+      "status": "generated",
+      "response_id": "resp_eabfe3f0-17df-9876-a04e-5e560268eba9",
+      "usage": {
+        "input_tokens": 608,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 258,
+        "output_tokens_details": {
+          "reasoning_tokens": 96
+        },
+        "total_tokens": 866,
+        "x_details": [
+          {
+            "input_tokens": 608,
+            "output_tokens": 258,
+            "output_tokens_details": {
+              "reasoning_tokens": 96
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 866,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "source_query_response_id": "resp_3ad2ec79-21b3-9264-ade4-55899d446f65"
+    },
+    {
+      "name": "increasing_parts",
+      "status": "generated",
+      "response_id": "resp_9f426cc3-241a-95de-9369-558c2a284422",
+      "usage": {
+        "input_tokens": 899,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 616,
+        "output_tokens_details": {
+          "reasoning_tokens": 210
+        },
+        "total_tokens": 1515,
+        "x_details": [
+          {
+            "input_tokens": 899,
+            "output_tokens": 616,
+            "output_tokens_details": {
+              "reasoning_tokens": 210
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 1515,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "source_query_response_id": "resp_f0f4f7da-370e-95af-930c-94faa7379695"
+    },
+    {
+      "name": "supplier_reference",
+      "status": "generated",
+      "response_id": "resp_5f04144e-23cc-9af6-aad3-de1674884b32",
+      "usage": {
+        "input_tokens": 1968,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 1685,
+        "output_tokens_details": {
+          "reasoning_tokens": 1212
+        },
+        "total_tokens": 3653,
+        "x_details": [
+          {
+            "input_tokens": 1968,
+            "output_tokens": 1685,
+            "output_tokens_details": {
+              "reasoning_tokens": 1212
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 3653,
+            "x_billing_type": "response_api"
+          }
+        ]
+      },
+      "source_query_response_id": "resp_d95b4296-5591-93f0-8e3c-785b0464e84a"
+    }
+  ],
+  "regression": {
+    "python_passed": 178,
+    "modules": 12,
+    "warnings": 1,
+    "dom_assertions": 11,
+    "dom_scope": "jsdom with mocked HTTP; not public browser acceptance"
+  },
+  "native_search": {
+    "genesis_responses_http": 503,
+    "genesis_error_code": "endpoint_capability_mismatch",
+    "moi_tools_list_http": 200,
+    "moi_tools_list_total": 0,
+    "moi_agents_list_http": 200,
+    "moi_agents_total": 6,
+    "system_web_search_detail_http": 200,
+    "system_web_search_exists": true,
+    "agent_card_http": 200,
+    "a2a_http": 200,
+    "task_id": "art-b10f44b7b91da6d1919012311d6a518628fbcce3d53d507b",
+    "task_state": "failed",
+    "trace_id": "trace-e1007d3ab9a0f7c3c51ee450e6da706c35c80935da4ad6b7",
+    "failure_reason": "reason.agent_runtime.provider_unavailable",
+    "returned_search_results": 0,
+    "important": "An empty tool directory does NOT prove native search is absent: system MOMO has moi_web_search, but this execution failed."
+  },
+  "search_acceptance": {
+    "successful_queries": 0,
+    "required": 3,
+    "source_links_verified": 0,
+    "native_attempts": 1,
+    "remaining_native_queries": "not retried after provider_unavailable",
+    "third_party_keys_created": false
+  },
+  "joint_live_status": "blocked; no successful external search result",
+  "backup": {
+    "new_download_endpoint": "/api/admin/backup/download",
+    "local_backup_restore_tests": 3,
+    "production_snapshot_downloaded": false,
+    "production_restore_verified": false,
+    "blocker": "Render Free has no shell/SSH/one-off jobs; current production code has no full SQLite export; browser Render login was not completed."
+  },
+  "deployment": {
+    "service_id": "srv-dbni3bk9v7es73cr4rd0",
+    "plan": "free",
+    "triggered": false,
+    "live_branch_unchanged": "release-v0.7",
+    "url": "https://quotepilot-demo.onrender.com/",
+    "public_http_attempts": [
+      {
+        "path": "/healthz",
+        "result": "ReadTimeout",
+        "timeout_seconds": 45
+      },
+      {
+        "path": "/api/health",
+        "result": "ReadTimeout",
+        "timeout_seconds": 45
+      },
+      {
+        "path": "/api/admin/backup/download",
+        "result": "ReadTimeout",
+        "timeout_seconds": 45
+      },
+      {
+        "path": "/login",
+        "result": "ReadTimeout",
+        "timeout_seconds": 45
+      }
+    ],
+    "public_acceptance": "not passed"
+  },
+  "progress": {
+    "definition": "Main natural-language checks (10) + real external search checks (3) + real joint check (1); excludes deployment readiness",
+    "passed": 10,
+    "total": 14,
+    "percent": 71.4
+  },
+  "remaining": [
+    "Some complete query flows still have unavailable AI analysis because evidence checks reject model assertions; isolated analysis retries can pass but do not prove consistent success.",
+    "Whole supplier flow passed in 44.44s on final targeted retry; latency remains material.",
+    "Need verified old SQLite backup or explicit permission to reset existing demo data before deployment.",
+    "Need MOI agent runtime/provider recovery for native search, or a separately authorized fallback search key.",
+    "Batch two not started because batch one deployment/external/joint acceptance is incomplete."
+  ],
+  "billing_note": "Only existing Genesis/MOI credentials used. No paid resource creation, account upgrade or third-party key creation. These receipts are not a complete billing ledger."
+}

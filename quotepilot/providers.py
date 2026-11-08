@@ -39,15 +39,19 @@ class GenesisProvider:
         if self.api_style not in ('responses','chat_completions'):raise ValueError('未知 Genesis API_STYLE')
         if not self.token or not self.model:raise ValueError('Genesis 缺少访问凭据或模型 ID')
         if not self.base.startswith('https://'):raise ValueError('Genesis 服务地址必须使用 HTTPS')
-    def complete_json(self,instructions,text,max_output_tokens=2048):
+    def complete_json(self,instructions,text,max_output_tokens=2048,reasoning_effort=None):
         messages=[{'role':'system','content':instructions}, {'role':'user','content':text}]
         started=time.perf_counter()
         if self.api_style=='responses':
             path='/responses';payload={'model':self.model,'input':[{'role':'user','content':text}],
                                       'instructions':messages[0]['content'],'store':False,'max_output_tokens':min(4096,max(512,int(max_output_tokens)))}
+            if reasoning_effort is not None:
+                if reasoning_effort not in ('low','medium','high'):raise ValueError('无效推理级别')
+                payload['reasoning']={'effort':reasoning_effort}
         else:
             path='/chat/completions';payload={'model':self.model,'messages':messages,'max_tokens':min(4096,max(512,int(max_output_tokens)))}
-        with httpx.Client(timeout=60,transport=self.transport,follow_redirects=False) as client:
+        # Separate connection and inference deadlines; no automatic retries or model switching.
+        with httpx.Client(timeout=httpx.Timeout(90,connect=10),transport=self.transport,follow_redirects=False) as client:
             response=client.post(self.base+path,headers={'Authorization':'Bearer '+self.token},json=payload)
             response.raise_for_status();raw=response.json()
         metadata={'provider':'genesis','simulated':False,'model':self.model,'api_style':self.api_style,'response_id':raw.get('id'),'usage':raw.get('usage',{}),'elapsed_seconds':round(time.perf_counter()-started,3),'status':raw.get('status')}

@@ -67,6 +67,17 @@ def test_incomplete_responses_rejected(monkeypatch):
     p=GenesisProvider(httpx.MockTransport(lambda req:httpx.Response(200,json={'status':'incomplete','output':[]})))
     with pytest.raises(ValueError,match='未完成'):p.extract('anything')
 
+
+def test_explicit_low_reasoning_is_sent_without_changing_extraction_default(monkeypatch):
+    monkeypatch.setenv('GENESIS_ACCESS_TOKEN','fake');monkeypatch.setenv('GENESIS_MODEL_ID','test');monkeypatch.setenv('GENESIS_API_STYLE','responses')
+    def respond(req):
+        body=json.loads(req.content)
+        assert body['reasoning']=={'effort':'low'} and body['max_output_tokens']==4096
+        return httpx.Response(200,json={'id':'TEST_ONLY_LOW','status':'completed','output':[{'type':'message','content':[{'type':'output_text','text':'{}'}]}]})
+    text,receipt=GenesisProvider(httpx.MockTransport(respond)).complete_json('JSON','test',max_output_tokens=4096,reasoning_effort='low')
+    assert text=='{}' and receipt['response_id']=='TEST_ONLY_LOW'
+
 def test_false_verified_status_without_config(client,monkeypatch):
     setup_run(client,monkeypatch)
     state=client.get('/api/integration').json();assert not state['genesis_configured'] and not state['model_connected'] and not state['matrixone_connected']
+
