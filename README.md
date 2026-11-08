@@ -1,3 +1,5 @@
+> MatrixNEXT最终交付状态与最新真实集成证据见 [最终说明](docs/final/README.md) 和 [提交核对表](docs/final/SUBMISSION_CHECKLIST.md)。独立公网业务环境尚未验收；不要把本地或私有链接当作已交付公网智能体。
+
 # QuotePilot · 商业闭环开发分支
 
 2026-11-08：第二至第五批开发在独立 `commercial-upgrades` 分支推进，**未部署；现网服务及数据未修改**。下方v0.7/批次一内容属于历史记录，不能视为本轮线上状态。

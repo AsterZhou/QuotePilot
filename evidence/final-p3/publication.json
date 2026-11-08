@@ -1,0 +1,39 @@
+{
+  "project_id": "appgprj_6af04efb54488191b5606bff81038890",
+  "audience": "public",
+  "version": {
+    "id": "appgprj_6af04efb54488191b5606bff81038890~appgver_fd69c455bc24819193471d53e9875192",
+    "project_id": "appgprj_6af04efb54488191b5606bff81038890",
+    "version_number": 2,
+    "source": {
+      "commit_sha": "4d05fcaf01627a7aeef69e1ed3dad39fa9185889"
+    },
+    "archive_storage": {
+      "archive_format": "tar",
+      "sediment_file_id": "file_00000000ac5881fd84c24b547893ad93",
+      "content_hash": "sha256:2b20995e0afc28a13541f9b56c09aaf1b185117e81c356c1fb81bfcc0c4dbe19",
+      "size_bytes": 10536960,
+      "file_count": 7
+    },
+    "screenshot_url": null,
+    "deployment_id": null
+  },
+  "deployment": {
+    "id": "appgdep_6af055c9a6d481919ca34ce792225a59",
+    "project_id": "appgprj_6af04efb54488191b5606bff81038890",
+    "title": "QuotePilot · MatrixNEXT 2026",
+    "version_id": "appgprj_6af04efb54488191b5606bff81038890~appgver_fd69c455bc24819193471d53e9875192",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site",
+    "has_mcp": false,
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6af04efb54488191b5606bff81038890",
+    "failure_message": null,
+    "env_set_revision": 0,
+    "updated_at": "2026-11-08T10:58:24.946006+00:00"
+  },
+  "source_commit": "4d05fcaf01627a7aeef69e1ed3dad39fa9185889",
+  "business_agent_deployed": false,
+  "production_render_modified": false
+}

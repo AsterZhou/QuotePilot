@@ -1,0 +1,32 @@
+[
+  {
+    "url": "https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/",
+    "status": 200,
+    "elapsed_ms": 5230,
+    "bytes": 4810,
+    "content_type": "text/html",
+    "cache_control": "public, max-age=0, must-revalidate",
+    "sha256": "0e55baee8c7530e144871581b523e85d418ca0025b5f84d84f92c53c6662ca19",
+    "authentication_sent": false
+  },
+  {
+    "url": "https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/video/",
+    "status": 200,
+    "elapsed_ms": 3806,
+    "bytes": 1404,
+    "content_type": "text/html",
+    "cache_control": "public, max-age=0, must-revalidate",
+    "sha256": "9f223ca0c70f2a17085a801e14eb220097c666610688b6143c2c240ee46cbeef",
+    "authentication_sent": false
+  },
+  {
+    "url": "https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/quotepilot-v2.mp4",
+    "status": 200,
+    "elapsed_ms": 4131,
+    "bytes": 9434302,
+    "content_type": "video/mp4",
+    "cache_control": "public, max-age=0, must-revalidate",
+    "sha256": "d710aa5de4e3704b0298cfa2707469264479ec6ff253cb7558a80cfb24afb29b",
+    "authentication_sent": false
+  }
+]

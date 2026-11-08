@@ -1,0 +1,6 @@
+{
+  "success": false,
+  "error": "HTTP403 on plain urllib request, no explicit User-Agent",
+  "cause_confirmed": false,
+  "note": "Earlier explicit-UA unauthenticated request and external browser succeeded"
+}
