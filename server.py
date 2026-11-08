@@ -653,7 +653,10 @@ def new_commercial_quote(req:CommercialQuoteRequest):
     with database() as con:
         try:return create_draft(con,req.model_dump(mode='json'))
         except KeyError:raise HTTPException(404,'询价行不存在')
-        except ValueError as ex:raise HTTPException(409,str(ex))
+        except ValueError as ex:
+            con.rollback()
+            with con:audit(con,'commercial_quote_calculation_failed','new_draft',{'error_type':type(ex).__name__})
+            raise HTTPException(409,str(ex))
 
 
 @app.get('/api/commercial-quotes')
@@ -885,3 +888,13 @@ def center_joint(req:JointQuestion,request:Request):
     return save(DB,sid,req.question,{**internal,'status':'completed','mode':'joint','sources':external['sources'],
         'comparisons':aligned,'live_search':True,'public_extraction_response_id':receipt['response_id'],
         'message':'仅对型号、规格、件状、单位、币种及价格日期均可核对的记录计算参考价差；不代表成交机会或可采购库存。'})
+
+@app.get('/api/operations/metrics')
+def recorded_operations_metrics():
+    from quotepilot.operations import metrics
+    with database() as con:return metrics(con)
+
+@app.get('/api/operations/health')
+def operations_health():
+    from quotepilot.operations import health
+    with database() as con:return health(con)

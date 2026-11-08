@@ -1,10 +1,29 @@
+# QuotePilot · 商业闭环开发分支
+
+2026-11-08：第二至第五批开发在独立 `commercial-upgrades` 分支推进，**未部署；现网服务及数据未修改**。下方v0.7/批次一内容属于历史记录，不能视为本轮线上状态。
+
+已新增字段证据与人工复核、RFQ版本差异、供应商原件及结构化复核、透明成本和三方案、双角色审批、PDF/Excel及运行指标。测试使用赛事样例与明确合成数据；供应商字段和汇率目前人工维护，未实现个人SSO、多租户或完整原生平台验收。
+
+- [第二批交付](docs/BATCH2_DELIVERY.md) · [第三批](docs/BATCH3_DELIVERY.md) · [第四批](docs/BATCH4_DELIVERY.md) · [第五批及限制](docs/BATCH5_DELIVERY.md)
+- [可复现全链记录](evidence/business_cycle.json) · [三分钟脚本](docs/DEMO_3MIN.md) · [架构](docs/ARCHITECTURE_COMMERCIAL.md)
+- [集中部署待办](docs/DEPLOYMENT_TODO.md)：所有登录、部署、现网备份获取、公网及原生平台验收待以后集中处理。
+
+```bash
+python -m pytest -q
+python scripts/business_cycle.py --output tmp/business_cycle.json
+```
+
+第二条仅使用临时SQLite和合成文件，禁用赛事自动播种，不调用外部模型或网络；ASGI TestClient结果不等于公网验收。
+
+---
+
 # QuotePilot · 报价室 v0.7.1
 
 ## 批次一：AI 查询中心（独立分支验收）
 
 新增 Schema 检索、业务术语、独立只读 SQLite、SQLGlot AST/字段/函数校验、会话追问、澄清及带证据引用的 AI 分析。保留原四个快捷统计与所有业务页面。外部搜索为 Tavily/Brave 可替换适配器，未配置 Key 时明确阻塞；联合参考价对齐拒绝缺失单位/规格/币种的记录。当前未迁移数据库，也未覆盖现网部署；验收状态以 docs/BATCH1_ACCEPTANCE.md 为准。
 
-配置与复现：见 docs/BATCH1_CONFIGURATION.md。本批次不自动进入批次二。
+配置与复现：见 docs/BATCH1_CONFIGURATION.md。此处为批次一历史状态；后续开发见文首。
 
 
 ## 2026-11-07 工作台可用性更新

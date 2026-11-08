@@ -96,9 +96,11 @@
     },
     {
       "name": "08_scan_manual.eml",
-      "sha256": "edd691ee697e77d207c87b49ca1ce4292716e29727d7b5542c2ccded7423419a",
+      "sha256": "dda34856ccf10fd777d893b0e4d035a48eeccb578aac8a23076cac101eee4904",
       "expected": [],
-      "must_report_issue": true
+      "must_report_issue": true,
+      "previous_missing_sha256": "edd691ee697e77d207c87b49ca1ce4292716e29727d7b5542c2ccded7423419a",
+      "fixture_note": "Regenerated synthetic raster PDF on 2026-11-08; missing original bytes not claimed restored."
     },
     {
       "name": "09_plain_alias.eml",

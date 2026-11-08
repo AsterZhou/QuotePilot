@@ -1,0 +1,388 @@
+{
+  "run_at": "2026-11-08T01:09:21.364097+00:00",
+  "synthetic_only": true,
+  "transport": "in-process ASGI TestClient, not public HTTP",
+  "external_model_calls": 0,
+  "native_platform_verified": false,
+  "public_acceptance": false,
+  "calls": [
+    {
+      "method": "GET",
+      "path": "/api/operations/metrics",
+      "status": 401,
+      "elapsed_ms": 2.25,
+      "expected_status": 401
+    },
+    {
+      "method": "POST",
+      "path": "/auth/login",
+      "status": 200,
+      "elapsed_ms": 2.07,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/auth/login",
+      "status": 200,
+      "elapsed_ms": 1.79,
+      "expected_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/operations/metrics",
+      "status": 403,
+      "elapsed_ms": 1.45,
+      "expected_status": 403
+    },
+    {
+      "method": "POST",
+      "path": "/api/emails/import",
+      "status": 200,
+      "elapsed_ms": 10.35,
+      "expected_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/lines",
+      "status": 200,
+      "elapsed_ms": 5.34,
+      "expected_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/lines/1/field-evidence",
+      "status": 200,
+      "elapsed_ms": 4.56,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/lines/1/review-fields",
+      "status": 200,
+      "elapsed_ms": 9.7,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/rfq-versions",
+      "status": 200,
+      "elapsed_ms": 6.28,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/supplier-offers/sources",
+      "status": 200,
+      "elapsed_ms": 4.47,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/supplier-offers",
+      "status": 200,
+      "elapsed_ms": 5.92,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/supplier-offers/OFFER-2a0f3ca3087d4762/confirm",
+      "status": 200,
+      "elapsed_ms": 6.15,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/supplier-offers",
+      "status": 200,
+      "elapsed_ms": 4.93,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/supplier-offers/OFFER-511104fe9f004acc/confirm",
+      "status": 200,
+      "elapsed_ms": 5.03,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/supplier-offers",
+      "status": 200,
+      "elapsed_ms": 4.98,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/supplier-offers/OFFER-1a6cba2afc884e89/confirm",
+      "status": 200,
+      "elapsed_ms": 5.64,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/commercial-quotes",
+      "status": 200,
+      "elapsed_ms": 7.52,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/commercial-quotes",
+      "status": 200,
+      "elapsed_ms": 7.6,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/commercial-quotes",
+      "status": 200,
+      "elapsed_ms": 6.35,
+      "expected_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/commercial-quotes/CQ-357FEA05FC384030/export/pdf",
+      "status": 409,
+      "elapsed_ms": 3.97,
+      "expected_status": 409
+    },
+    {
+      "method": "POST",
+      "path": "/api/commercial-quotes/CQ-357FEA05FC384030/approve",
+      "status": 409,
+      "elapsed_ms": 4.71,
+      "expected_status": 409
+    },
+    {
+      "method": "POST",
+      "path": "/api/commercial-quotes/CQ-357FEA05FC384030/review",
+      "status": 200,
+      "elapsed_ms": 6.23,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/commercial-quotes/CQ-357FEA05FC384030/approve",
+      "status": 403,
+      "elapsed_ms": 1.59,
+      "expected_status": 403
+    },
+    {
+      "method": "POST",
+      "path": "/api/commercial-quotes/CQ-357FEA05FC384030/approve",
+      "status": 200,
+      "elapsed_ms": 6.06,
+      "expected_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/commercial-quotes/CQ-357FEA05FC384030/export/pdf",
+      "status": 200,
+      "elapsed_ms": 32.04,
+      "expected_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/commercial-quotes/CQ-357FEA05FC384030/export/xlsx",
+      "status": 200,
+      "elapsed_ms": 12.77,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/emails/import",
+      "status": 200,
+      "elapsed_ms": 8.59,
+      "expected_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/lines",
+      "status": 200,
+      "elapsed_ms": 3.73,
+      "expected_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/lines/2/field-evidence",
+      "status": 200,
+      "elapsed_ms": 4.02,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/lines/2/review-fields",
+      "status": 200,
+      "elapsed_ms": 6.75,
+      "expected_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/rfq-versions",
+      "status": 200,
+      "elapsed_ms": 5.09,
+      "expected_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/rfq-versions/compare",
+      "status": 200,
+      "elapsed_ms": 4.3,
+      "expected_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/commercial-quotes/CQ-357FEA05FC384030",
+      "status": 200,
+      "elapsed_ms": 4.17,
+      "expected_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/operations/health",
+      "status": 200,
+      "elapsed_ms": 4.97,
+      "expected_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/operations/metrics",
+      "status": 200,
+      "elapsed_ms": 3.32,
+      "expected_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/backup/download",
+      "status": 200,
+      "elapsed_ms": 11.42,
+      "expected_status": 200
+    }
+  ],
+  "http_checks": 36,
+  "rfq_versions": [
+    "RFQV-96b9245034d64e57",
+    "RFQV-d5261a66a45b4577"
+  ],
+  "quote_id": "CQ-357FEA05FC384030",
+  "plans": {
+    "lowest_cost": {
+      "supplier": "SYN-Cheap",
+      "cost_cny": "1102.00",
+      "selling_total_cny": "1378.00"
+    },
+    "fastest": {
+      "supplier": "SYN-Fast",
+      "cost_cny": "1602.00",
+      "selling_total_cny": "2003.00"
+    },
+    "balanced": {
+      "supplier": "SYN-Fast",
+      "cost_cny": "1602.00",
+      "selling_total_cny": "2003.00"
+    }
+  },
+  "quantity_change": {
+    "before": 100,
+    "after": 500
+  },
+  "quote_impacts": [
+    {
+      "quote_id": "CQ-357FEA05FC384030",
+      "quote_status": "approved",
+      "old_line_id": 1,
+      "part_number": "PN-0001",
+      "supplier": "SYN-Cheap",
+      "source_resource_id": null,
+      "new_quantity": 500,
+      "known_moq": 1,
+      "changes": [
+        "quantity"
+      ],
+      "requires_requote": true,
+      "risks": [
+        "原报价有效性待人工复核",
+        "报价需重新核价，历史报价快照保持不变",
+        "采购量变化，需重新核对供应商单价及MOQ",
+        "单位成本和利润需重新计算，不假定数量折扣"
+      ],
+      "profit_impact": "unknown_until_recalculated"
+    },
+    {
+      "quote_id": "CQ-204519293084478F",
+      "quote_status": "draft",
+      "old_line_id": 1,
+      "part_number": "PN-0001",
+      "supplier": "SYN-Fast",
+      "source_resource_id": null,
+      "new_quantity": 500,
+      "known_moq": 1,
+      "changes": [
+        "quantity"
+      ],
+      "requires_requote": true,
+      "risks": [
+        "原报价有效性待人工复核",
+        "报价需重新核价，历史报价快照保持不变",
+        "采购量变化，需重新核对供应商单价及MOQ",
+        "单位成本和利润需重新计算，不假定数量折扣"
+      ],
+      "profit_impact": "unknown_until_recalculated"
+    },
+    {
+      "quote_id": "CQ-8991DB6C350D4A1F",
+      "quote_status": "draft",
+      "old_line_id": 1,
+      "part_number": "PN-0001",
+      "supplier": "SYN-Fast",
+      "source_resource_id": null,
+      "new_quantity": 500,
+      "known_moq": 1,
+      "changes": [
+        "quantity"
+      ],
+      "requires_requote": true,
+      "risks": [
+        "原报价有效性待人工复核",
+        "报价需重新核价，历史报价快照保持不变",
+        "采购量变化，需重新核对供应商单价及MOQ",
+        "单位成本和利润需重新计算，不假定数量折扣"
+      ],
+      "profit_impact": "unknown_until_recalculated"
+    }
+  ],
+  "approved_snapshot_quantity": 100,
+  "exports": {
+    "pdf_sha256": "d455dd6f635967e8dfaf408298594926dfd84a4e5c8fa6c53ebe44853d8ac0d1",
+    "xlsx_sha256": "f16056c6319140ac29906e4bd5fba69fabe785df348a3bf7d4dcaa3814af0c2c",
+    "readback_verified": true
+  },
+  "sql": {
+    "rows": [
+      {
+        "n": 1
+      }
+    ],
+    "columns": [
+      "n"
+    ],
+    "sql": "SELECT COUNT(*) AS \"n\" FROM \"commercial_quote_states\" AS \"commercial_quote_states\" WHERE \"commercial_quote_states\".\"status\" = ? LIMIT 101",
+    "sql_parameters": [
+      "approved"
+    ],
+    "source_tables": [
+      "commercial_quote_states"
+    ],
+    "returned_records": 1,
+    "truncated": false,
+    "query_ms": 0.53,
+    "readonly": true,
+    "row_limit": 100,
+    "timeout_seconds": 1.0,
+    "generation": "script-authored SELECT, not natural language/model"
+  },
+  "audit_valid": true,
+  "backup_restore_verified": true,
+  "synthetic_rfq_lines": 2,
+  "remaining": "No native platform, live model, public network, multitenancy or production deployment verified"
+}
