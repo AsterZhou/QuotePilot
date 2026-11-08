@@ -1,0 +1,13 @@
+{
+  "kind": "Cloudflare Quick Tunnel (temporary process-bound preview)",
+  "paid_resources_created": 0,
+  "production_service_touched": false,
+  "public_acceptance": false,
+  "account_login_required": false,
+  "blocker": {
+    "type": "RuntimeError",
+    "reason": "Quick Tunnel did not return a public URL within 45 seconds"
+  },
+  "preview_closed_after_test": true,
+  "persistent_hosting_deployed": false
+}

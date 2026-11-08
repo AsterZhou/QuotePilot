@@ -1,0 +1,64 @@
+{
+  "kind": "Cloudflare Quick Tunnel (temporary process-bound preview)",
+  "paid_resources_created": 0,
+  "production_service_touched": false,
+  "public_acceptance": false,
+  "account_login_required": false,
+  "url": "https://api.trycloudflare.com",
+  "health_checks": [
+    {
+      "url": "https://api.trycloudflare.com/healthz",
+      "status": 403,
+      "elapsed_seconds": 4.657,
+      "body": "Your request was blocked."
+    },
+    {
+      "url": "https://api.trycloudflare.com/healthz",
+      "status": 403,
+      "elapsed_seconds": 8.793,
+      "body": "Your request was blocked."
+    },
+    {
+      "url": "https://api.trycloudflare.com/healthz",
+      "status": 403,
+      "elapsed_seconds": 12.659,
+      "body": "Your request was blocked."
+    },
+    {
+      "url": "https://api.trycloudflare.com/healthz",
+      "status": 403,
+      "elapsed_seconds": 16.718,
+      "body": "Your request was blocked."
+    },
+    {
+      "url": "https://api.trycloudflare.com/healthz",
+      "status": 403,
+      "elapsed_seconds": 22.756,
+      "body": "Your request was blocked."
+    },
+    {
+      "url": "https://api.trycloudflare.com/healthz",
+      "status": 403,
+      "elapsed_seconds": 27.498,
+      "body": "Your request was blocked."
+    },
+    {
+      "url": "https://api.trycloudflare.com/healthz",
+      "status": 403,
+      "elapsed_seconds": 32.393,
+      "body": "Your request was blocked."
+    },
+    {
+      "url": "https://api.trycloudflare.com/healthz",
+      "status": 403,
+      "elapsed_seconds": 36.873,
+      "body": "Your request was blocked."
+    }
+  ],
+  "blocker": {
+    "type": "RuntimeError",
+    "reason": "Public origin did not become reachable; no E2E success claimed"
+  },
+  "preview_closed_after_test": true,
+  "persistent_hosting_deployed": false
+}
