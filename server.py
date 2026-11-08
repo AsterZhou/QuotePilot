@@ -546,6 +546,160 @@ class MatchRequest(BaseModel):
     reason:str=Field(min_length=3,max_length=1000)
 
 
+class SupplierOfferRequest(BaseModel):
+    source_id:str=Field(min_length=1,max_length=100)
+    source_locator:str=Field(min_length=1,max_length=1000)
+    source_excerpt:str=Field(min_length=1,max_length=4000)
+    supplier:str=Field(min_length=1,max_length=200)
+    part_number:str=Field(min_length=1,max_length=150)
+    specification:str=Field(min_length=1,max_length=1000)
+    unit:str=Field(min_length=1,max_length=30)
+    condition:str=Field(min_length=1,max_length=30)
+    currency:str=Field(min_length=3,max_length=3)
+    unit_price:Decimal=Field(gt=0,le=1000000000000)
+    fx_to_cny:Decimal=Field(gt=0,le=1000000)
+    fx_source:str=Field(min_length=1,max_length=1000)
+    moq:int=Field(ge=1,le=1000000000,strict=True)
+    lead_days:int=Field(ge=0,le=3650,strict=True)
+    shipping_total:Decimal=Field(ge=0,le=1000000000000)
+    tax_rate:Decimal=Field(ge=0,lt=1)
+    quote_date:date
+    valid_until:date
+    payment_terms:str=Field(min_length=1,max_length=1000)
+
+
+class CommercialQuoteRequest(BaseModel):
+    line_ids:list[int]=Field(min_length=1,max_length=100)
+    scheme:Literal['lowest_cost','fastest','balanced']='balanced'
+    asof:date=Field(default_factory=center_today)
+    valid_until:date
+    delivery_deadline:date|None=None
+    target_margin:Decimal=Field(ge=0,lt=1)
+    line_costs:dict[str,dict[str,Decimal]]=Field(default_factory=dict)
+    company_name:str=Field(min_length=1,max_length=200)
+    company_contact:str=Field(default='',max_length=500)
+    customer_name:str=Field(min_length=1,max_length=200)
+    customer_contact:str=Field(default='',max_length=500)
+    delivery_terms:str=Field(min_length=1,max_length=1000)
+    payment_terms:str=Field(min_length=1,max_length=1000)
+    remarks:str=Field(default='',max_length=1000)
+
+
+class CommercialReviewRequest(BaseModel):
+    version:int=Field(ge=1)
+    actor:str=Field(min_length=1,max_length=100)
+    reason:str=Field(min_length=3,max_length=1000)
+    confirm_risks:bool=False
+
+
+@app.get('/api/auth/me')
+def auth_me(request:Request):
+    from quotepilot.security import session_role,COOKIE,production
+    role=session_role(request.cookies.get(COOKIE,'')) if production() else 'admin'
+    return {'role':role,'account':role,'production':production(),'identity_scope':'单团队共享角色账户；无公众注册，不是多租户'}
+
+
+@app.post('/api/supplier-offers/sources')
+async def supplier_source(file:UploadFile=File(...)):
+    import hashlib
+    name=Path(file.filename or '').name
+    if Path(name).suffix.lower() not in ('.pdf','.xlsx','.eml','.txt'):raise HTTPException(415,'仅接受PDF、Excel、EML或TXT原报价文件')
+    raw=await file.read(5*1024*1024+1)
+    if not raw or len(raw)>5*1024*1024:raise HTTPException(413,'文件为空或超过5MB')
+    if name.lower().endswith('.xlsx'):
+        import zipfile
+        from io import BytesIO
+        try:
+            with zipfile.ZipFile(BytesIO(raw)) as z:
+                if sum(x.file_size for x in z.infolist())>50*1024*1024:raise ValueError()
+        except Exception:raise HTTPException(422,'工作簿无效或解压体积超限')
+    digest=hashlib.sha256(raw).hexdigest();sid='SUPSRC-'+digest
+    with database() as con:
+        with con:
+            con.execute("INSERT OR IGNORE INTO source_files(id,filename,sha256,content,kind,dataset) VALUES(?,?,?,?,?,?)",(sid,name,digest,raw,'supplier_quote','user_upload'))
+            audit(con,'supplier_source_uploaded',sid,{'filename':name,'sha256':digest,'bytes':len(raw)})
+    return {'source_id':sid,'filename':name,'sha256':digest,'parse_method':'人工结构化并复核，不声称已自动解析文件'}
+
+
+@app.post('/api/supplier-offers')
+def add_supplier_offer(req:SupplierOfferRequest):
+    from quotepilot.commercial import add_offer
+    with database() as con:
+        try:return add_offer(con,req.model_dump(mode='json'))
+        except ValueError as ex:raise HTTPException(409,str(ex))
+
+
+@app.get('/api/supplier-offers')
+def supplier_offers():
+    from quotepilot.commercial import offers
+    with database() as con:return {'rows':offers(con)}
+
+
+@app.post('/api/supplier-offers/{oid}/confirm')
+def review_supplier_offer(oid:str,req:CommercialReviewRequest,request:Request):
+    from quotepilot.commercial import confirm_offer
+    from quotepilot.security import session_role,COOKIE,production
+    role=session_role(request.cookies.get(COOKIE,'')) if production() else 'admin'
+    with database() as con:
+        try:return confirm_offer(con,oid,str(role)+' / '+req.actor,req.reason)
+        except KeyError:raise HTTPException(404,'供应商报价不存在')
+        except ValueError as ex:raise HTTPException(409,str(ex))
+
+
+@app.post('/api/commercial-quotes')
+def new_commercial_quote(req:CommercialQuoteRequest):
+    from quotepilot.commercial import create_draft
+    if req.valid_until<req.asof:raise HTTPException(422,'报价有效期早于基准日')
+    with database() as con:
+        try:return create_draft(con,req.model_dump(mode='json'))
+        except KeyError:raise HTTPException(404,'询价行不存在')
+        except ValueError as ex:raise HTTPException(409,str(ex))
+
+
+@app.get('/api/commercial-quotes')
+def commercial_quote_list():
+    with database() as con:return {'rows':[dict(r) for r in con.execute('SELECT q.id,q.created_at,s.status,s.version FROM commercial_quotes q JOIN commercial_quote_states s ON q.id=s.quote_id ORDER BY q.created_at DESC LIMIT 100')]}
+
+
+@app.get('/api/commercial-quotes/{qid}')
+def commercial_quote_detail(qid:str):
+    from quotepilot.commercial import load
+    with database() as con:
+        try:
+            obj=load(con,qid);obj['approval_history']=[dict(r) for r in con.execute('SELECT * FROM commercial_quote_events WHERE quote_id=? ORDER BY id',(qid,))];return obj
+        except KeyError:raise HTTPException(404,'报价不存在')
+
+
+@app.get('/api/commercial-quotes/{qid}/export/{kind}')
+def export_commercial_quote(qid:str,kind:Literal['pdf','xlsx'],final:bool=True):
+    from quotepilot.commercial_exports import export_quote
+    from quotepilot.commercial import load
+    from quotepilot.provenance import stamp
+    import hashlib
+    from uuid import uuid4
+    with database() as con:
+        try:raw,media=export_quote(con,qid,kind,final);version=load(con,qid)['version']
+        except KeyError:raise HTTPException(404,'报价不存在')
+        except ValueError as ex:raise HTTPException(409,str(ex))
+        with con:
+            eid='EXPORT-'+uuid4().hex
+            con.execute('INSERT INTO commercial_exports VALUES(?,?,?,?,?,?,?)',(eid,qid,version,kind,hashlib.sha256(raw).hexdigest(),int(final),stamp()))
+            audit(con,'commercial_quote_exported',qid,{'export_id':eid,'version':version,'format':kind,'final':final,'sha256':hashlib.sha256(raw).hexdigest()})
+    return Response(raw,media_type=media,headers={'Content-Disposition':f'attachment; filename="{qid}_v{version}.{kind}"','X-Content-Type-Options':'nosniff'})
+
+
+@app.post('/api/commercial-quotes/{qid}/{action}')
+def commercial_quote_action(qid:str,action:Literal['review','approve'],req:CommercialReviewRequest,request:Request):
+    from quotepilot.commercial import transition
+    from quotepilot.security import session_role,COOKIE,production
+    role=session_role(request.cookies.get(COOKIE,'')) if production() else 'admin'
+    with database() as con:
+        try:return transition(con,qid,req.version,action,str(role),str(role),req.actor,req.reason,center_today(),req.confirm_risks)
+        except KeyError:raise HTTPException(404,'报价不存在')
+        except PermissionError as ex:raise HTTPException(403,str(ex))
+        except ValueError as ex:raise HTTPException(409,str(ex))
+
+
 @app.post('/api/rfq-versions/matches')
 def confirm_rfq_matches(req:MatchRequest,request:Request):
     from quotepilot.rfq_versions import record_matches

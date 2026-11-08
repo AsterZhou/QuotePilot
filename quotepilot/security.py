@@ -15,22 +15,43 @@ def validate_production():
     url=urlsplit(os.environ.get('QUOTEPILOT_PUBLIC_URL',''))
     if url.scheme!='https' or not url.hostname or url.path not in ('','/') or url.query or url.fragment or url.username:raise ValueError('production requires an HTTPS public origin')
     if os.environ.get('QUOTEPILOT_PROVIDER')=='genesis' and not(os.environ.get('GENESIS_ACCESS_TOKEN') or os.environ.get('GENESIS_API_KEY')):raise ValueError('Genesis credentials missing')
+    reviewer=os.environ.get('QUOTEPILOT_REVIEWER_PASSWORD','')
+    if reviewer and (len(reviewer)<12 or reviewer==os.environ['QUOTEPILOT_LOGIN_PASSWORD']):raise ValueError('reviewer password must be distinct and at least 12 characters')
 
 def origin():return os.environ.get('QUOTEPILOT_PUBLIC_URL','').rstrip('/')
 
-def signed_session():
-    body=str(int(time.time())+8*3600)+'.'+secrets.token_hex(16)
+def signed_session(role='admin'):
+    if role not in ('admin','reviewer'):raise ValueError('unknown role')
+    body=str(int(time.time())+8*3600)+'.'+secrets.token_hex(16)+'.'+role
     sig=hmac.new(os.environ['QUOTEPILOT_SESSION_SECRET'].encode(),body.encode(),hashlib.sha256).hexdigest()
     return body+'.'+sig
 
 def valid_session(value):
     try:
-        expiry,nonce,sig=value.split('.')
+        parts=value.split('.')
+        if len(parts)==3:expiry,nonce,sig=parts;body=expiry+'.'+nonce
+        elif len(parts)==4:
+            expiry,nonce,role,sig=parts
+            if role not in ('admin','reviewer'):return False
+            body=expiry+'.'+nonce+'.'+role
+        else:return False
         remaining=int(expiry)-int(time.time())
         if not 0<remaining<=8*3600 or len(nonce)!=32:return False
-        expected=hmac.new(os.environ['QUOTEPILOT_SESSION_SECRET'].encode(),(expiry+'.'+nonce).encode(),hashlib.sha256).hexdigest()
+        expected=hmac.new(os.environ['QUOTEPILOT_SESSION_SECRET'].encode(),body.encode(),hashlib.sha256).hexdigest()
         return hmac.compare_digest(sig,expected)
     except (ValueError,KeyError,AttributeError):return False
+
+def session_role(value):
+    if not valid_session(value):return None
+    parts=value.split('.')
+    return parts[2] if len(parts)==4 else 'admin'
+
+def reviewer_allowed(path,method):
+    if method in ('GET','HEAD'):
+        return not path.startswith(('/api/admin/','/api/query-center/','/api/audit','/api/integration','/api/native-workflow'))
+    if method=='POST':
+        return path in ('/api/emails/import','/api/emails/preview','/api/supplier-offers/sources','/api/supplier-offers','/api/commercial-quotes') or bool(__import__('re').fullmatch(r'/api/(lines/\d+/review-fields|supplier-offers/[^/]+/confirm|commercial-quotes/[^/]+/review)',path))
+    return False
 
 class RateLimiter:
     def __init__(self):self.events={};self.lock=threading.Lock()
@@ -76,13 +97,18 @@ class DemoAccessMiddleware(BaseHTTPMiddleware):
                         if len(raw)>2048:raise ValueError()
                         password=json.loads(raw).get('password','')
                         ok=isinstance(password,str) and hmac.compare_digest(hashlib.sha256(password.encode()).digest(),hashlib.sha256(os.environ['QUOTEPILOT_LOGIN_PASSWORD'].encode()).digest())
+                        role='admin'
+                        if not ok and isinstance(password,str) and os.environ.get('QUOTEPILOT_REVIEWER_PASSWORD'):
+                            ok=hmac.compare_digest(hashlib.sha256(password.encode()).digest(),hashlib.sha256(os.environ['QUOTEPILOT_REVIEWER_PASSWORD'].encode()).digest());role='reviewer'
                     except (ValueError,TypeError,AttributeError):ok=False
                     response=JSONResponse({'ok':True} if ok else {'detail':'访问密码错误'},200 if ok else 401)
-                    if ok:response.set_cookie(COOKIE,signed_session(),max_age=8*3600,secure=True,httponly=True,samesite='strict',path='/')
+                    if ok:response.set_cookie(COOKIE,signed_session(role),max_age=8*3600,secure=True,httponly=True,samesite='strict',path='/')
             elif not valid_session(request.cookies.get(COOKIE,'')):
                 response=JSONResponse({'detail':'请先登录'},401) if path.startswith('/api/') else RedirectResponse('/login',303)
             elif path=='/auth/logout' and request.method=='POST':
                 response=JSONResponse({'ok':True});response.delete_cookie(COOKIE,path='/',secure=True,httponly=True,samesite='strict')
+            elif session_role(request.cookies.get(COOKIE,''))=='reviewer' and not reviewer_allowed(path,request.method):
+                response=JSONResponse({'detail':'当前复核角色无此权限'},403)
             elif path.endswith('/extract') or path in ('/api/extraction/preview','/api/analytics/ask','/api/query-center/ask','/api/query-center/joint'):
                 if not self.limiter.allow('ai-global',30,3600):response=JSONResponse({'detail':'演示模型调用已达每小时30次上限，请稍后再试'},429)
             elif path=='/api/query-center/external':

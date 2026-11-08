@@ -162,6 +162,8 @@ def open_db(path):
     install(con)
     from .rfq_versions import install as install_versions
     install_versions(con)
+    from .commercial import install as install_commercial
+    install_commercial(con)
     return con
 
 

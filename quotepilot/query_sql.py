@@ -14,6 +14,11 @@ ALLOWED={
  'prices':{'resource_id','part_number','supplier_code','supplier','condition','unit_price','currency','fx_to_cny','moq','lead_days','in_stock','certificate','quote_date','valid_until','status','source_row'},
  'quotes':{'id','created_at','status','version','rule_version'},
  'quote_items':{'quote_id','line_id','snapshot_json'},
+ 'supplier_offer_catalog':{'offer_id','supplier','part_number','specification','unit','condition','unit_price','currency','fx_to_cny','moq','lead_days','quote_date','valid_until','source_id'},
+ 'offer_reviews':{'offer_id','at'},
+ 'commercial_quotes':{'id','created_at'},
+ 'commercial_quote_states':{'quote_id','status','version'},
+ 'commercial_quote_items':{'quote_id','line_id','offer_id','quantity','unit_price_cny','total_cny','field_review_version'},
 }
 GLOSSARY={
  '询价份数':'historical以COUNT(DISTINCT rfq_no)计；邮件需求须结合email_id和source_rfq_no，不能把明细行数当RFQ份数',
@@ -28,6 +33,8 @@ GLOSSARY={
  '时间':'historical.inquiry_date是历史询价时间；emails.mail_date是原邮件日期文本；rfq_lines没有created_at字段',
  '数量合计':'按unit分组，EA、IN、FT不得混加；价格按currency分开，不得混合币种求和/平均',
  '报价快照':'quote_items.snapshot_json含$.part_number,$.quantity,$.unit,$.condition,$.unit_quote_cny,$.line_total_cny；数值须CAST，不代表成交',
+ '新供应商原报价':'supplier_offer_catalog为有文件依据的人工结构化报价；只有EXISTS offer_reviews.offer_id=offer_id才已人工复核。与prices旧历史示例来源分开。',
+ '商业报价':'commercial_quote_items JOIN commercial_quote_states（quote_id）保存新闭环方案；status=approved才已审批，仍不是成交。未完成报价必须同时检查旧quotes及新commercial_quote_states两条链。',
 }
 FUNCTIONS={'count','sum','avg','min','max','coalesce','nullif','substr','substring','strftime','date','datetime','julianday','round','abs','cast','json_extract','json_extract_scalar','lower','upper','trim','length','lag','lead','row_number','rank','dense_rank','if','iif','case','total','and','or','exists','like'}
 

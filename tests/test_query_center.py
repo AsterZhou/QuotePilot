@@ -55,7 +55,7 @@ def test_schema_retrieval_preserves_real_metadata_and_fallback(db):
     from quotepilot.query_center import retrieve_schema
     schema=discover(db)
     selected=retrieve_schema(schema,'哪些 RFQ 尚未完成报价？',[])
-    assert set(selected['tables'])=={'rfq_lines','quote_items','quotes'}
+    assert {'rfq_lines','quote_items','quotes','commercial_quotes','commercial_quote_items','commercial_quote_states'}<=set(selected['tables'])
     assert selected['tables']['rfq_lines']==schema['tables']['rfq_lines']
     assert retrieve_schema(schema,'请查询prices原始记录',[])['tables']['prices']==schema['tables']['prices']
     assert retrieve_schema(schema,'帮我进一步看看',[])['tables']==schema['tables']

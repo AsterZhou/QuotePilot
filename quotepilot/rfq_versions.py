@@ -124,7 +124,11 @@ def compare(con,left_id,right_id,asof):
     if terms or attachment_changes:
         affected.extend((x['before'],x['after'],['header_terms' if terms else 'attachment_changed']) for x in diff['unchanged'])
     for old,new,changed in affected:
-        quotes=con.execute('SELECT q.id,q.status,i.snapshot_json FROM quote_items i JOIN quotes q ON q.id=i.quote_id WHERE i.line_id=?',(old['line_id'],)).fetchall()
+        quotes=[dict(r) for r in con.execute('SELECT q.id,q.status,i.snapshot_json FROM quote_items i JOIN quotes q ON q.id=i.quote_id WHERE i.line_id=?',(old['line_id'],))]
+        for r in con.execute('SELECT q.id,s.status,q.payload_json FROM commercial_quote_items i JOIN commercial_quotes q ON q.id=i.quote_id JOIN commercial_quote_states s ON s.quote_id=q.id WHERE i.line_id=?',(old['line_id'],)):
+            item=next((x for x in json.loads(r['payload_json'])['lines'] if x['line_id']==old['line_id']),None)
+            offer=(item.get('selected') or {}).get('offer',{}) if item else {}
+            quotes.append({'id':r['id'],'status':r['status'],'snapshot_json':json.dumps({'price_basis':{'record':offer}})})
         for quote in quotes:
             snapshot=json.loads(quote['snapshot_json']);source=snapshot.get('price_basis',{}).get('record',{})
             risks=['原报价有效性待人工复核','报价需重新核价，历史报价快照保持不变']
