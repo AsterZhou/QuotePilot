@@ -96,11 +96,10 @@
     },
     {
       "name": "08_scan_manual.eml",
-      "sha256": "dda34856ccf10fd777d893b0e4d035a48eeccb578aac8a23076cac101eee4904",
+      "sha256": "edd691ee697e77d207c87b49ca1ce4292716e29727d7b5542c2ccded7423419a",
       "expected": [],
       "must_report_issue": true,
-      "previous_missing_sha256": "edd691ee697e77d207c87b49ca1ce4292716e29727d7b5542c2ccded7423419a",
-      "fixture_note": "Regenerated synthetic raster PDF on 2026-11-08; missing original bytes not claimed restored."
+      "fixture_note": "Original restored from 2026-11-06 launch backup; exact historical SHA256 verified on 2026-11-08."
     },
     {
       "name": "09_plain_alias.eml",
@@ -120,6 +119,13 @@
       "sha256": "e128a1c28d5dbbe68841460fdea202a79447d68f96748e1ddc1baa2b662804c1",
       "expected": [],
       "must_report_issue": true
+    },
+    {
+      "name": "11_scan_small.eml",
+      "sha256": "dda34856ccf10fd777d893b0e4d035a48eeccb578aac8a23076cac101eee4904",
+      "expected": [],
+      "must_report_issue": true,
+      "fixture_note": "Supplemental small synthetic raster PDF retained separately; original 08 fixture restored byte-for-byte."
     }
   ]
 }

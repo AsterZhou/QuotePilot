@@ -17,7 +17,7 @@ def clients(tmp_path,monkeypatch):
     import server
     monkeypatch.setattr(server,'DB',tmp_path/'commercial.db')
     for k,v in {'QUOTEPILOT_ENV':'production','QUOTEPILOT_PROVIDER':'mock','QUOTEPILOT_PUBLIC_URL':'https://commercial.example.invalid','QUOTEPILOT_SESSION_SECRET':'TEST_ONLY_SESSION_SECRET_'+'x'*32,'QUOTEPILOT_LOGIN_PASSWORD':'TEST_ONLY_ADMIN_PASS_1234','QUOTEPILOT_REVIEWER_PASSWORD':'TEST_ONLY_REVIEWER_PASS_5678'}.items():monkeypatch.setenv(k,v)
-    with TestClient(server.app,base_url='https://commercial.example.invalid',client=('commercial-admin',53000)) as admin,TestClient(server.app,base_url='https://commercial.example.invalid',client=('commercial-review',53001)) as reviewer:
+    with TestClient(server.app,base_url='https://commercial.example.invalid',client=('commercial-admin-'+tmp_path.name,53000)) as admin,TestClient(server.app,base_url='https://commercial.example.invalid',client=('commercial-review-'+tmp_path.name,53001)) as reviewer:
         for client,password in [(admin,'TEST_ONLY_ADMIN_PASS_1234'),(reviewer,'TEST_ONLY_REVIEWER_PASS_5678')]:
             client.headers.update({'Origin':'https://commercial.example.invalid'})
             assert client.post('/auth/login',json={'password':password}).status_code==200

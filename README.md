@@ -15,6 +15,8 @@ python scripts/business_cycle.py --output tmp/business_cycle.json
 
 第二条仅使用临时SQLite和合成文件，禁用赛事自动播种，不调用外部模型或网络；ASGI TestClient结果不等于公网验收。
 
+最新：[独立环境验收与修复](docs/INDEPENDENT_ACCEPTANCE_20261108.md)：255项测试、31条DOM断言、真实桌面浏览器20步通过。旧扫描原件已按历史SHA恢复，新增供应商原件规则提取及人工确认；尚未部署。
+
 ---
 
 # QuotePilot · 报价室 v0.7.1

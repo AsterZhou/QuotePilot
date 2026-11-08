@@ -37,3 +37,7 @@
 ## 文件清单
 
 quotepilot/operations.py、store.py、security.py；server.py；web/operations.js、app.js、index.html；scripts/business_cycle.py、rebuild_scan_fixture.py；tests/test_operations.py、test_business_cycle.py、foreign_v07/08_scan_manual.eml及manifest；evidence/business_cycle.json、batch5_pytest.txt；README.md；docs/BATCH5_DELIVERY.md、DEMO_3MIN.md、DEPLOYMENT_TODO.md、ARCHITECTURE_COMMERCIAL.md。
+
+## 2026-11-08独立验收更正
+
+原扫描邮件并非丢失，上一轮本地取回不完整；现从归档恢复并与历史SHA256/Git Blob逐字节一致。小替代件改为独立11号素材。最新255项测试和真实浏览器20步验收、修复及失败记录见INDEPENDENT_ACCEPTANCE_20261108.md，旧报告中的245项和未执行浏览器是当时记录。

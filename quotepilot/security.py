@@ -50,7 +50,7 @@ def reviewer_allowed(path,method):
     if method in ('GET','HEAD'):
         return not path.startswith(('/api/admin/','/api/query-center/','/api/audit','/api/operations','/api/integration','/api/native-workflow'))
     if method=='POST':
-        return path in ('/api/emails/import','/api/emails/preview','/api/supplier-offers/sources','/api/supplier-offers','/api/commercial-quotes','/api/rfq-versions','/api/rfq-versions/matches') or bool(__import__('re').fullmatch(r'/api/(lines/\d+/review-fields|supplier-offers/[^/]+/confirm|commercial-quotes/[^/]+/review)',path))
+        return path in ('/api/emails/import','/api/emails/preview','/api/supplier-offers/sources','/api/supplier-offers','/api/commercial-quotes','/api/rfq-versions','/api/rfq-versions/matches') or bool(__import__('re').fullmatch(r'/api/(lines/\d+/review-fields|supplier-offers/[^/]+/confirm|supplier-offers/sources/[^/]+/extract|commercial-quotes/[^/]+/review)',path))
     return False
 
 class RateLimiter:
@@ -109,6 +109,8 @@ class DemoAccessMiddleware(BaseHTTPMiddleware):
                 response=JSONResponse({'ok':True});response.delete_cookie(COOKIE,path='/',secure=True,httponly=True,samesite='strict')
             elif session_role(request.cookies.get(COOKIE,''))=='reviewer' and not reviewer_allowed(path,request.method):
                 response=JSONResponse({'detail':'当前复核角色无此权限'},403)
+            elif __import__('re').fullmatch(r'/api/supplier-offers/sources/[^/]+/extract',path):
+                if not self.limiter.allow('local-supplier-extraction',60,3600):response=JSONResponse({'detail':'本地原件解析达到每小时60次上限，请稍后再试'},429)
             elif path.endswith('/extract') or path in ('/api/extraction/preview','/api/analytics/ask','/api/query-center/ask','/api/query-center/joint'):
                 if not self.limiter.allow('ai-global',30,3600):response=JSONResponse({'detail':'演示模型调用已达每小时30次上限，请稍后再试'},429)
             elif path=='/api/query-center/external':

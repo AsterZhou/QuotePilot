@@ -166,6 +166,8 @@ def open_db(path):
     install_commercial(con)
     from .operations import install as install_operations
     install_operations(con)
+    from .supplier_extraction import install as install_supplier_extraction
+    install_supplier_extraction(con)
     return con
 
 

@@ -331,6 +331,8 @@ class ReviewRequest(BaseModel):
 
 @app.patch('/api/quotes/{qid}')
 def review_quote(qid:str,req:ReviewRequest):
+    from quotepilot.security import production
+    if req.approve and production():raise HTTPException(409,'旧报价仅保留试算及历史归档；新的正式审批须进入商用报价双角色流程')
     with database() as con:
         try:return change_quote(con,qid,req.version,req.actor,req.reason,[p.model_dump(mode='json') for p in req.patches],req.approve,req.confirm_constraints)
         except KeyError:raise HTTPException(404,'报价不存在')
@@ -561,6 +563,10 @@ class SupplierOfferRequest(BaseModel):
     fx_source:str=Field(min_length=1,max_length=1000)
     moq:int=Field(ge=1,le=1000000000,strict=True)
     lead_days:int=Field(ge=0,le=3650,strict=True)
+    shipping_scope:Literal['line','shipment']='line'
+    shipping_group:str=Field(default='',max_length=100)
+    extraction_run_id:str|None=None
+    extraction_candidate:int|None=None
     shipping_total:Decimal=Field(ge=0,le=1000000000000)
     tax_rate:Decimal=Field(ge=0,lt=1)
     quote_date:date
@@ -596,7 +602,7 @@ class CommercialReviewRequest(BaseModel):
 def auth_me(request:Request):
     from quotepilot.security import session_role,COOKIE,production
     role=session_role(request.cookies.get(COOKIE,'')) if production() else 'admin'
-    return {'role':role,'account':role,'production':production(),'identity_scope':'单团队共享角色账户；无公众注册，不是多租户'}
+    return {'today':center_today().isoformat(),'role':role,'account':role,'production':production(),'identity_scope':'单团队共享角色账户；无公众注册，不是多租户'}
 
 
 @app.post('/api/supplier-offers/sources')
@@ -898,3 +904,14 @@ def recorded_operations_metrics():
 def operations_health():
     from quotepilot.operations import health
     with database() as con:return health(con)
+
+
+@app.post('/api/supplier-offers/sources/{sid}/extract')
+def extract_supplier_source(sid:str):
+    from quotepilot.supplier_extraction import extract
+    with database() as con:
+        try:return extract(con,sid)
+        except (ValueError,UnicodeError) as ex:raise HTTPException(422,str(ex))
+        except Exception as ex:
+            audit(con,'supplier_extraction_failed',sid,{'error_type':type(ex).__name__});con.commit()
+            raise HTTPException(422,'原件解析失败；请人工核对或更换可读文字版文件')

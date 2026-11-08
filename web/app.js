@@ -49,7 +49,7 @@ async function renderOverview(){const s=await api('/api/overview');state.overvie
 function metric(label,value,note,idx,destination){return `<button type="button" class="metric metric-link" ${destination==='inbox'?'data-go="inbox"':`data-catalog="${destination}"`} aria-label="${esc(label)}，查看明细"><span class="metric-label"><span>${label}</span><span class="metric-index">${idx}</span></span><span class="metric-value">${fmt(value)}</span><span class="metric-note">${esc(note)}</span><span class="metric-open">查看明细 ↗</span></button>`}
 function processRow(no,title,desc,end){return `<li class="process-row"><span class="process-no">${no}</span><span><div class="process-title">${title}</div><div class="process-desc">${desc}</div></span><span class="process-end">${end}</span></li>`}
 
-async function renderInbox(){const integration=await api('/api/integration');const aiReady=integration.active_provider==='genesis'&&integration.genesis_configured;const emails=await getEmails();if(!state.emailId||!emails.some(e=>e.email_id===state.emailId))state.emailId=emails[0]?.email_id||'';
+async function renderInbox(){const identity=await api('/api/auth/me');const integration=identity.role==='reviewer'?{active_provider:'disabled',genesis_configured:false}:await api('/api/integration');const aiReady=integration.active_provider==='genesis'&&integration.genesis_configured;const emails=await getEmails();if(!state.emailId||!emails.some(e=>e.email_id===state.emailId))state.emailId=emails[0]?.email_id||'';
  $('#main').innerHTML=`<section class="page">
  ${pageHead('01 / INCOMING', '来件有迹可循。','保留原邮件，拆出询价明细。每个数字都能追到正文或附件。',`<button class="btn" data-action="upload-open">＋ 导入 EML</button><button class="btn primary" data-go="quote">从来件进入核价 ↗</button>`)}
  <div class="inbox-layout"><article class="panel"><div class="panel-head"><div><h2>收件清单</h2><div class="panel-sub">当前来件 · ${emails.length} 封邮件</div></div>${badge('SOURCES','neutral')}</div><div id="email-list" class="mail-list">${emails.map(e=>mailItem(e)).join('')}</div></article>
@@ -156,7 +156,7 @@ document.addEventListener('click',async e=>{
  if(target.dataset.editQuoteLine){await editQuoteLine(Number(target.dataset.editQuoteLine));return}
  if(target.dataset.export){await exportQuote(target.dataset.export);return}
  const action=target.dataset.action;
- if(action==='reload')render().catch(errorPage);
+ if(action==='reload')api('/api/auth/me').then(identity=>{if(identity.role==='reviewer')$$('.nav-link').forEach(b=>{if(['query','operations','audit','rules','connect','insight','quote'].includes(b.dataset.page))b.hidden=true});return render()}).catch(errorPage);
  if(action==='upload-open'){const n=$('#upload-panel');n.style.display='block';n.scrollIntoView({behavior:'smooth'})}
  if(action==='upload-close')$('#upload-panel').style.display='none';
  if(action==='clear-inbox-search'){state.inboxSearch='';state.inboxPage=0;$('#inbox-search').value='';loadInboxLines()}
