@@ -160,6 +160,8 @@ def open_db(path):
     con.executescript(EXT_SCHEMA)
     from .provenance import install
     install(con)
+    from .rfq_versions import install as install_versions
+    install_versions(con)
     return con
 
 

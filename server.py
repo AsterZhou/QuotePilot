@@ -530,6 +530,62 @@ class FieldReviewRequest(BaseModel):
     confirm_source:bool=False
 
 
+class VersionRequest(BaseModel):
+    email_id:str=Field(min_length=1,max_length=500)
+    rfq_no:str=Field(min_length=1,max_length=150)
+    actor:str=Field(min_length=1,max_length=100)
+    reason:str=Field(min_length=3,max_length=1000)
+    terms:dict=Field(default_factory=dict)
+
+
+class MatchRequest(BaseModel):
+    left:str
+    right:str
+    matches:dict[str,int]
+    actor:str=Field(min_length=1,max_length=100)
+    reason:str=Field(min_length=3,max_length=1000)
+
+
+@app.post('/api/rfq-versions/matches')
+def confirm_rfq_matches(req:MatchRequest,request:Request):
+    from quotepilot.rfq_versions import record_matches
+    with database() as con:
+        try:return record_matches(con,req.left,req.right,req.matches,'admin_session:'+center_owner(request)[:12]+' / '+req.actor,req.reason)
+        except KeyError:raise HTTPException(404,'版本不存在')
+        except ValueError as ex:raise HTTPException(409,str(ex))
+
+
+@app.post('/api/rfq-versions')
+def register_rfq_version(req:VersionRequest,request:Request):
+    from quotepilot.rfq_versions import register
+    with database() as con:
+        try:return register(con,req.email_id,req.rfq_no,'admin_session:'+center_owner(request)[:12]+' / '+req.actor,req.reason,req.terms)
+        except ValueError as ex:raise HTTPException(409,str(ex))
+
+
+@app.get('/api/rfq-versions')
+def list_rfq_versions(limit:int=Query(100,ge=1,le=200),offset:int=Query(0,ge=0)):
+    with database() as con:
+        return {'rows':[dict(r) for r in con.execute('SELECT v.id,v.series_id,v.version,v.email_id,v.created_at,v.payload_sha256,s.customer_key,s.rfq_no FROM rfq_versions v JOIN rfq_series s ON s.id=v.series_id ORDER BY v.created_at DESC,v.version DESC LIMIT ? OFFSET ?',(limit,offset))]}
+
+
+@app.get('/api/rfq-versions/compare')
+def compare_rfq_versions(left:str,right:str,asof:date=Query(default_factory=center_today)):
+    from quotepilot.rfq_versions import compare
+    with database() as con:
+        try:return compare(con,left,right,asof.isoformat())
+        except KeyError:raise HTTPException(404,'RFQ版本不存在')
+        except ValueError as ex:raise HTTPException(409,str(ex))
+
+
+@app.get('/api/rfq-versions/{vid}')
+def get_rfq_version(vid:str):
+    from quotepilot.rfq_versions import load
+    with database() as con:
+        try:return load(con,vid)
+        except KeyError:raise HTTPException(404,'RFQ版本不存在')
+
+
 @app.get('/api/review-queue')
 def field_review_queue(limit:int=Query(50,ge=1,le=200),offset:int=Query(0,ge=0)):
     from quotepilot.provenance import capture

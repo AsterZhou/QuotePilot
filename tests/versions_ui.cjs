@@ -1,0 +1,6 @@
+const fs=require('fs'),assert=require('node:assert/strict'),{JSDOM}=require('jsdom');
+const w=new JSDOM('<div id="rfq-diff-result"></div>',{runScripts:'outside-only'}).window;
+w.eval(`var $=q=>document.querySelector(q);var esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));var reviewLabels={quantity:'数量'};`);
+w.eval(fs.readFileSync('web/rfq_versions.js','utf8')+'\nwindow.__show=showRFQDiff;');
+w.__show({left:{id:'old',version:1},right:{id:'new',version:2},summary:{added:0,removed:0,modified:1,unchanged:0,ambiguous:1},note:'snapshot',attachments_changed:true,unprovided_terms:['delivery_date'],added:[],removed:[],unchanged:[],modified:[{before:{part_number:'<img src=x>'},changes:{quantity:{before:100,after:500}}}],ambiguous:[{part_number:'X',old_line_ids:[1,2],new_line_ids:[3,4]}],header_changes:{},quote_impacts:[]});
+assert.equal(w.document.querySelectorAll('img').length,0);assert.equal(w.document.querySelector('del').textContent,'100');assert.equal(w.document.querySelector('strong').textContent,'500');assert.ok(w.document.querySelector('#rfq-match-form'));assert.match(w.document.body.textContent,/交付日期/);assert.match(w.document.body.textContent,/尚未确定对应关系/);console.log('RFQ diff UI: 6 assertions passed (DOM only).');
