@@ -10,7 +10,7 @@ import re
 import sqlite3
 from typing import Literal
 
-from fastapi import FastAPI, File, HTTPException, Query, UploadFile, Request
+from fastapi import FastAPI, File, Form, HTTPException, Query, UploadFile, Request
 from fastapi.responses import HTMLResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -22,6 +22,7 @@ from quotepilot.analytics import summary, run_query, QUESTIONS
 from quotepilot.pricing import batch_quote, D
 from quotepilot.exports import quote_docx, quote_csv, audit_json
 from quotepilot.parsing import parse_eml
+from quotepilot.rfq_upload import read_rfq
 
 ROOT = Path(__file__).resolve().parent
 DB = Path(os.environ.get('QUOTEPILOT_DB',str(ROOT / 'workspace' / 'quotepilot.db')))
@@ -143,35 +144,26 @@ def line_detail(line_id:int):
         return result
 
 @app.post('/api/emails/preview')
-async def preview_email(file:UploadFile=File(...)):
-    raw = await _read_eml(file)
-    try: obj = parse_eml(raw,file.filename or 'upload.eml')
+async def preview_email(file:UploadFile=File(...), customer_email:str=Form("")):
+    raw, filename = await read_rfq(file, customer_email)
+    try: obj = parse_eml(raw,filename)
     except Exception as e: raise HTTPException(422, f'邮件解析失败：{e}')
     return {'filename':obj['filename'],'subject':obj['subject'],'sender':obj['sender'],
             'count':len(obj['lines']),'sample_lines':obj['lines'][:12],
             'notes':obj['parse_notes'],'attachments':obj['attachments'],'status':'needs_review' if obj['parse_notes'] or not obj['lines'] else 'parsed'}
 
 @app.post('/api/emails/import')
-async def import_email(file:UploadFile=File(...)):
-    raw=await _read_eml(file)
+async def import_email(file:UploadFile=File(...), customer_email:str=Form("")):
+    raw, filename = await read_rfq(file, customer_email)
     try:
         with database() as con:
             before=con.execute('SELECT COUNT(*) FROM rfq_lines').fetchone()[0]
-            obj=ingest_eml(con,raw,Path(file.filename or 'upload.eml').name)
+            obj=ingest_eml(con,raw,filename)
             after=con.execute('SELECT COUNT(*) FROM rfq_lines').fetchone()[0]
         return {'ok':True,'status':'needs_review' if obj['parse_notes'] or not obj['lines'] else 'imported','subject':obj['subject'],'parsed_count':len(obj['lines']),
                 'new_lines':after-before,'duplicate_lines':len(obj['lines'])-(after-before),
                 'notes':obj['parse_notes']}
     except Exception as e: raise HTTPException(422, f'导入失败：{e}')
-
-async def _read_eml(file:UploadFile)->bytes:
-    if not (file.filename or '').lower().endswith('.eml'):
-        raise HTTPException(415,'仅支持 EML 文件')
-    # Do not allow unlimited uploads or untrusted file paths.
-    data=await file.read(10*1024*1024+1)
-    if len(data)>10*1024*1024:raise HTTPException(413,'EML 超过 10MB 上限')
-    if not data:raise HTTPException(422,'空文件')
-    return data
 
 class QuoteRequest(BaseModel):
     line_ids:list[int] = Field(default_factory=list, min_length=1, max_length=300)

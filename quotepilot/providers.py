@@ -50,9 +50,15 @@ class GenesisProvider:
                 payload['reasoning']={'effort':reasoning_effort}
         else:
             path='/chat/completions';payload={'model':self.model,'messages':messages,'max_tokens':min(4096,max(512,int(max_output_tokens)))}
-        # Separate connection and inference deadlines; no automatic retries or model switching.
+        # Retry only a failure to establish the connection, never an ambiguous inference result.
         with httpx.Client(timeout=httpx.Timeout(90,connect=10),transport=self.transport,follow_redirects=False) as client:
-            response=client.post(self.base+path,headers={'Authorization':'Bearer '+self.token},json=payload)
+            for attempt in range(2):
+                try:
+                    response = client.post(self.base+path, headers={'Authorization':'Bearer '+self.token}, json=payload)
+                    break
+                except (httpx.ConnectTimeout, httpx.ConnectError):
+                    if attempt: raise
+                    time.sleep(0.25)
             response.raise_for_status();raw=response.json()
         metadata={'provider':'genesis','simulated':False,'model':self.model,'api_style':self.api_style,'response_id':raw.get('id'),'usage':raw.get('usage',{}),'elapsed_seconds':round(time.perf_counter()-started,3),'status':raw.get('status')}
         if self.api_style=='responses':

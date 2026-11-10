@@ -12,15 +12,29 @@ def local_interactive_preview():
     # Only the owned cloud-browser preview origin; never an arbitrary HTTP public host.
     return os.environ.get('QUOTEPILOT_LOCAL_PREVIEW')=='1' and os.environ.get('QUOTEPILOT_PUBLIC_URL')=='http://terminal.local:4173'
 
+def login_digest(role):
+    name = 'QUOTEPILOT_LOGIN_PASSWORD' if role == 'admin' else 'QUOTEPILOT_REVIEWER_PASSWORD'
+    encoded = os.environ.get(name + '_SHA256', '')
+    if encoded:
+        if len(encoded) != 64 or not all(c in '0123456789abcdef' for c in encoded):
+            raise ValueError('Invalid demo access digest')
+        return encoded
+    value = os.environ.get(name, '')
+    if value and len(value) < 12:
+        raise ValueError('Production password must be at least 12 characters')
+    return hashlib.sha256(value.encode()).hexdigest() if value else ''
+
+
 def validate_production():
     if not production():return
-    if len(os.environ.get('QUOTEPILOT_LOGIN_PASSWORD',''))<12:raise ValueError('production requires a login password of at least 12 characters')
+    if not login_digest('admin'):raise ValueError('production requires a login password of at least 12 characters')
     if len(os.environ.get('QUOTEPILOT_SESSION_SECRET',''))<32:raise ValueError('production requires a session secret of at least 32 characters')
     url=urlsplit(os.environ.get('QUOTEPILOT_PUBLIC_URL',''))
     if (url.scheme!='https' and not local_interactive_preview()) or not url.hostname or url.path not in ('','/') or url.query or url.fragment or url.username:raise ValueError('production requires an HTTPS public origin')
     if os.environ.get('QUOTEPILOT_PROVIDER')=='genesis' and not(os.environ.get('GENESIS_ACCESS_TOKEN') or os.environ.get('GENESIS_API_KEY')):raise ValueError('Genesis credentials missing')
-    reviewer=os.environ.get('QUOTEPILOT_REVIEWER_PASSWORD','')
-    if reviewer and (len(reviewer)<12 or reviewer==os.environ['QUOTEPILOT_LOGIN_PASSWORD']):raise ValueError('reviewer password must be distinct and at least 12 characters')
+    reviewer = login_digest('reviewer')
+    if reviewer and hmac.compare_digest(reviewer, login_digest('admin')):
+        raise ValueError('reviewer password must be distinct')
 
 def origin():return os.environ.get('QUOTEPILOT_PUBLIC_URL','').rstrip('/')
 
@@ -100,10 +114,12 @@ class DemoAccessMiddleware(BaseHTTPMiddleware):
                         raw=await request.body()
                         if len(raw)>2048:raise ValueError()
                         password=json.loads(raw).get('password','')
-                        ok=isinstance(password,str) and hmac.compare_digest(hashlib.sha256(password.encode()).digest(),hashlib.sha256(os.environ['QUOTEPILOT_LOGIN_PASSWORD'].encode()).digest())
-                        role='admin'
-                        if not ok and isinstance(password,str) and os.environ.get('QUOTEPILOT_REVIEWER_PASSWORD'):
-                            ok=hmac.compare_digest(hashlib.sha256(password.encode()).digest(),hashlib.sha256(os.environ['QUOTEPILOT_REVIEWER_PASSWORD'].encode()).digest());role='reviewer'
+                        digest = hashlib.sha256(password.encode()).hexdigest() if isinstance(password, str) else None
+                        role = 'admin'
+                        ok = digest is not None and hmac.compare_digest(digest, login_digest(role))
+                        if not ok and digest is not None:
+                            role = 'reviewer'
+                            ok = hmac.compare_digest(digest, login_digest(role))
                     except (ValueError,TypeError,AttributeError):ok=False
                     response=JSONResponse({'ok':True} if ok else {'detail':'访问密码错误'},200 if ok else 401)
                     if ok:response.set_cookie(COOKIE,signed_session(role),max_age=8*3600,secure=not local_interactive_preview(),httponly=True,samesite='strict',path='/')

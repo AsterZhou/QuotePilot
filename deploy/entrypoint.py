@@ -18,6 +18,9 @@ def load_runtime_environment():
 def main():
     port=load_runtime_environment()
     from quotepilot.security import validate_production
+    if os.environ.get('QUOTEPILOT_RELEASE_DEMO') == '1':
+        import secrets
+        os.environ.setdefault('QUOTEPILOT_SESSION_SECRET', secrets.token_urlsafe(48))
     validate_production()
     if os.environ.get('QUOTEPILOT_RELEASE_DEMO') == '1':
         from deploy.release_seed import install_seed
