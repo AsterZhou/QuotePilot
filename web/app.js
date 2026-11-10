@@ -10,7 +10,9 @@ const money = n => {const [whole,fraction='']=String(n??'0').split('.');return '
 const state={page:'overview',emails:[],lines:[],allLines:[],selected:new Set(),emailId:'',inboxSearch:'',inboxPage:0,quotePage:0,quoteSearch:'',quoteFilter:'all',quoteEmail:'all',quoteReport:null,quoteReq:null,insight:'每月询价趋势',overview:null,chart:null,filters:{asof:'2026-09-20',method:'markup',rate:20}};
 let toastTimer;
 function toast(text){const n=$('#toast');n.textContent=text;n.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>n.classList.remove('show'),3700)}
-async function api(path,opts={}){const r=await fetch(path,{cache:'no-store',...opts});if(!r.ok){let d={};try{d=await r.json()}catch{}throw new Error(typeof d.detail==='string'?d.detail:'服务错误 '+r.status)}return r.json()}
+async function api(path,opts={}){const r=await fetch(path,{cache:'no-store',...opts});if(!r.ok){let d={};try{d=await r.json()}catch{}const fieldNames={source_rfq_no:'来源询价号',part_number:'件号',quantity:'数量',unit:'单位',actor:'复核人',reason:'确认说明',description:'技术描述',condition:'件状',lines:'所选需求行'};
+const details=Array.isArray(d.detail)?d.detail.map(issue=>{const field=issue.loc?.at(-1);return (fieldNames[field]||field||'字段')+'：'+(issue.msg||'请检查填写内容');}).join('；'):'';
+throw new Error(typeof d.detail==='string'?d.detail:details||'服务错误 '+r.status)}return r.json()}
 const post=(path,obj)=>api(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)});
 const days = x => x ? String(x).slice(0,10) : '—';
 function badge(text,variant='neutral'){return `<span class="tag ${variant}">${esc(text)}</span>`}
@@ -182,7 +184,7 @@ document.addEventListener('click',async e=>{
  if(action==='manual-intake')openManualIntake();
  if(action==='save-manual-intake')saveManualIntake();
  if(action==='native-workflow-status'){try{const r=await api('/api/native-workflow/status');toast(r.workflow_id+' / '+r.status+' / 成功运行须另行验收')}catch(e){toast(e.message)}}
- if(action==='confirm-ai-extraction')confirmAIExtraction();
+
  if(action==='approve-quote')approveQuote();
  if(action==='sync-cloud-quote')syncCloudQuote(target);
  if(action==='save-line-edit')saveLineEdit();
@@ -245,13 +247,148 @@ async function saveLineEdit(){try{const r=state.quoteReport;const patch={line_id
 
 async function aiExtractEmail(button){if(!state.emailId){toast('先选择一封来件');return}button.disabled=true;button.textContent='Genesis正在提取…';try{showAIExtraction(await post('/api/emails/'+encodeURIComponent(state.emailId)+'/extract',{}))}catch(e){toast('提取未完成：'+e.message)}finally{button.disabled=false;button.textContent='Genesis 补充提取 ↗'}}
 async function savedAIExtraction(){try{const r=await api('/api/emails/'+encodeURIComponent(state.emailId)+'/extractions');if(!r.rows.length){toast('当前邮件尚无AI提取记录');return}showAIExtraction(await api('/api/extractions/'+r.rows[0].id))}catch(e){toast(e.message)}}
-function showAIExtraction(r){state.aiRun=r;
-$('#drawer-content').innerHTML=`<div class="drawer-top"><h2>核对 AI 整理出的客户需求</h2><button class="drawer-close" data-action="close-drawer">×</button></div><p>对照原始邮件逐项核实。引用的原句可能对应另一件物料，仍需确认含义。未知项请留空或向客户核实。</p><details><summary>模型与执行详情</summary><p class="info-strip">${r.simulated?'当前是Mock，不能作为真实提取入库':(r.provider==='moi_native'?'MOI 原生模型节点 / ':'真实Genesis调用 / ')+esc(r.model)}<br>${esc(r.run_id)}<br>${esc(r.execution_id||r.response_id||'')} / ${esc(r.status||'pending')}</p></details><details><summary>查看原始输入与调用依据</summary><pre style="white-space:pre-wrap">${esc(r.input_text||'')}</pre><p>输入 SHA256：${esc(r.input_sha256||'')}<br>Token：${esc(JSON.stringify(r.usage||{}))} / ${esc(r.elapsed_seconds||'')} 秒</p></details><p class="issue">建议不会自动成为业务数据。逐行核对件号、数量、单位和件状；未知字段保持待确认。${(r.source_notes||[]).map(esc).join('；')}</p>
-<div class="field"><label>来源询价号（对照原邮件填写）</label><input id="ai-rfq" placeholder="原文中的RFQ编号"></div>
-<div id="ai-lines">${r.lines.map((x,i)=>`<article class="panel ai-candidate" style="padding:12px;margin:12px 0" data-index="${i}"><label><input type="checkbox" class="ai-selected" checked> 采用此建议行</label><p>AI 建议：型号 ${esc(x.part_number||'待核实')} · 数量 ${esc(x.quantity??'待核实')} · 单位 ${esc(x.unit||'待核实')} · 件状 ${esc(x.condition||'待核实')}。下方填写实际确认值。</p><div class="field"><label>件号</label><input class="ai-part" value="${esc(x.part_number||'')}"></div><div class="field"><label>数量</label><input class="ai-qty" type="number" min="1" step="1" value="${x.quantity??''}"></div><div class="field"><label>单位</label><input class="ai-unit" value="${esc(x.unit||'')}"></div><div class="field"><label>技术描述（对照原文人工填写）</label><input class="ai-description" value=""><label>件状（原文未提供可留空）</label><input class="ai-condition" value="${esc(x.condition||'')}"></div><blockquote style="white-space:pre-wrap;margin:10px 0;font-size:12px;border-left:3px solid #9bb;padding-left:10px">原文证据：${esc(x.evidence)}</blockquote></article>`).join('')||'<p>没有可确认的建议行。</p>'}</div>
-<div class="field"><label>复核人</label><input id="ai-actor"></div><div class="field"><label>确认说明</label><input id="ai-reason" placeholder="说明核对依据或修改原因"></div><label><input type="checkbox" id="ai-source-confirm"> 已对照原始邮件/附件核对字段</label><button class="btn primary block" style="margin-top:16px" data-action="confirm-ai-extraction" ${r.simulated||!r.lines.length||r.status==='confirmed'?'disabled':''}>确认选中行入库</button>`;
-$('#drawer-backdrop').classList.remove('hidden');$('#drawer').classList.remove('hidden');toast('建议已生成，请逐行核对原文')}
-async function confirmAIExtraction(){try{const lines=$$('.ai-candidate').filter(n=>$('.ai-selected',n).checked).map(n=>({source_index:Number(n.dataset.index),part_number:$('.ai-part',n).value,quantity:Number($('.ai-qty',n).value),unit:$('.ai-unit',n).value,condition:$('.ai-condition',n).value,description:$('.ai-description',n).value,source_rfq_no:$('#ai-rfq').value}));const r=await post('/api/extractions/'+state.aiRun.run_id+'/confirm',{actor:$('#ai-actor').value.trim(),reason:$('#ai-reason').value.trim(),confirm_source:$('#ai-source-confirm').checked,lines});state.emails=[];state.allLines=[];state.selected=new Set(r.line_ids);closeDrawer();if(state.page==='inbox')await renderInbox();toast('已确认入库 '+r.new_lines+' 行，可进入复核与报价')}catch(e){toast('未入库：'+e.message)}}
+function reviewSource(run) {
+  const mail = state.emails.find(item => item.email_id === run.email_id);
+  const subject = mail?.subject || '';
+  const text = String(run.input_text || '');
+  const ids = [...new Set(subject.match(/\bRFQ[-_][A-Z0-9]+(?:[-_.][A-Z0-9]+)*/gi) || [])];
+  return {subject, text, rfq:ids.length === 1 ? ids[0] : ''};
+}
+
+function reviewDescription(run, line, text, offers) {
+  if (run.lines.length !== 1) return '';
+  const paragraphs = text.split(/\r?\n/).filter(s => s.trim() && !/^FILE /.test(s));
+  const labeled = paragraphs.map(s => s.match(/^\s*(?:技术描述|规格|规格型号|description|specification)\s*[:：]\s*(.+?)\s*$/i)).filter(Boolean);
+  if (labeled.length === 1 && labeled[0][1].length <= 1000) return labeled[0][1];
+  if (paragraphs.length === 1 && line.evidence && paragraphs[0].includes(line.evidence)) {
+    const explicit=paragraphs[0].match(/(?:[，,；;。]\s*)规格(?:为|是|[:：])\s*([^，,；;。！？\n]{1,200})[。；;，,]?/g);
+    if(explicit?.length===1)return explicit[0].replace(/^[，,；;。]\s*规格(?:为|是|[:：])\s*/,'').replace(/[。；;，,]$/,'').trim();
+  }
+  if (paragraphs.length !== 1 || !line.part_number || !line.evidence || !paragraphs[0].includes(line.evidence)) return '';
+  // Only propose a complete clause in a one-line inquiry. Keep model numbers and units case-sensitive.
+  const clauses = paragraphs[0].split(/[,，;；。]/).map(s => s.trim().replace(/\.$/, ''));
+  const specs = new Set(offers.filter(o => o.review_status === 'confirmed' && o.part_number === line.part_number)
+    .map(o => o.specification).filter(s => s && clauses.some(c => c === s ||
+      (/^[A-Z][a-z]{3,}\s/.test(s) && c === s[0].toLowerCase()+s.slice(1)))));
+  return specs.size === 1 ? [...specs][0] : '';
+}
+
+function reviewField(label, cls, value, attrs='') {
+  return `<label class="field">${label}<input class="${cls}" value="${esc(value ?? '')}" ${attrs}></label>`;
+}
+
+function savedReview(receipt) {
+  const ids = receipt.line_ids || [];
+  state.selected = new Set(ids);
+  $('#drawer-content').innerHTML = `<div class="drawer-top"><h2>客户需求已保存</h2><button class="drawer-close" data-action="close-drawer" aria-label="关闭">×</button></div>
+    <p role="status" class="info-strip" id="ai-saved-summary">已保存 ${ids.length} 行需求，可继续核对供应商报价。</p>
+    <button class="btn primary" id="ai-next-supplier">下一步：核对供应商报价 →</button>`;
+  $('#ai-next-supplier').onclick = async () => { closeDrawer(); await nav('commercial'); };
+  return $('#ai-saved-summary');
+}
+
+async function showSavedReview(receipt) {
+  const summary = savedReview(receipt);
+  const ids = new Set(receipt.line_ids || []);
+  if (!ids.size) return;
+  try {
+    const rows = await Promise.all([...ids].slice(0,3).map(id => api('/api/lines/'+encodeURIComponent(id))));
+    if (summary.isConnected) {
+      const labels = rows.map(l => l.part_number+' × '+l.quantity+' '+l.unit);
+      summary.textContent = '已保存 '+labels.join('、')+(ids.size>3?' 等 '+ids.size+' 行需求。':'。');
+    }
+  } catch { /* The confirmation receipt already establishes the saved rows. */ }
+}
+
+function showAIExtraction(run) {
+  state.aiRun=run;
+  $('#drawer-backdrop').classList.remove('hidden');
+  $('#drawer').classList.remove('hidden');
+  $('#drawer').setAttribute('aria-hidden','false');
+  if (run.status === 'confirmed' && run.confirmed) {showSavedReview(run.confirmed);return;}
+  const source=reviewSource(run);
+  const role=$('#session-role')?.textContent.trim() || '';
+  const actor=['管理员','业务复核员'].includes(role)?role:'';
+  const candidates=run.lines.map((line,i)=>`<fieldset class="panel ai-candidate" data-index="${i}" style="padding:12px;margin:12px 0">
+    <legend><label><input type="checkbox" class="ai-selected" checked> 采用需求 ${i+1}</label></legend>
+    <blockquote>原文证据：${esc(line.evidence||'请在原文中核对')}</blockquote>
+    ${reviewField('件号（必填）','ai-part',line.part_number,'maxlength="150"')}
+    ${reviewField('数量（必填）','ai-qty',line.quantity,'type="number" min="1" step="1"')}
+    ${reviewField('单位（必填）','ai-unit',line.unit,'maxlength="30"')}
+    ${reviewField('技术描述（供应商比价时使用）','ai-description',reviewDescription(run,line,source.text,[]),'maxlength="1000"')}
+    <small class="ai-desc-note"></small>
+    ${reviewField('件状','ai-condition',line.condition,'maxlength="30"')}
+    </fieldset>`).join('');
+  $('#drawer-content').innerHTML=`<div class="drawer-top"><h2>核对客户询价</h2><button class="drawer-close" data-action="close-drawer" aria-label="关闭">×</button></div>
+    <section class="info-strip"><strong>邮件主题</strong><p>${esc(source.subject||'原邮件未提供主题')}</p><strong>核对原文</strong>
+      <pre style="white-space:pre-wrap;overflow:auto;max-height:240px">${esc(source.text||'请打开原件核对')}</pre></section>
+    <details><summary>模型与执行详情</summary><p>${esc(run.provider)} · ${esc(run.model)} · ${esc(run.run_id)}<br>${esc(run.execution_id||run.response_id||'')}<br>输入 SHA256：${esc(run.input_sha256||'')}</p></details>
+    <form id="ai-review-form" novalidate>
+      <label class="field">来源询价号（必填）<input id="ai-rfq" maxlength="100" value="${esc(source.rfq)}" placeholder="填写客户邮件或附件中的询价号"></label>
+      <div id="ai-lines">${candidates||'<p>没有可确认的建议行，请核对原件后补录。</p>'}</div>
+      <label class="field">复核人（必填）<input id="ai-actor" maxlength="100" value="${esc(actor)}"></label>
+      <label><input type="checkbox" id="ai-source-confirm"> 已逐项对照原文，确认以上内容一致</label>
+      <label class="field">修改说明<input id="ai-reason" maxlength="1000" placeholder="修改已有建议或补充其他依据时填写"></label>
+      <p id="ai-review-error" class="issue" role="alert"></p>
+      <button type="submit" class="btn primary block" data-action="confirm-ai-extraction" ${run.simulated||!run.lines.length?'disabled':''}>确认选中行入库</button>
+    </form>`;
+  const form=$('#ai-review-form');
+  form.onsubmit=e=>{e.preventDefault();confirmAIExtraction(form,run);};
+  form.oninput=e=>{e.target.removeAttribute('aria-invalid');$('#ai-review-error').textContent='';if(e.target.matches('.ai-description'))e.target.dataset.edited='true';};
+  if(run.lines.length===1 && !$('.ai-description',form).value) {
+    const input=$('.ai-description',form);
+    api('/api/supplier-offers').then(({rows})=>{
+      if(!form.isConnected||input.dataset.edited||input.value)return;
+      const spec=reviewDescription(run,run.lines[0],source.text,rows);
+      if(spec){input.defaultValue=spec;input.value=spec;$('.ai-desc-note',form).textContent='已对照邮件片段带出供应商原件中的规格写法，请核实。';}
+    }).catch(()=>{});
+  }
+}
+
+async function confirmAIExtraction(form,run) {
+  const button=$('button[type="submit"]',form);
+  if(button.disabled)return;
+  const val=(s,n=form)=>$(s,n).value.trim();
+  const error=$('#ai-review-error',form);
+  function invalid(input,message){
+    error.textContent=message;
+    input.setAttribute('aria-invalid','true');input.focus();return false;
+  }
+  const selected=$$('.ai-candidate',form).filter(n=>$('.ai-selected',n).checked);
+  if(!selected.length)return invalid($('.ai-selected',form)||button,'请至少选择一行需求。');
+  if(!val('#ai-rfq'))return invalid($('#ai-rfq',form),'请填写来源询价号，可在上方邮件主题或原文中查找。');
+  const lines=[];let changed=false;
+  for(const row of selected){
+    const index=Number(row.dataset.index),orig=run.lines[index];
+    const part=val('.ai-part',row),unit=val('.ai-unit',row),condition=val('.ai-condition',row),qty=Number(val('.ai-qty',row));
+    if(!part)return invalid($('.ai-part',row),'请填写所选行的件号。');
+    if(!Number.isSafeInteger(qty)||qty<1)return invalid($('.ai-qty',row),'请填写大于零的整数数量。');
+    if(!unit)return invalid($('.ai-unit',row),'请填写数量单位，例如 EA。');
+    changed ||= Boolean(orig.part_number && part!==orig.part_number || orig.quantity!=null && qty!==orig.quantity ||
+      orig.unit && unit!==orig.unit || orig.condition && condition!==orig.condition);
+    for(const field of ['.ai-description','.ai-condition','.ai-part','.ai-unit']){
+      const input=$(field,row);
+      if(input.defaultValue.trim() && input.value.trim()!==input.defaultValue.trim())changed=true;
+    }
+    lines.push({source_index:index,part_number:part,quantity:qty,unit,condition,description:val('.ai-description',row),source_rfq_no:val('#ai-rfq')});
+  }
+  if(!val('#ai-actor'))return invalid($('#ai-actor',form),'请填写复核人。');
+  if(!$('#ai-source-confirm',form).checked)return invalid($('#ai-source-confirm',form),'请先对照原文，并勾选核对确认。');
+  changed ||= Boolean($('#ai-rfq',form).defaultValue && val('#ai-rfq')!==$('#ai-rfq',form).defaultValue);
+  const note=val('#ai-reason');
+  if((changed||note)&&note.length<3)return invalid($('#ai-reason',form),'请用至少三个字说明核对或修改依据。');
+  error.textContent='';button.disabled=true;button.textContent='正在保存…';
+  try{
+    const receipt=await post('/api/extractions/'+encodeURIComponent(run.run_id)+'/confirm',{
+      actor:val('#ai-actor'),reason:note||'逐项核对邮件原文，确认所选字段一致',confirm_source:true,lines});
+    state.emails=[];state.allLines=[];
+    if(!form.isConnected||state.aiRun!==run)return;
+    state.emailId=run.email_id;state.inboxSearch='';state.inboxPage=0;
+    showSavedReview(receipt);
+    if(state.page==='inbox')renderInbox().catch(e=>toast(e.message));
+  }catch(e){if(form.isConnected){error.textContent='保存未完成：'+e.message;error.scrollIntoView({block:'nearest'});}}
+  finally{if(form.isConnected){button.disabled=false;button.textContent='确认选中行入库';}}
+}
 
 async function syncCloudQuote(button){if(!state.quoteReport?.quote_id)return;button.disabled=true;const old=button.textContent;button.textContent='写入并读回校验…';try{const r=await post('/api/quotes/'+state.quoteReport.quote_id+'/sync-matrixone',{});toast('云端快照已读回校验：'+r.payload_sha256.slice(0,12))}catch(e){toast('同步未确认成功：'+e.message)}finally{button.disabled=false;button.textContent=old}}
 
