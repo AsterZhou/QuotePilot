@@ -494,6 +494,53 @@ def native_workflow_status():
     except Exception:raise HTTPException(502,'MOI工作流状态读取失败；不能判定运行成功')
 
 
+class NativeStart(BaseModel):
+    synthetic_confirmed: Literal[True]
+
+
+class NativeReconcile(BaseModel):
+    execution_id: str = Field(pattern=r'^[A-Za-z0-9_-]{1,100}$')
+
+
+@contextmanager
+def native_job_context():
+    from quotepilot import native_jobs
+    try:
+        client, sql, wid = native_jobs.clients()
+        with database() as con:
+            yield native_jobs, con, client, sql, wid
+    except KeyError as ex:
+        raise HTTPException(404, '作业、原件或平台回执字段不存在') from ex
+    except ValueError as ex:
+        raise HTTPException(409, native_jobs.safe_error(ex)) from ex
+    except Exception as ex:
+        raise HTTPException(502, '读取或保存作业失败，请按原记录核对状态') from ex
+
+
+@app.post('/api/native-workflow/emails/{email_id}/runs')
+def start_native_email(email_id: str, req: NativeStart):
+    with native_job_context() as (jobs, con, client, sql, wid):
+        return jobs.start(con, email_id, client, sql, wid)
+
+
+@app.get('/api/native-workflow/emails/{email_id}/runs')
+def native_email_history(email_id: str):
+    with native_job_context() as (jobs, con, client, _, wid):
+        return {'rows': jobs.history(con, email_id, client, wid)}
+
+
+@app.post('/api/native-workflow/runs/{ref}/refresh')
+def refresh_native_job(ref: str):
+    with native_job_context() as (jobs, con, client, sql, wid):
+        return jobs.refresh(con, ref, client, sql, wid)
+
+
+@app.post('/api/native-workflow/runs/{ref}/reconcile')
+def reconcile_native_job(ref: str, req: NativeReconcile):
+    with native_job_context() as (jobs, con, client, _, wid):
+        return jobs.bind_execution(con, ref, req.execution_id, client, wid)
+
+
 # Batch one: independent read-only AI query center. Existing business APIs remain intact.
 def center_today():
     from zoneinfo import ZoneInfo

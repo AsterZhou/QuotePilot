@@ -1,4 +1,4 @@
-"""One real native start attempt + Genesis extraction + approved synthetic quote mirror.
+"""Read the workflow definition, then test separate Genesis and approved quote integrations.
 Requires existing server env credentials. No instance creation, retries or production DB.
 """
 import sys,os,json,time,hashlib,base64
@@ -43,12 +43,9 @@ def run():
         from quotepilot.native_workflow import MOIWorkflowClient
         client=MOIWorkflowClient(transport)
         try:
-            # One documented server attempt, even though preflight reports disabled.
-            data=client.request('POST',client.workflow_path(WID)+'/executions',{'values':{'vars_run_ref':'SPRINT-SYNTHETIC-20261108'},'trigger_now':True})
-            eid=data.get('workflow_run',{}).get('execution_id');report['native_execution_id']=eid
-            if eid:report['native_execution_detail']=client.execution(WID,eid)
-            report['native_start_response']=data
-        except Exception as error:report['native_blocker']={'type':type(error).__name__,'reason':redact(str(error),secret),'preflight':'workflow disabled, no compute instances; no auto enable or resource creation'}
+            report['native_definition']=client.status(WID)
+            report['native_note']='Read-only diagnostic. Submit an uploaded RFQ from the QuotePilot inbox.'
+        except Exception as error:report['native_blocker']={'type':type(error).__name__,'reason':redact(str(error),secret)}
         from quotepilot.providers import GenesisProvider
         try:
             text='SYNTHETIC RFQ: Please quote 100 EA of PN-0001 in FN condition. RFQ BROWSER-RFQ. Description: Synthetic valve spec A.'

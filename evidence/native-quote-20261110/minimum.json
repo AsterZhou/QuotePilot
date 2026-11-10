@@ -1,0 +1,521 @@
+{
+  "minimum_start": {
+    "time": "2026-11-10T07:34:04.073425+00:00",
+    "method": "POST",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-apps/a1f75c37-eb9d-57ce-bfe3-6debdf2142c3/executions",
+    "http": 200,
+    "trace": "59ade8c3-8d1c-4a9c-82be-d196a2383cc6",
+    "request_id": "59ade8c3-8d1c-4a9c-82be-d196a2383cc6",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "workflow_run": {
+          "execution_id": "9ea0945a-ec8b-4131-a000-35df3d3adbd0",
+          "workflow_id": "a1f75c37-eb9d-57ce-bfe3-6debdf2142c3",
+          "status": "triggered",
+          "available_actions": [
+            "refresh",
+            "result",
+            "delete",
+            "pause",
+            "cancel"
+          ],
+          "execution_mode": "one_shot",
+          "moi_task_id": "01a1c460-d93b-7bb9-8a14-270bf82d5b68",
+          "moi_case_id": "01a1c460-d93b-7bbf-82a2-2c7814187a0f",
+          "moi_workflow_def_id": "c838d9bc-2c52-4ffc-8156-2d5811983c8e",
+          "moi_workflow_version_id": "774142a5-6e06-434f-9786-6301d73b2823"
+        }
+      }
+    },
+    "request_body": {
+      "trigger_now": true
+    }
+  },
+  "min_status": {
+    "time": "2026-11-10T07:34:20.808439+00:00",
+    "method": "GET",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-apps/a1f75c37-eb9d-57ce-bfe3-6debdf2142c3/executions/9ea0945a-ec8b-4131-a000-35df3d3adbd0",
+    "http": 200,
+    "trace": "336423dc-24a6-4c1f-b56d-e3ec77a6af7f",
+    "request_id": "336423dc-24a6-4c1f-b56d-e3ec77a6af7f",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "execution": {
+          "execution_id": "9ea0945a-ec8b-4131-a000-35df3d3adbd0",
+          "workflow_id": "a1f75c37-eb9d-57ce-bfe3-6debdf2142c3",
+          "status": "completed",
+          "available_actions": [
+            "refresh",
+            "result",
+            "delete",
+            "retry"
+          ],
+          "execution_mode": "one_shot",
+          "moi_task_id": "01a1c460-d93b-7bb9-8a14-270bf82d5b68",
+          "moi_case_id": "01a1c460-d93b-7bbf-82a2-2c7814187a0f",
+          "moi_workflow_def_id": "c838d9bc-2c52-4ffc-8156-2d5811983c8e",
+          "moi_workflow_version_id": "774142a5-6e06-434f-9786-6301d73b2823",
+          "started_at": "2026-11-10T07:34:04Z",
+          "ended_at": "2026-11-10T07:34:09Z",
+          "created_at": "2026-11-10T07:34:04Z",
+          "updated_at": "2026-11-10T07:34:10Z"
+        }
+      }
+    }
+  },
+  "min_node": {
+    "time": "2026-11-10T07:34:20.302220+00:00",
+    "method": "GET",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-apps/a1f75c37-eb9d-57ce-bfe3-6debdf2142c3/executions/9ea0945a-ec8b-4131-a000-35df3d3adbd0/nodes/root.extract_fields",
+    "http": 200,
+    "trace": "4e125a0d-03e1-40cf-a1cf-89d01bed3a32",
+    "request_id": "4e125a0d-03e1-40cf-a1cf-89d01bed3a32",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "node": {
+          "flow_id": "root",
+          "name": "extract_fields",
+          "node_key": "root.extract_fields",
+          "node_type": "extract",
+          "display_name": "Information Extraction",
+          "workitem_id": "00433d5e-0acf-56e8-9f61-7b815262bdd7",
+          "node_execution_id": "8a271db0-2b51-5a6e-bedb-0cfeb778b8ab"
+        },
+        "run": {
+          "status": "COMPLETED",
+          "started_at": "2026-11-10T07:34:05Z",
+          "ended_at": "2026-11-10T07:34:09Z",
+          "duration_ms": 4000,
+          "runtime_input": {
+            "documents": [
+              {
+                "content": "Please quote 3 EA of PN-0001, condition FN, synthetic valve spec A.",
+                "id": "qp-synthetic-rfq"
+              }
+            ],
+            "instruction": "Extract only explicit RFQ values. Preserve literal part number, unit and condition.",
+            "json_schema": {
+              "properties": {
+                "condition": {
+                  "type": "string"
+                },
+                "part_number": {
+                  "description": "Exact part number",
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer"
+                },
+                "unit": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "part_number",
+                "quantity",
+                "unit",
+                "condition"
+              ],
+              "type": "object"
+            },
+            "mode": "n_to_1"
+          },
+          "runtime_output": {
+            "document_metadata": [
+              null
+            ],
+            "documents": [
+              {
+                "content": "Please quote 3 EA of PN-0001, condition FN, synthetic valve spec A.",
+                "id": "qp-synthetic-rfq",
+                "metadata": {
+                  "extraction_result": "{\"condition\":\"FN\",\"part_number\":\"PN-0001\",\"quantity\":3,\"unit\":\"EA\"}",
+                  "sources_tracking": {
+                    "condition": [
+                      {
+                        "block_index": "idx_0",
+                        "confidence": 0.5,
+                        "file_id": "",
+                        "file_name": "",
+                        "page_number": 0,
+                        "quote": "condition FN"
+                      }
+                    ],
+                    "part_number": [
+                      {
+                        "block_index": "idx_0",
+                        "confidence": 0.5,
+                        "file_id": "",
+                        "file_name": "",
+                        "page_number": 0,
+                        "quote": "PN-0001"
+                      }
+                    ],
+                    "quantity": [
+                      {
+                        "block_index": "idx_0",
+                        "confidence": 1,
+                        "file_id": "",
+                        "file_name": "",
+                        "page_number": 0,
+                        "quote": "3 EA"
+                      }
+                    ],
+                    "unit": [
+                      {
+                        "block_index": "idx_0",
+                        "confidence": 0.5,
+                        "file_id": "",
+                        "file_name": "",
+                        "page_number": 0,
+                        "quote": "3 EA"
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "metrics": {
+              "calls": [
+                {
+                  "cached_tokens": 0,
+                  "completion_tokens": 92,
+                  "context_budget": {
+                    "reason": "adapter_unsupported",
+                    "status": "unknown"
+                  },
+                  "duration_ms": 4089,
+                  "group": "g1",
+                  "phase": "trunk",
+                  "prompt_tokens": 436,
+                  "retries": 0
+                }
+              ],
+              "field_grounding": [
+                {
+                  "field": "condition",
+                  "parent": "",
+                  "reading": {
+                    "key": {
+                      "box": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "raw": ""
+                    },
+                    "label": {
+                      "box": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "raw": ""
+                    },
+                    "page": 0,
+                    "state": "",
+                    "subject": {
+                      "box": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "raw": ""
+                    },
+                    "value": {
+                      "box": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "raw": ""
+                    }
+                  },
+                  "reason": "partial_sources",
+                  "source_digest": "650b83bb8f85ed8ced636aa20c3732173b22b70245b699d796a3dea470b000a1",
+                  "status": "unresolved"
+                },
+                {
+                  "field": "part_number",
+                  "parent": "",
+                  "reading": {
+                    "key": {
+                      "box": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "raw": ""
+                    },
+                    "label": {
+                      "box": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "raw": ""
+                    },
+                    "page": 0,
+                    "state": "",
+                    "subject": {
+                      "box": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "raw": ""
+                    },
+                    "value": {
+                      "box": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "raw": ""
+                    }
+                  },
+                  "reason": "partial_sources",
+                  "source_digest": "650b83bb8f85ed8ced636aa20c3732173b22b70245b699d796a3dea470b000a1",
+                  "status": "unresolved"
+                },
+                {
+                  "field": "unit",
+                  "parent": "",
+                  "reading": {
+                    "key": {
+                      "box": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "raw": ""
+                    },
+                    "label": {
+                      "box": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "raw": ""
+                    },
+                    "page": 0,
+                    "state": "",
+                    "subject": {
+                      "box": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "raw": ""
+                    },
+                    "value": {
+                      "box": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "raw": ""
+                    }
+                  },
+                  "reason": "partial_sources",
+                  "source_digest": "650b83bb8f85ed8ced636aa20c3732173b22b70245b699d796a3dea470b000a1",
+                  "status": "unresolved"
+                }
+              ],
+              "gates": {
+                "ambiguities": 0,
+                "binding_fail": 0,
+                "binding_pass": 4,
+                "quote_fail": 0,
+                "quote_pass": 4,
+                "rescan_hits": 0,
+                "visual_checks": 3,
+                "visual_overrides": 0
+              },
+              "ingest": {
+                "source": "reuse_documents"
+              },
+              "plan": {
+                "contract_hash": "26c0f25e9a04549aac0fa9cf4b5832b64c64e8857e2076e8ce927dd89dda0ac3",
+                "empty_units": 0,
+                "gear": "all_on_table",
+                "groups": [
+                  "g1"
+                ],
+                "model": "kimi-k3",
+                "model_source": "slot",
+                "prompt_hash": "5c605c7c97933cb6d94ec21481c67dcabd19eab77048323f62d22c649706653d",
+                "units": 1
+              },
+              "stages": [
+                {
+                  "acted": 1,
+                  "attempted": 1,
+                  "stage": "layout.ingest",
+                  "status_counts": {
+                    "success": 1
+                  },
+                  "wiring": "wired"
+                },
+                {
+                  "acted": 1,
+                  "attempted": 1,
+                  "stage": "extract.trunk",
+                  "status_counts": {
+                    "success": 1
+                  },
+                  "wiring": "wired"
+                },
+                {
+                  "acted": 0,
+                  "attempted": 4,
+                  "stage": "extract.adjudicate",
+                  "status_counts": {
+                    "success": 1
+                  },
+                  "wiring": "wired"
+                }
+              ],
+              "totals": {
+                "cached_tokens": 0,
+                "calls": 1,
+                "completion_tokens": 92,
+                "prompt_tokens": 436,
+                "wall_ms": 4093
+              },
+              "visual": [
+                {
+                  "before": "FN",
+                  "detail": "partial_sources",
+                  "field": "condition",
+                  "result": "rejected_no_evidence"
+                },
+                {
+                  "before": "PN-0001",
+                  "detail": "partial_sources",
+                  "field": "part_number",
+                  "result": "rejected_no_evidence"
+                },
+                {
+                  "before": "EA",
+                  "detail": "partial_sources",
+                  "field": "unit",
+                  "result": "rejected_no_evidence"
+                }
+              ]
+            },
+            "mode": "n_to_1",
+            "outcome": {
+              "status": "succeeded"
+            },
+            "result": "{\"condition\":\"FN\",\"part_number\":\"PN-0001\",\"quantity\":3,\"unit\":\"EA\"}",
+            "sources_tracking": {
+              "condition": [
+                {
+                  "block_index": "idx_0",
+                  "confidence": 0.5,
+                  "file_id": "",
+                  "file_name": "",
+                  "page_number": 0,
+                  "quote": "condition FN"
+                }
+              ],
+              "part_number": [
+                {
+                  "block_index": "idx_0",
+                  "confidence": 0.5,
+                  "file_id": "",
+                  "file_name": "",
+                  "page_number": 0,
+                  "quote": "PN-0001"
+                }
+              ],
+              "quantity": [
+                {
+                  "block_index": "idx_0",
+                  "confidence": 1,
+                  "file_id": "",
+                  "file_name": "",
+                  "page_number": 0,
+                  "quote": "3 EA"
+                }
+              ],
+              "unit": [
+                {
+                  "block_index": "idx_0",
+                  "confidence": 0.5,
+                  "file_id": "",
+                  "file_name": "",
+                  "page_number": 0,
+                  "quote": "3 EA"
+                }
+              ]
+            },
+            "warnings": [
+              {
+                "code": "field_grounding_unresolved",
+                "field": "condition",
+                "message": "This value could not be verified in its field region. Review the original document."
+              },
+              {
+                "code": "field_grounding_unresolved",
+                "field": "part_number",
+                "message": "This value could not be verified in its field region. Review the original document."
+              },
+              {
+                "code": "field_grounding_unresolved",
+                "field": "unit",
+                "message": "This value could not be verified in its field region. Review the original document."
+              }
+            ]
+          },
+          "runtime_vars": {
+            "__input__": "{\"documents\":[{\"content\":\"Please quote 3 EA of PN-0001, condition FN, synthetic valve spec A.\",\"id\":\"qp-synthetic-rfq\"}],\"instruction\":\"Extract only explicit RFQ values. Preserve literal part number, unit and condition.\",\"json_schema\":{\"properties\":{\"condition\":{\"type\":\"string\"},\"part_number\":{\"description\":\"Exact part number\",\"type\":\"string\"},\"quantity\":{\"type\":\"integer\"},\"unit\":{\"type\":\"string\"}},\"required\":[\"part_number\",\"quantity\",\"unit\",\"condition\"],\"type\":\"object\"},\"mode\":\"n_to_1\"}",
+            "__save__": "{\"extract_result\":\".result\",\"extracted_documents\":\".documents\"}"
+          },
+          "config": {
+            "id": "moi:extract",
+            "inConnector": {
+              "nodes": [
+                "__start"
+              ],
+              "type": "simple"
+            },
+            "outConnector": {
+              "nodes": [
+                "__end"
+              ],
+              "type": "simple"
+            },
+            "varMap": {
+              "__input__": "{\"documents\":[{\"content\":\"Please quote 3 EA of PN-0001, condition FN, synthetic valve spec A.\",\"id\":\"qp-synthetic-rfq\"}],\"instruction\":\"Extract only explicit RFQ values. Preserve literal part number, unit and condition.\",\"json_schema\":{\"properties\":{\"condition\":{\"type\":\"string\"},\"part_number\":{\"description\":\"Exact part number\",\"type\":\"string\"},\"quantity\":{\"type\":\"integer\"},\"unit\":{\"type\":\"string\"}},\"required\":[\"part_number\",\"quantity\",\"unit\",\"condition\"],\"type\":\"object\"},\"mode\":\"n_to_1\"}",
+              "__save__": "{\"extract_result\":\".result\",\"extracted_documents\":\".documents\"}"
+            },
+            "version": "v1"
+          },
+          "metrics": {
+            "input": "1 documents"
+          }
+        }
+      }
+    }
+  }
+}

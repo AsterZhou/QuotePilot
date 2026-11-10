@@ -4,6 +4,7 @@ WORKDIR /app
 COPY requirements-tested.txt /app/
 RUN pip install -r requirements-tested.txt && useradd --uid 10001 --create-home quote && mkdir /data && chown quote:quote /data
 COPY --chown=quote:quote quotepilot/ /app/quotepilot/
+COPY --chown=quote:quote integration/rfq_native.yaml /app/integration/rfq_native.yaml
 COPY --chown=quote:quote web/ /app/web/
 COPY --chown=quote:quote workspace/samples/ /app/workspace/samples/
 COPY --chown=quote:quote server.py /app/

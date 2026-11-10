@@ -16,10 +16,15 @@ def integration_status(con):
     if con.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='cloud_quote_receipts'").fetchone():
         row=con.execute('SELECT receipt_json,verified_at FROM cloud_quote_receipts WHERE workspace_id=? ORDER BY rowid DESC LIMIT 1',(workspace,)).fetchone()
         if row:cloud={**json.loads(row['receipt_json']),'at':row['verified_at']}
-    return {'moi_connected':bool(cloud_configured and cloud),'matrixone_connected':bool(cloud_configured and cloud),'model_connected':bool(configured and verified),
+    native = None
+    wid = os.getenv('MOI_WORKFLOW_ID','')
+    if wid and con.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='native_rfq_jobs'").fetchone():
+        native = con.execute("SELECT eid FROM native_rfq_jobs WHERE workspace=? AND workflow=? AND phase='review_ready' ORDER BY rowid DESC LIMIT 1",(workspace,wid)).fetchone()
+    return {'moi_connected' :bool(cloud_configured and cloud),'matrixone_connected':bool(cloud_configured and cloud),'model_connected':bool(configured and verified),
             'active_provider':os.environ.get('QUOTEPILOT_PROVIDER','mock'),
             'ephemeral_storage':os.environ.get('QUOTEPILOT_EPHEMERAL_DEMO')=='1',
-            'moi_sql_configured':cloud_configured,'last_verified_cloud_snapshot':cloud,'moi_workflow_connected':False,
+            'native_rfq_enabled':bool(os.getenv('QUOTEPILOT_NATIVE_RFQ')=='1' and os.getenv('MOI_WORKFLOW_ID') and cloud_configured),
+            'moi_sql_configured':cloud_configured,'last_verified_cloud_snapshot':cloud,'moi_workflow_connected':bool(native),'last_native_execution_id':native['eid'] if native else None,
             'genesis_configured':bool(configured),'last_successful_genesis_call':verified,
             'connection_check':'已保存的最近成功调用证据，不代表持续在线探测',
             'mode':'genesis_assisted_local' if configured else 'local_offline',

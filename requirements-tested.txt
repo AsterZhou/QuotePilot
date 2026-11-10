@@ -32,3 +32,4 @@ socksio==1.0.0
 
 
 sqlglot==30.30.0
+PyYAML==6.0.3
