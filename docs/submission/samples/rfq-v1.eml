@@ -1,0 +1,14 @@
+From: Synthetic Buyer <browser@example.invalid>
+Subject: SYNTHETIC BROWSER V1
+Message-ID: <browser-v1@example.invalid>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+SYNTHETIC ONLY
+RFQ No: BROWSER-RFQ
+Part Number: PN-0001
+Quantity: 100
+Unit Of Measure: EA
+Condition: FN
+Description: Synthetic valve spec A

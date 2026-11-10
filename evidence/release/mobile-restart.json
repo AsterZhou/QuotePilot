@@ -1,0 +1,30 @@
+{
+  "mobile": [
+    {
+      "page": "inbox",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "page": "review",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "page": "versions",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "page": "commercial",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "page": "audit",
+      "viewport": 390,
+      "width": 390
+    }
+  ],
+  "local_process_restart_retained_new_email": true
+}

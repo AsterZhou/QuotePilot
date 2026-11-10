@@ -21,3 +21,5 @@ tmp/
 evidence/batch1/*
 !evidence/batch1/acceptance.json
 !evidence/batch1/closeout.json
+
+/dist/

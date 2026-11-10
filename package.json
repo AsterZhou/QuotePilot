@@ -1,7 +1,8 @@
 {
-  "name": "quotepilot-interactive-preview",
+  "name": "quotepilot",
   "private": true,
   "scripts": {
-    "dev": "python3 -u scripts/preview_boot.py"
+    "dev": "python3 -u scripts/preview_boot.py",
+    "build": "node scripts/build_web.cjs"
   }
 }

@@ -1,0 +1,80 @@
+{
+  "network": "external Genesis and MatrixOne via local FastAPI routes",
+  "input": "synthetic",
+  "upload": 200,
+  "model_http": 200,
+  "genesis": {
+    "model": "qwen3.8-flash",
+    "run_id": "EX-768EC06ECA39",
+    "response_id": "resp_157ebb4d-81b6-9e2f-bd25-1977f357464e",
+    "simulated": false,
+    "usage": {
+      "input_tokens": 430,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 469,
+      "output_tokens_details": {
+        "reasoning_tokens": 379
+      },
+      "total_tokens": 899,
+      "x_details": [
+        {
+          "input_tokens": 430,
+          "output_tokens": 469,
+          "output_tokens_details": {
+            "reasoning_tokens": 379
+          },
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 899,
+          "x_billing_type": "response_api"
+        }
+      ]
+    },
+    "lines": [
+      {
+        "part_number": "PN-0001",
+        "quantity": 100,
+        "unit": "EA",
+        "condition": "FN",
+        "evidence": "Please quote one hundred pieces of PN-0001, factory new (FN), ordered in EA."
+      }
+    ],
+    "input_sha256": "7c09ba98940a517c0351be46c54d3d068921c7ce063304cc3e89dd289c7085f7"
+  },
+  "confirmation": {
+    "run_id": "EX-768EC06ECA39",
+    "line_ids": [
+      3
+    ],
+    "new_lines": 1,
+    "actor": "Release QA",
+    "reason": "Verified against synthetic mail",
+    "selected_indices": [
+      0
+    ],
+    "unselected_indices": [],
+    "idempotent": false
+  },
+  "mirror_http": 200,
+  "matrixone": {
+    "verified": true,
+    "quote_id": "CQ-8463E589EDD44CCF",
+    "version": 3,
+    "payload_sha256": "80392debfa5cc8894b65e03fdb4a0e6ce32463952668b716cef368f00d1c0afa",
+    "table": "quotepilot_sprint.commercial_quote_snapshots_v1",
+    "query_ids": [
+      "01a1c452-30e7-7324-878e-6cceb7198c89",
+      "01a1c452-5112-768b-a88a-acb6898d7553",
+      "01a1c452-742d-787e-86fa-1ff03648028e",
+      "01a1c452-934f-7638-a000-e894cd1730e4"
+    ],
+    "scope": "application_orchestrated_approved_commercial_snapshot",
+    "native_workflow_execution": false,
+    "primary_store": "SQLite"
+  },
+  "readback_verified": true
+}

@@ -1,0 +1,12 @@
+{
+  "pdf": {
+    "sha256": "71067d6cbe7c745644341dc4d1e195c512fa9c0bf4cc6859fbc7595782338333",
+    "amount_readback_verified": true,
+    "expected_total_cny": "1378.00"
+  },
+  "xlsx": {
+    "sha256": "2f666798ea8af9f3a7a56648dc134162144b85acedafc340b5ccf16fea0b9de0",
+    "amount_readback_verified": true,
+    "expected_total_cny": "1378.00"
+  }
+}

@@ -1,6 +1,7 @@
 const fs=require('fs'),assert=require('node:assert/strict'),{JSDOM}=require('jsdom');
 const w=new JSDOM('<div id="commercial-draft"></div>',{runScripts:'outside-only'}).window;
 w.eval(`var $=q=>document.querySelector(q);var esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));var money=v=>'CNY '+v;`);
+w.api=async()=>({verified:false});
 w.eval(fs.readFileSync('web/commercial.js','utf8')+'\nwindow.__show=(q,role)=>{commercialIdentity={role};commercialShow(q)};');
 const q={id:'CQ-SYNTHETIC',scheme:'lowest_cost',status:'draft',version:1,total_cost_cny:'100.00',suggested_total_cny:'125.00',balanced_formula:'score',specification_basis:'source',approval_blockers:[],lines:[{line_id:1,part_number:'<img src=x>',quantity:1,unit:'EA',selected:{offer:{supplier:'SYNTHETIC',lead_days:2,source_id:'abc'},calculation:{purchase_cny:'100.00',processing_cny:'0',freight_cny:'0',tax_cny:'0',other_cny:'0',total_cost_cny:'100',suggested_unit_price_cny:'125',actual_margin:'.2',formula:'cost/(1-margin)',tax_basis:'purchase',rounding:'HALF_UP',risks:[]}},rejected:[]}]};
 w.__show(q,'reviewer');assert.equal(w.document.querySelectorAll('img').length,0);assert.ok(w.document.querySelector('[data-commercial-action="review"]'));assert.equal(w.document.querySelector('[data-commercial-action="approve"]'),null);assert.ok(w.document.querySelector('a[href$="final=false"]'));assert.match(w.document.body.textContent,/20.00%/);
