@@ -9,3 +9,4 @@ httpx[socks]>=0.25,<1
 
 
 sqlglot==30.30.0
+PyYAML==6.0.3

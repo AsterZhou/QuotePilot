@@ -1,0 +1,16 @@
+{
+  "utc": "2026-11-10T05:47:10.239234+00:00",
+  "workspace_id": "ec94c942-2d64-c6be-c968-e793caaef007",
+  "workflow_id": "45e246b6-9a6f-5331-82cd-44c00f67cb18",
+  "credential_present": false,
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/workflow/v2/workflow-apps/45e246b6-9a6f-5331-82cd-44c00f67cb18",
+      "http": 401,
+      "code": "Unauthorized",
+      "request_id": "0b614483-a34b-4c76-814f-7e44f2f00d53",
+      "trace_id": "0b614483-a34b-4c76-814f-7e44f2f00d53"
+    }
+  ]
+}

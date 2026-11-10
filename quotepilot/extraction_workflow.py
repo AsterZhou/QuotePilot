@@ -54,12 +54,16 @@ def source_context(con,email_id):
 
 def create_run(con,email_id,result,text,refs,notes):
     ensure_schema(con)
+    with con:
+        return record_suggestions(con,email_id,result,text,refs,notes)
+
+def record_suggestions(con,email_id,result,text,refs,notes):
+    """Insert suggestions and audit in the caller's transaction."""
     rid='EX-'+uuid4().hex[:12].upper()
     result={**result,'source_ids':refs,'source_notes':notes,'run_id':rid,'email_id':email_id}
-    with con:
-        con.execute('INSERT INTO extraction_runs(id,email_id,input_text,input_sha256,result_json,status,model,provider) VALUES(?,?,?,?,?,?,?,?)',
+    con.execute('INSERT INTO extraction_runs(id,email_id,input_text,input_sha256,result_json,status,model,provider) VALUES(?,?,?,?,?,?,?,?)',
                     (rid,email_id,text,hashlib.sha256(text.encode()).hexdigest(),json.dumps(result,ensure_ascii=False),'pending',result.get('model'),result['provider']))
-        audit(con,'ai_suggestions_created',rid,{'email_id':email_id,'provider':result['provider'],'simulated':result['simulated'],'model':result.get('model'),'response_id':result.get('response_id'),'usage':result.get('usage'),'candidate_count':len(result['lines']),'source_notes':notes})
+    audit(con,'ai_suggestions_created',rid,{'email_id':email_id,'provider':result['provider'],'simulated':result['simulated'],'model':result.get('model'),'response_id':result.get('response_id'),'execution_id':result.get('execution_id'),'usage':result.get('usage'),'candidate_count':len(result['lines']),'source_notes':notes})
     return {**result,'input_text':text,'input_sha256':hashlib.sha256(text.encode()).hexdigest()}
 
 def load_run(con,rid):
@@ -90,18 +94,19 @@ def confirm_run(con,rid,lines,actor,reason):
             existing=con.execute('SELECT id FROM rfq_lines WHERE email_id=? AND source_rfq_no=? AND part_number=? AND quantity=? AND unit=? AND part_condition=?',
                                  (r['email_id'],rfq,pn,qty,unit,cond)).fetchone()
             if existing:ids.append(existing['id']);continue
+            native=original.get('provider')=='moi_native'
             ref=f'{email["filename"]} · {rid} / suggestion {idx+1}'
             customer=(email['sender'] or '').split('<')[0].strip().strip('"')
             cur=con.execute('''INSERT INTO rfq_lines(email_id,source_rfq_no,part_number,description,quantity,unit,urgency,part_condition,mpn,deadline,product_scope,customer,source_kind,source_ref)
                                 VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
-                            (r['email_id'],rfq,pn,patch.get('description',''),qty,unit,'',cond,'','','',customer,'Genesis建议（已人工确认）',ref))
+                            (r['email_id'],rfq,pn,patch.get('description',''),qty,unit,'',cond,'','','',customer,'MOI原生建议（已人工确认）' if native else 'Genesis建议（已人工确认）',ref))
             lid=cur.lastrowid;ids.append(lid);added+=1
             evidence={'run_id':rid,'original_model_suggestion':suggested,'confirmed_fields':patch,'actor':actor,'reason':reason,'source_ids':original['source_ids']}
             con.execute('INSERT INTO line_evidence VALUES(?,?,?)',(lid,json.dumps(evidence,ensure_ascii=False),'人工确认'))
             from .provenance import capture,locate_snippet,FIELDS
             sid,location=locate_snippet(con,r['email_id'],suggested.get('evidence',''))
             original_values={k:suggested.get('condition' if k=='part_condition' else k) for k in FIELDS}
-            capture(con,lid,suggested,method='genesis:'+str(original.get('model') or 'unknown'),source_id=sid,locator=location,
+            capture(con,lid,suggested,method=('moi_native:' if native else 'genesis:')+str(original.get('model') or 'unknown'),source_id=sid,locator=location,
                 confirmed=True,actor=actor,reason=reason,original_values=original_values)
             con.execute('INSERT OR IGNORE INTO rfq_headers(email_id,source_rfq_no,customer) VALUES(?,?,?)',(r['email_id'],rfq,customer))
         receipt={'run_id':rid,'line_ids':ids,'new_lines':added,'actor':actor,'reason':reason,'selected_indices':indices,'unselected_indices':[i for i in range(len(original['lines'])) if i not in indices]}

@@ -36,6 +36,7 @@ def install(con):
     for table in ('source_files','field_evidence','field_revisions','audit_events','audit_chain'):
         for operation in ('UPDATE','DELETE'):
             con.execute(f"CREATE TRIGGER IF NOT EXISTS protect_{table}_{operation.lower()} BEFORE {operation} ON {table} BEGIN SELECT RAISE(ABORT,'immutable evidence or audit record'); END")
+    con.execute('BEGIN IMMEDIATE')
     seal_audit(con);con.commit()
 
 def verify_audit(con):
@@ -115,7 +116,7 @@ def capture(con,line_id,raw=None,method='deterministic_parser',source_id=None,lo
             page=raw.get('_source_page') or (re.search(r'page (\d+)',str(raw.get('_source_row',''))) or [None,None])[1]
             if page:loc.update(page=int(page),verified='parser_page')
         snippet=str(raw.get('_source_snippets',{}).get(key,value) or '')
-        if method.startswith('genesis'):snippet=str(raw.get('evidence') or snippet)
+        if method.startswith(('genesis', 'moi_native:')):snippet=str(raw.get('evidence') or snippet)
         trust='source_located' if source and snippet and ('cell' in loc or 'page' in loc or raw.get('_raw_text') or value is not None) else 'requires_review'
         if not line[field]:trust='missing'
         if loc.get('verification')=='unlocated':trust='requires_review'

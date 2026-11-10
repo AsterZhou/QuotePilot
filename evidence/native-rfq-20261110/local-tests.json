@@ -1,0 +1,24 @@
+{
+  "command": "python -m pytest -q",
+  "python": "3.12.14",
+  "source": "isolated local application, real SQLite, real generated PDF/XLSX; MOI HTTP and SQL in the new tests use contract fixtures",
+  "result": "279 passed, 2 warnings in 28.00s",
+  "new_native_contract_cases": 8,
+  "export_amount_checked_cny": "43.74",
+  "browser_javascript_syntax": "passed",
+  "native_execution_id": null,
+  "native_execution_verified": false,
+  "public_acceptance": false,
+  "warnings": [
+    "anyio pytest plugin deprecated CallSpec2 name",
+    "Starlette TestClient httpx deprecation"
+  ],
+  "dependencies": {
+    "fastapi": "0.141.1",
+    "pydantic": "2.13.4",
+    "httpx": "0.28.1",
+    "PyMuPDF": "1.26.6",
+    "openpyxl": "3.1.5",
+    "PyYAML": "6.0.3"
+  }
+}
