@@ -123,6 +123,10 @@ MatrixOne 同步只接受已有两个不同账户完成签核的报价。服务�
 
 ## 八、演示环境与使用
 
+评审样例可直接下载。自然语言邮件用来检查模型建议，结构化邮件用于复演数量变更，供应商 PDF 包含三家合成报价。
+
+[自然语言询价 EML](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/rfq-natural.eml) · [原始 100 件 EML](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/rfq-v1.eml) · [更新 500 件 EML](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/rfq-v2.eml) · [三家供应商报价 PDF](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/suppliers.pdf)
+
 1. 管理员从「询价来件」上传合成 EML，或选择独立 PDF、XLSX 并填写所属客户邮箱。先预览，再导入。
 2. 选择目标邮件，检查来源。对自然语言来件触发 Genesis 补充提取，对照原文确认；在「证据与复核」处理缺项。
 3. 在「报价与审批」上传供应商报价原件，核对候选的单价、币种、规格、起订量和交期。用业务复核员身份确认。
