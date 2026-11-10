@@ -156,7 +156,7 @@ document.addEventListener('click',async e=>{
  if(target.dataset.editQuoteLine){await editQuoteLine(Number(target.dataset.editQuoteLine));return}
  if(target.dataset.export){await exportQuote(target.dataset.export);return}
  const action=target.dataset.action;
- if(action==='reload')api('/api/auth/me').then(identity=>{if(identity.role==='reviewer')$$('.nav-link').forEach(b=>{if(['query','operations','audit','rules','connect','insight','quote'].includes(b.dataset.page))b.hidden=true});return render()}).catch(errorPage);
+ if(action==='reload')enterWorkspace().catch(errorPage);
  if(action==='upload-open'){const n=$('#upload-panel');n.style.display='block';n.scrollIntoView({behavior:'smooth'})}
  if(action==='upload-close')$('#upload-panel').style.display='none';
  if(action==='clear-inbox-search'){state.inboxSearch='';state.inboxPage=0;$('#inbox-search').value='';loadInboxLines()}
@@ -208,7 +208,8 @@ async function enterWorkspace(){
  const identity=await api('/api/auth/me');
  document.querySelector('#session-role').textContent=identity.role==='reviewer'?'业务复核员':'管理员';
  if(identity.role==='reviewer')$$('.nav-link').forEach(b=>{if(['query','operations','audit','rules','connect','insight','quote'].includes(b.dataset.page))b.hidden=true});
- return render();
+ await render();
+ document.querySelector('#nav').inert=false;
 }
 document.addEventListener('change', e=>{
  if(e.target.id==='eml-file') {
@@ -217,7 +218,7 @@ document.addEventListener('change', e=>{
  }
 });
 document.querySelector('#sign-out').addEventListener('click', async()=>{try{await post('/auth/logout',{});location.assign('/login')}catch(e){toast(e.message)}});
-enterWorkspace().catch(errorPage);
+document.addEventListener('DOMContentLoaded',()=>enterWorkspace().catch(errorPage),{once:true});
 
 async function renderAudit(){const rows=await api('/api/audit');const ex=await api('/api/exceptions');$('#main').innerHTML=`<section class="page">${pageHead('AUDIT TRAIL','每次决策，留下记录。','按时间查看原件导入、字段修订、报价签核和文件导出，展开记录可核对操作依据。')}<article class="panel"><div class="panel-head"><h2>解析异常 / ${ex.parse_issues.length}</h2></div><div class="panel-body">${ex.parse_issues.map(x=>`<p class="issue">${esc(x.source_ref)}：${esc(x.reason)}</p>`).join('')||'当前没有记录的解析异常'}</div></article><article class="panel" style="margin-top:20px"><div class="panel-head"><h2>最近 ${rows.length} 条操作</h2></div><div class="panel-body">${rows.map(x=>`<details style="padding:12px;border-bottom:1px solid #ddd"><summary>${esc(x.at)} · ${esc(x.action)} · ${esc(x.actor)} · ${esc(x.entity_id)}</summary><pre style="max-height:350px;overflow:auto;white-space:pre-wrap;word-break:break-all">${esc(x.detail_json)}</pre></details>`).join('')}</div></article></section>`}
 async function renderHistory(){const rows=await api('/api/quotes');$('#main').innerHTML=`<section class="page">${pageHead('QUOTE ARCHIVE','报价可保存，也可复核。','每个归档绑定规则版本与来源快照；导出读取已保存金额。')}<article class="panel"><div class="panel-body">${rows.map(x=>`<div class="filter-bar"><span class="mono">${esc(x.id)} / v${x.version}</span><span>${esc(x.created_at)} · ${esc(x.status)}</span><button class="btn small" data-saved-quote="${esc(x.id)}">打开复核 ↗</button></div>`).join('')||'尚无保存报价，请在核价工作台执行一次核价。'}</div></article></section>`}
