@@ -167,6 +167,7 @@ async def import_email(file:UploadFile=File(...), customer_email:str=Form("")):
             after=con.execute('SELECT COUNT(*) FROM rfq_lines').fetchone()[0]
         return {'ok':True,'email_id':obj['message_id'],'status':'needs_review' if obj['parse_notes'] or not obj['lines'] else 'imported','subject':obj['subject'],'parsed_count':len(obj['lines']),
                 'new_lines':after-before,'duplicate_lines':len(obj['lines'])-(after-before),
+                'already_imported':obj.get('already_imported',False),
                 'notes':obj['parse_notes']}
     except Exception as e: raise HTTPException(422, f'导入失败：{e}')
 
