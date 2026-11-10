@@ -187,7 +187,7 @@ def recent_customer_ranking(db, question, reference_date, owner, sid):
     asof = date.fromisoformat(reference_date)
     month_index = asof.year * 12 + asof.month - 1 - 3
     year, month = divmod(month_index, 12)
-    start = date(year, month + 1, min(asof.day, monthrange(year, month + 1)[1]))
+    start = date.min if year < 1 else date(year, month + 1, min(asof.day, monthrange(year, month + 1)[1]))
     sid, _ = session(db, owner, sid)
     sql = """SELECT COALESCE(NULLIF(airline, ''), '未提供') AS 客户,
                     COUNT(DISTINCT rfq_no) AS 询价份数
