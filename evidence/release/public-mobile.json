@@ -1,0 +1,31 @@
+{
+  "viewport": 390,
+  "dimensions": [
+    {
+      "name": "inbox",
+      "css": 390,
+      "content": 390
+    },
+    {
+      "name": "review",
+      "css": 390,
+      "content": 390
+    },
+    {
+      "name": "versions",
+      "css": 390,
+      "content": 390
+    },
+    {
+      "name": "commercial",
+      "css": 390,
+      "content": 390
+    },
+    {
+      "name": "audit",
+      "css": 390,
+      "content": 390
+    }
+  ],
+  "errors": []
+}

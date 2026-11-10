@@ -119,6 +119,8 @@ MatrixOne 同步只接受已有两个不同账户完成签核的报价。服务�
 | MatrixOne 业务回执 | 本轮本地服务将合成已审批报价 CQ-8463E589EDD44CCF / v3 写入真实 MatrixOne，完整载荷与 SHA-256 读回相符 |
 | 导出 | 同一合成 500 件报价的 PDF 与 Excel 经独立读取，均为 CNY 6,880.00；版本差异不会改写旧单 |
 
+**公网复演。** 评委端点完成 28 步真实浏览器操作。公网 Genesis 记录为 `EX-DDB11C307C9B`；500 件正式报价为 `CQ-9B967EA9DFA345A7`，PDF 和 Excel 均为 6,880.00 元。MatrixOne 完整快照及重复同步读回一致。实测记录见[发布验收报告](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/acceptance/)。
+
 上述验证检验规定输入与业务约束。测试样本包含合成案例，不能据此推导真实客户总体准确率、节约工时或商业回报。
 
 ## 八、演示环境与使用

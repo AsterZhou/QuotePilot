@@ -1,0 +1,134 @@
+{
+  "app_commit": "e88342a6ae8ad0dfc07cd0556b8c2a055d4c7711",
+  "deploy_id": "dep-dbpcocff3r2c73fpt7mg",
+  "url": "https://quotepilot-matrixnext-final.onrender.com",
+  "browser": "Chrome Headless Shell, external public HTTPS origin",
+  "passed": true,
+  "ui_steps": 28,
+  "network_responses_in_browser_page": 154,
+  "http_status_counts": {
+    "200": 154
+  },
+  "browser_uncaught_errors": 0,
+  "steps": [
+    "browser_login",
+    "browser_login",
+    "upload_preview_import",
+    "real_genesis_user_confirmation",
+    "register_version",
+    "human_field_review",
+    "supplier_pdf_extraction",
+    "supplier_human_confirmation",
+    "supplier_human_confirmation",
+    "supplier_human_confirmation",
+    "three_plans",
+    "business_review",
+    "admin_approval",
+    "real_matrixone_ui_mirror",
+    "download",
+    "download",
+    "upload_preview_import",
+    "register_version",
+    "version_diff_quote_impact",
+    "reprice_review",
+    "reprice_calculate",
+    "reprice_business",
+    "reprice_approve",
+    "export",
+    "approved_500_matrixone_readback",
+    "reviewer_inbox_usable",
+    "reviewer_admin_access_denied",
+    "approved_snapshot_unchanged"
+  ],
+  "genesis": {
+    "run_id": "EX-DDB11C307C9B",
+    "response_id": "resp_3eb4e54a-42a3-9a8b-9bba-827dbdbd59c4",
+    "model": "qwen3.8-flash",
+    "simulated": false,
+    "lines": [
+      {
+        "part_number": "PN-0001",
+        "quantity": 100,
+        "unit": "EA",
+        "condition": "factory new (FN)",
+        "evidence": "Please quote one hundred pieces of PN-0001, factory new (FN), ordered in EA."
+      }
+    ]
+  },
+  "genesis_tokens": 773,
+  "v1_mirror": {
+    "verified": true,
+    "quote_id": "CQ-2C36E387C95442F5",
+    "version": 3,
+    "payload_sha256": "24dde7ee3294645c6af1524f8f142e3b03033511e97db4d5ab49cf12f762e03f",
+    "table": "quotepilot_sprint.commercial_quote_snapshots_v1",
+    "query_ids": [
+      "01a1c46f-4de8-7def-8269-4dbaca40161b",
+      "01a1c46f-5238-7a24-88b0-cce4410fcea4",
+      "01a1c46f-56ae-7bab-9611-cc2fc9c3d5d0",
+      "01a1c46f-5a8a-7c60-8298-97c3f1988e32"
+    ],
+    "scope": "application_orchestrated_approved_commercial_snapshot",
+    "native_workflow_execution": false,
+    "primary_store": "SQLite"
+  },
+  "v2_mirror": {
+    "verified": true,
+    "quote_id": "CQ-9B967EA9DFA345A7",
+    "version": 3,
+    "payload_sha256": "00cf7bb5d1e06ffe2d43e3cff47f08404b04bd2d5d2e0d85e8bf9102dec37608",
+    "table": "quotepilot_sprint.commercial_quote_snapshots_v1",
+    "query_ids": [
+      "01a1c46f-e2ea-7b8d-9cc0-265eb141c27e",
+      "01a1c46f-e677-7d2c-9d8a-8667a17d6969",
+      "01a1c46f-eb8f-761e-98d4-c0ff0b09448d",
+      "01a1c46f-ef24-71d1-b724-af311319dd97"
+    ],
+    "scope": "application_orchestrated_approved_commercial_snapshot",
+    "native_workflow_execution": false,
+    "primary_store": "SQLite"
+  },
+  "exports": [
+    {
+      "quote_id": "CQ-2C36E387C95442F5",
+      "quantity": 100,
+      "pdf_total_cny": "1378.00",
+      "excel_total_cny": "1378.00",
+      "pdf_sha256": "048b5a750ae19e27c72cce7fde895f281f74a3c1df430e9a950185958b7dfd38",
+      "xlsx_sha256": "6b94f0de3175342660fb33b00d50dde37b064e56bfc2aa02358714f4aa4e1f7c"
+    },
+    {
+      "quote_id": "CQ-9B967EA9DFA345A7",
+      "quantity": 500,
+      "pdf_total_cny": "6880.00",
+      "excel_total_cny": "6880.00",
+      "pdf_sha256": "9ad195f242aa20de05e4fd36efea6437c1b9027dbb8ee2c9e9d9008847a6a929",
+      "xlsx_sha256": "2d4bcf3127d4f0648991d4a6a59293bc21be35bd241fcf41a5593da22e1594b9"
+    }
+  ],
+  "v2_repeat_sync": {
+    "quote_id": "CQ-9B967EA9DFA345A7",
+    "version": 3,
+    "matching_digest": "00cf7bb5d1e06ffe2d43e3cff47f08404b04bd2d5d2e0d85e8bf9102dec37608",
+    "repeat_query_ids": [
+      "01a1c470-3e6b-7887-8211-0ab5110029b1",
+      "01a1c470-41df-7b0f-8765-fb8a6e4db6ce",
+      "01a1c470-45d2-75fe-9393-e106a57ecff9",
+      "01a1c470-4969-7927-a953-fe1f94f26f3a"
+    ],
+    "repeat_readback": true
+  },
+  "access_control": {
+    "anonymous_overview": 401,
+    "reviewer_admin_endpoint": 403
+  },
+  "restart": {
+    "marker": "<restart-check-1794296014422859337@example.invalid>",
+    "pre_restart_mails": 3,
+    "unauthenticated_overview": 401,
+    "before_marker_present": true,
+    "after_marker_present": false,
+    "after_mails": 2,
+    "seed_restored": true
+  }
+}

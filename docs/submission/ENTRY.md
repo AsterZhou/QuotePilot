@@ -9,3 +9,13 @@
 **应用价值**　采购员能查明一个数字来自哪份文件，报价员能解释不同方案的成本差异，审批人能判断一份旧报价是否仍适用。合成案例中，订购量由 100 件改为 500 件；通过重新分摊固定费用，系统将照搬旧单价得到的 6,890 元校正为 6,880 元，并生成对应版本的正式文件。
 
 **数据合规**　公开材料均展示虚构客户、合成邮件、合成供应商价格及审批记录。仅限合成文件，演示价格不代表实际供应商报价或交易。
+
+## 评审表单链接
+
+| 表单项目 | 填写内容 |
+|---|---|
+| 可运行智能体 | https://quotepilot-matrixnext-final.onrender.com/ |
+| 演示视频 | https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/video/ |
+| 说明文档 | https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/ |
+
+管理员访问码为 `QP-Judge-Admin-26M`，业务复核员访问码为 `QP-Judge-Review-26M`。访问码与合成样例均列于说明文档第八节。无需注册。完整源码位于 AsterZhou/QuotePilot 的 final-submission 分支，仓库按既有权限访问。
