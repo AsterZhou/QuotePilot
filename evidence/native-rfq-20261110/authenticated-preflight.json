@@ -1,0 +1,162 @@
+{
+  "utc": "2026-11-10T06:13:21.429509+00:00",
+  "workspace_id": "ec94c942-2d64-c6be-c968-e793caaef007",
+  "workflow_id": "45e246b6-9a6f-5331-82cd-44c00f67cb18",
+  "credential_present": true,
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/workflow/v2/workflow-apps/45e246b6-9a6f-5331-82cd-44c00f67cb18",
+      "http": 200,
+      "code": "OK",
+      "request_id": "c7d5816a-17a3-459d-a7cd-26204a5b1fb2",
+      "trace_id": "c7d5816a-17a3-459d-a7cd-26204a5b1fb2",
+      "workflow": {
+        "id": "45e246b6-9a6f-5331-82cd-44c00f67cb18",
+        "status": "disabled",
+        "execution_mode": "one_shot",
+        "available_actions": [
+          "update",
+          "delete",
+          "enable",
+          "list_executions"
+        ],
+        "trigger_summary": {
+          "mode": "one_shot",
+          "configured": true,
+          "enabled": false
+        }
+      },
+      "field_ids": [
+        "run_ref",
+        "vars_run_ref"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workflow/v2/workflow-apps/45e246b6-9a6f-5331-82cd-44c00f67cb18/executions",
+      "http": 200,
+      "code": "OK",
+      "request_id": "7c76de37-c6cd-41ea-b2d8-4840440666aa",
+      "trace_id": "7c76de37-c6cd-41ea-b2d8-4840440666aa",
+      "total": 0
+    },
+    {
+      "method": "GET",
+      "path": "/compute-resources",
+      "http": 200,
+      "code": "OK",
+      "request_id": "4177cf81-6f4b-4005-b325-b8e4ce1ea7bb",
+      "trace_id": "4177cf81-6f4b-4005-b325-b8e4ce1ea7bb",
+      "visible_resources": []
+    },
+    {
+      "method": "GET",
+      "path": "/compute-resource-specs/management-permission",
+      "http": 200,
+      "code": "OK",
+      "request_id": "ed6dc91b-da6c-486e-bbfd-4a8d31bdd9a0",
+      "trace_id": "ed6dc91b-da6c-486e-bbfd-4a8d31bdd9a0",
+      "can_manage_specs": false
+    }
+  ],
+  "compute_specs": {
+    "http": 200,
+    "code": "OK",
+    "request_id": "e6c6ac7e-a754-4308-9a43-1736e7224f61",
+    "specs": [
+      {
+        "kind": "query",
+        "family": "query",
+        "credit_per_hour": 0.12,
+        "enabled": false
+      },
+      {
+        "kind": "query",
+        "family": "query",
+        "credit_per_hour": 0.24,
+        "enabled": false
+      },
+      {
+        "kind": "query",
+        "family": "query",
+        "credit_per_hour": 0.48,
+        "enabled": false
+      },
+      {
+        "kind": "task",
+        "family": "compute",
+        "credit_per_hour": 6,
+        "enabled": true
+      },
+      {
+        "kind": "task",
+        "family": "compute",
+        "credit_per_hour": 12,
+        "enabled": true
+      },
+      {
+        "kind": "task",
+        "family": "compute",
+        "credit_per_hour": 24,
+        "enabled": true
+      },
+      {
+        "kind": "task",
+        "family": "gpu",
+        "credit_per_hour": 0.4,
+        "enabled": false
+      },
+      {
+        "kind": "task",
+        "family": "gpu",
+        "credit_per_hour": 0.75,
+        "enabled": false
+      },
+      {
+        "kind": "task",
+        "family": "gpu",
+        "credit_per_hour": 1.4,
+        "enabled": false
+      },
+      {
+        "kind": "task",
+        "family": "memory",
+        "credit_per_hour": 0.15,
+        "enabled": false
+      },
+      {
+        "kind": "task",
+        "family": "memory",
+        "credit_per_hour": 0.25,
+        "enabled": false
+      },
+      {
+        "kind": "task",
+        "family": "standard",
+        "credit_per_hour": 6,
+        "enabled": false
+      },
+      {
+        "kind": "task",
+        "family": "standard",
+        "credit_per_hour": 12,
+        "enabled": false
+      },
+      {
+        "kind": "task",
+        "family": "standard",
+        "credit_per_hour": 0.1,
+        "enabled": false
+      },
+      {
+        "kind": "task",
+        "family": "standard",
+        "credit_per_hour": 0.2,
+        "enabled": false
+      }
+    ]
+  },
+  "launch_requests": 0,
+  "created_resources": 0
+}
