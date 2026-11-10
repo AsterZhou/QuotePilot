@@ -51,9 +51,11 @@ def parse_pdf(raw: bytes, filename: str) -> list[dict[str, str]]:
         header=doc[0].get_text(sort=False) if len(doc) else ''
         # A row-shaped sequence alone cannot establish that a document is an RFQ.
         match=re.search(r'REQUEST FOR QUOTATION\s*#\s*(RFQ-[0-9A-Z][0-9A-Z._-]*)',header,re.I)
-        if not match:raise ValueError('未识别可靠的 RFQ 标题；文档用途待人工确认')
+        if not match:
+            if not header.strip() and not any(page.get_text().strip() for page in doc):
+                raise ValueError('扫描 PDF 无可读取的文字，请保存原件后对照图片人工补录')
+            raise ValueError('未识别可靠的 RFQ 标题；文档用途待人工确认')
         result=[]
-        if not any(p.get_text().strip() for p in doc):raise ValueError('PDF无文字层；扫描件请走OCR建议复核或人工录入')
         for page_idx,page in enumerate(doc,1):
             horizontal=_horizontal_pdf(page,page_idx,match.group(1))
             if horizontal:
