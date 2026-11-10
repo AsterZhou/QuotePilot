@@ -19,7 +19,7 @@ async function openNativeRFQ() {
     const retry = !job || ['preflight_failed', 'preparing'].includes(job.phase);
     const reconcile = job && !job.execution_id && ['dispatch_unknown','dispatching'].includes(job.phase);
     wrapper.innerHTML = `<div class="drawer-top"><h2>AI 自动整理客户询价</h2><button class="drawer-close" data-action="close-drawer">×</button></div>
-      <p>确认使用合成文件，点击启动。稍候点击刷新进度，处理成功后打开建议，对照邮件核实字段并确认写入。</p><small>${esc(email)}</small>${job ? `<p role="status">${esc(phases[job.phase] || job.phase)}</p>
+      <div aria-live="polite" class="job-progress"></div><p>确认使用合成文件，点击启动。稍候点击刷新进度，处理成功后打开建议，对照邮件核实字段并确认写入。</p><small>${esc(email)}</small>${job ? `<p role="status">${esc(phases[job.phase] || job.phase)}</p>
       <p role="alert">${esc(job.error)}</p><details><summary>技术详情 · 执行 ID 与节点</summary><p>询价引用 <code>${esc(job.ref)}</code><br>平台执行 ID <code>${esc(job.execution_id || '尚未取得')}</code></p>
       ${Object.entries(job.receipt.nodes || {}).map(([key,value]) =>
         `<p><code>${esc(key)}</code> · ${esc(value.status)}</p>`).join('')}</details>` : '<p>此询价尚无原生作业。</p>'}
@@ -36,6 +36,7 @@ async function openNativeRFQ() {
         const jobUrl = '/api/native-workflow/runs/' + encodeURIComponent(job?.ref || '');
         if (op === 'start') {
           if (!wrapper.querySelector('.synthetic').checked) return toast('请先确认本次为合成测试文件');
+          wrapper.querySelector('.job-progress').textContent='正在准备原文并提交处理，请稍候…';
           draw(await post(url, {synthetic_confirmed:true}));
         } else if (op === 'review') {
           const review = await api('/api/extractions/' + encodeURIComponent(job.review_id));
@@ -47,7 +48,7 @@ async function openNativeRFQ() {
         } else {
           draw((await api(url)).rows[0]);
         }
-      } catch (error) { toast(error.message); }
+      } catch (error) { wrapper.querySelector('.job-progress').textContent='操作未完成：'+error.message; toast(error.message); }
       finally { button.disabled = false; }
     };
   }

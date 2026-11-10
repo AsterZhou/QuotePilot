@@ -16,6 +16,6 @@
 |---|---|
 | 可运行智能体 | https://quotepilot-matrixnext-final.onrender.com/ |
 | 演示视频 | https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/video/ |
-| 说明文档 | https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/ |
+| 说明文档 | https://quotepilot-matrixnext-final.onrender.com/guide/technical.html |
 
 管理员访问码为 `QP-Judge-Admin-26M`，业务复核员访问码为 `QP-Judge-Review-26M`。访问码与合成样例均列于说明文档第八节。无需注册。完整源码位于 AsterZhou/QuotePilot 的 final-submission 分支，仓库按既有权限访问。

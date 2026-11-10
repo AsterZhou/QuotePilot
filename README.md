@@ -24,7 +24,7 @@
 |---|---|
 | 评委工作台 | [登录合成演示环境](https://quotepilot-matrixnext-final.onrender.com/) · 角色访问码见技术白皮书第八节 |
 | 产品演示 | [真实操作录屏与中文字幕](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/video/) |
-| 技术白皮书 | [网页阅读](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/) · [仓库版本](docs/TECHNICAL_DOCUMENTATION.md) |
+| 技术白皮书 | [网页阅读](https://quotepilot-matrixnext-final.onrender.com/guide/technical.html) · [仓库版本](docs/TECHNICAL_DOCUMENTATION.md) |
 | 验收依据 | [最终测试报告](docs/submission/ACCEPTANCE.md) |
 | 提交文字 | [作品介绍、技术亮点与应用价值](docs/submission/ENTRY.md) |
 

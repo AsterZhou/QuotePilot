@@ -77,6 +77,10 @@ def overview():
           COUNT(DISTINCT l.source_rfq_no) AS rfq_count FROM emails e LEFT JOIN rfq_lines l ON e.email_id=l.email_id
           GROUP BY e.email_id ORDER BY e.filename''')]
         s['history_distinct_parts']=con.execute('SELECT COUNT(DISTINCT part_number) FROM historical').fetchone()[0]
+        has_runs = con.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='extraction_runs'").fetchone()
+        s['pending_ai_suggestions'] = con.execute(
+            "SELECT COUNT(*) FROM extraction_runs WHERE status='pending' AND provider IN ('genesis','moi_native')"
+        ).fetchone()[0] if has_runs else 0
         s['last_import']=con.execute('SELECT MAX(imported_at) FROM emails').fetchone()[0]
         return s
 
@@ -717,7 +721,15 @@ def new_commercial_quote(req:CommercialQuoteRequest):
 
 @app.get('/api/commercial-quotes')
 def commercial_quote_list():
-    with database() as con:return {'rows':[dict(r) for r in con.execute('SELECT q.id,q.created_at,s.status,s.version FROM commercial_quotes q JOIN commercial_quote_states s ON q.id=s.quote_id ORDER BY q.created_at DESC LIMIT 100')]}
+    with database() as con:
+        rows = con.execute("""SELECT q.id, q.created_at, s.status, s.version,
+            json_extract(q.payload_json,'$.customer_name') AS customer_name,
+            json_extract(q.payload_json,'$.scheme') AS scheme,
+            COALESCE(MAX(e.at),q.created_at) AS updated_at
+            FROM commercial_quotes q JOIN commercial_quote_states s ON s.quote_id=q.id
+            LEFT JOIN commercial_quote_events e ON e.quote_id=q.id
+            GROUP BY q.id ORDER BY updated_at DESC, q.rowid DESC LIMIT 100""")
+        return {'rows': [dict(row) for row in rows]}
 
 
 @app.get('/api/commercial-quotes/{qid}')

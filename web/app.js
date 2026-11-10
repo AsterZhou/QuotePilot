@@ -34,7 +34,7 @@ async function renderOverview(){const [s,offers,quotes,queue]=await Promise.all(
  const approved=quotes.rows.filter(q=>q.status==='approved').length;
  const steps=[
   ['上传客户询价',s.mails+' 封已导入','有新询价时上传 EML、PDF 或 Excel。','inbox','upload-open','上传文件'],
-  ['AI 整理需求',waiting+' 封尚无明细 · '+queue.total+' 行待复核','选择邮件，核对建议中的型号和数量。','inbox','','选择来件'],
+  ['AI 整理需求',waiting+' 封尚无明细 · '+s.pending_ai_suggestions+' 笔建议待采纳 · '+queue.total+' 行待复核','选择邮件，核对建议中的型号和数量。','inbox','','选择来件'],
   ['核对供应商报价',pending+' 份待确认','保存供应商原件并逐项核对报价条件。','commercial','offer-file-form','查看供应商报价'],
   ['计算销售价格',drafts+' 份草稿','选定需求行，填写费用与毛利率，再比较方案。','commercial','commercial-form','开始核价'],
   ['业务审核与管理员审批',drafts+' 份草稿 · '+reviewed+' 份待批准','复核员审核选定方案，管理员打开同一编号批准。','commercial','saved-plans','继续处理'],
@@ -48,7 +48,7 @@ async function renderOverview(){const [s,offers,quotes,queue]=await Promise.all(
 }
 function recentQuoteLinks(rows){
  const labels={draft:'待业务审核',business_reviewed:'待管理员审批',approved:'已批准 · 可下载'};
- return rows.map(q=>`<p><button class="btn small" data-jump="commercial" data-resume="${esc(q.id)}">${esc(q.id)} →</button> v${esc(q.version)} · ${esc(labels[q.status]||q.status)}</p>`).join('')||'<p>暂无相关报价。</p>';
+ return rows.map(q=>`<p><button class="btn small" data-jump="commercial" data-resume="${esc(q.id)}">${esc(q.id)} →</button> v${esc(q.version)} · ${esc(q.customer_name)} · ${esc(schemeNames[q.scheme]||q.scheme)} · ${esc(labels[q.status]||q.status)}</p>`).join('')||'<p>暂无相关报价。</p>';
 }
 function metric(label,value,note,idx,destination){return `<button type="button" class="metric metric-link" ${destination==='inbox'?'data-go="inbox"':`data-catalog="${destination}"`} aria-label="${esc(label)}，查看明细"><span class="metric-label"><span>${label}</span><span class="metric-index">${idx}</span></span><span class="metric-value">${fmt(value)}</span><span class="metric-note">${esc(note)}</span><span class="metric-open">查看明细 ↗</span></button>`}
 function processRow(no,title,desc,end){return `<li class="process-row"><span class="process-no">${no}</span><span><div class="process-title">${title}</div><div class="process-desc">${desc}</div></span><span class="process-end">${end}</span></li>`}
