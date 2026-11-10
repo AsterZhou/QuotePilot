@@ -190,7 +190,7 @@ def ingest_eml(con, raw, filename, dataset='user_upload'):
         if existing['file_hash'] != o['sha256']:
             raise ValueError('Message-ID 冲突：内容不同，已拒绝覆盖；请核对原邮件')
         audit(con,'import_duplicate',existing['email_id'],{'sha256':o['sha256']});con.commit()
-        return o
+        return {**o, 'already_imported': True}
     with con:
         con.execute('INSERT INTO emails(email_id,file_hash,filename,subject,sender,mail_date) VALUES(?,?,?,?,?,?)',
                     (o['message_id'],o['sha256'],filename,o['subject'],o['sender'],o['date']))

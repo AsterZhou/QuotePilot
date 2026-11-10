@@ -1,0 +1,16 @@
+Message-ID: <qp-start-here-003-v1@example.invalid>
+From: Demo Purchasing <demo-buyer@example.invalid>
+To: demo-sales@example.invalid
+Subject: RFQ-START-003 | Three sample valves
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Please quote the following items.
+
+RFQ No: RFQ-START-003
+Part Number: PN-0001
+Quantity: 3
+Unit Of Measure: EA
+Condition: FN
+Description: Synthetic valve spec A

@@ -20,6 +20,11 @@ async def read_rfq(file: UploadFile, customer_email: str):
     if suffix == '.eml':
         return data, name
 
+    if suffix == '.pdf':
+        sample = Path(__file__).resolve().parents[1] / 'web/guide/samples/suppliers.pdf'
+        if sample.is_file() and data == sample.read_bytes():
+            raise HTTPException(422, '这是第三步的供应商示例报价单，请在「供应商比价与报价」上传。第一步请选择客户询价邮件。')
+
     sender = customer_email.strip().lower()
     if len(sender) > 254 or not re.fullmatch(r'[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+', sender):
         raise HTTPException(422, '请填写此独立附件所属的客户邮箱，再预览或导入')
