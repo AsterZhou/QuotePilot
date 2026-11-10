@@ -37,6 +37,9 @@ async def lifespan(app):
     try:
         if os.environ.get("QUOTEPILOT_RELEASE_DEMO") != "1":
             seed_official(con,SAMPLES)
+        else:
+            from deploy.release_seed import seed_demo_history
+            seed_demo_history(con)
     finally:con.close()
     yield
 
@@ -911,7 +914,9 @@ from fastapi import Request
 @app.get('/api/query-center/status')
 def center_status():
     from quotepilot.search_service import config
-    return {'genesis_enabled':os.environ.get('QUOTEPILOT_PROVIDER','mock')=='genesis','external_search':config(),
+    with database() as con:
+        sample_date = con.execute("SELECT MAX(substr(inquiry_date,1,10)) FROM historical WHERE date(inquiry_date) IS NOT NULL").fetchone()[0]
+    return {'historical_reference_date':sample_date,'genesis_enabled':os.environ.get('QUOTEPILOT_PROVIDER','mock')=='genesis','external_search':config(),
             'default_reference_date':datetime.now(__import__('zoneinfo').ZoneInfo('Asia/Shanghai')).date().isoformat(),'database':'SQLite','read_only_queries':True,'max_rows':100,'query_timeout_seconds':1,
             'storage_notice':'沿用当前SQLite存储；本批次未迁移数据库。免费临时部署的新增记录仍可能随重新部署丢失。'}
 
@@ -930,7 +935,12 @@ def center_history(sid:str,request:Request):
 def center_ask(req:CenterQuestion,request:Request):
     from quotepilot.query_center import run
     if not req.question.strip():raise HTTPException(422,'问题不能为空')
-    try:return run(DB,center_provider(),req.question.strip(),req.asof.isoformat(),center_owner(request),req.session_id)
+    try:
+        question = req.question.strip()
+        if re.fullmatch(r'(?:最近|近)[三3]个月(?:内)?[，, ]*哪[个些]客户(?:的)?(?:询价|询问)(?:次数|份数)?最多[？?。]?', question):
+            from quotepilot.query_center import recent_customer_ranking
+            return recent_customer_ranking(DB, question, req.asof.isoformat(), center_owner(request), req.session_id)
+        return run(DB,center_provider(),question,req.asof.isoformat(),center_owner(request),req.session_id)
     except PermissionError:raise HTTPException(403,'无法访问该查询会话')
 
 @app.post('/api/query-center/quick')
@@ -941,11 +951,18 @@ def center_quick(req:CenterQuick,request:Request):
     if req.question not in QUESTIONS:raise HTTPException(422,'未知快捷统计')
     try:sid,_=session(DB,center_owner(request),req.session_id)
     except PermissionError:raise HTTPException(403,'无法访问该查询会话')
+    scopes = {
+        '每月询价趋势': '全部历史示例，按询价月份分组，分别计算独立询价号和物料明细行数。',
+        '客户紧急询价排名': '全部历史示例，按客户统计紧急询价，先按独立紧急询价份数降序，再按紧急明细行数降序。',
+        '热门询价件号': '全部历史示例，按件号统计物料明细行数并降序排列。',
+        '即将截止的询价': f'历史询价明细，截止日期从 {req.asof.isoformat()} 起七天内，按截止日期从早到晚排列。',
+    }
+    scope = scopes[req.question]
     params=[req.asof.isoformat(),req.asof.isoformat()] if req.question=='即将截止的询价' else []
     result=execute(DB,QUESTIONS[req.question],params)
     return save(DB,sid,req.question,{**result,'status':'completed','question':req.question,'title':req.question,
-       'reference_date':req.asof.isoformat(),'interpretation':'历史询价示例；询价份数按RFQ No计，物料明细分别统计；非实时订单。',
-       'statistics_scope':'历史询价示例 / 固定快捷统计 / 日期按所选基准日',
+       'reference_date':req.asof.isoformat(),'interpretation':scope,
+       'statistics_scope':scope,
        'chart':'line' if req.question=='每月询价趋势' else 'ranking' if req.question!='即将截止的询价' else 'table',
        'analysis':{'status':'not_requested','summary':'已直接执行只读快捷统计，本次未调用AI。','findings':[],'caveats':[]}})
 
