@@ -1,69 +1,75 @@
-# QuotePilot 技术架构与工程验证
+# QuotePilot 技术白皮书
 
-MatrixNEXT 2026 · 企业命题赛道 · RFQ 询价分析与报价智能体
+MatrixNEXT 2026 · 企业命题「RFQ 询价分析与报价智能体」
 
-QuotePilot 是面向企业采购询价（RFQ）的报价智能体。系统将非结构化来件中的采购需求转为可复核的字段，由规则引擎核算价格，并将签核记录、正式文件与同一报价版本关联。技术设计围绕三个问题展开。模型从哪份原件取值，金额按哪套规则生成，已批准的版本如何独立核验。
+工业零部件报价员收到一封询价邮件和三家供应商的报价，需要同时答复客户两个问题：多少钱，何时能交？QuotePilot 用 Genesis 从来件中提取带出处的需求，经人工确认后，按供应商条件计算可交付的报价方案。每个售价都能追到供应商原件，每次批准都对应一个可独立核验的版本。
 
-## 系统架构与技术选型
+## 一笔报价，两个交付选择
 
-| 系统层 | 技术栈 | 在 QuotePilot 中承担的职责 |
+客户询购 3 件 PN-0001 阀件，规格为 Synthetic valve spec A，件状 FN。三家合成供应商分别承诺 20 天、2 天、7 天交货。在相同数量、费用和目标毛利率下，报价员可向客户说明：**三件总价从 43.74 元提高到 62.49 元，承诺交期从 20 天缩短到 2 天。提前 18 天的报价差额是 18.75 元。**
+
+| 选择依据 | 选中的供应商 | 三件客户报价 | 供应商承诺交期 |
+| --- | --- | --- | --- |
+| 最低成本 | SYN-Cheap | ¥43.74 | 20 天 |
+| 最快交付 | SYN-Fast | ¥62.49 | 2 天 |
+| 成本与交期各占 50% | SYN-Fast | ¥62.49 | 2 天 |
+
+同一供应商可以满足两种选择依据。本次批准了最低成本方案。下文用这笔合成订单说明原件如何进入模型、规则如何产生报价，以及第三方如何复核交付结果。[询价原件](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/rfq-native.eml) · [供应商原件（PDF）](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/suppliers.pdf) · [已批准报价（PDF）](https://quotepilot-matrixnext-final.onrender.com/guide/evidence/approved.pdf)
+
+## 从询价原文到可采纳的需求
+
+一封邮件可能同时包含多个件号、数量和件状。即使模型正确摘录了“3 EA”，这段引用也可能属于另一行。QuotePilot 把原文位置、模型建议和人工确认值分别保存，报价使用已确认的需求。
+
+| MOI 原生工作流 v3 | 本笔询价的数据 |
+| --- | --- |
+| 读取原文 · MatrixOne SQL | FastAPI 为来件生成独立的 run_ref，保存原文及 SHA-256。SQL 按该引用读取本次输入。 |
+| 提取字段 · Genesis | 从原文提取件号、数量、单位、件状及引用片段；本次模型节点耗时 6 秒。 |
+| 写入候选 · MatrixOne SQL | 将模型输出写回同一引用下的记录。本次写入 1 条候选。 |
+| 读回结果 · MatrixOne SQL | 原生节点读回候选。应用随后独立查询并比对结果，形成可供复核的字段建议。 |
+
+FastAPI 使用 Pydantic 校验结构，并检查数量及引用片段。业务人员对照原件确认字段关系，记录修订和依据。遇到启动响应丢失时，服务端按原来的 run_ref 核对平台执行，再恢复对应作业。[四节点执行回执](https://quotepilot-matrixnext-final.onrender.com/guide/evidence/native.json) · [字段复核画面](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/00-genesis-evidence.webp)
+
+## 为什么最终报价是 43.74 元
+
+供应商 PDF 由规则解析，业务复核员确认原件。系统检查件号、规格、单位、件状、起订量、有效期、汇率及指定交期，保留候选被排除的原因。合格供应商进入排序，金额由 Python Decimal 计算。
+
+| 可复算步骤 | 最低成本方案 |
+| --- | --- |
+| 采购与费用 | 3 件 × 10.00 元采购单价 ＋ 3.00 元加工费 ＋ 2.00 元其他费用 ＝ **35.00 元总成本**。样例运费与税率均为零。 |
+| 单件售价 | 35.00 ÷ 3 ÷（1 − 20% 目标毛利率）＝ 14.5833… 元；按 ROUND_HALF_UP 舍入到分，得 **14.58 元**。 |
+| 正式报价 | 3 件 × 14.58 元 ＝ **43.74 元**。PDF 与 Excel 均取已批准版本的单价与数量，报价单各行可直接加总。 |
+
+**综合方案为何也选择 SYN-Fast？** 引擎逐行计算「0.5 × 候选总成本 / 最低总成本 ＋ 0.5 × 候选交期 / 最短交期」，取较低分。本例最快供应商的成本为 50 元，评分约 1.21；7 天供应商成本为 41 元，评分约 2.34；20 天供应商成本为 35 元，评分为 5.50。三份原件都参与了选择。多行订单在选定候选后按采购金额权重分摊批次运费，并以分为单位处理尾差。[供应商条件](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/suppliers.pdf) · [方案核价画面](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/03-cost-plans.webp)
+
+## 客户改量后，原审批依据如何保留
+
+客户更新询价时，系统保存新的 RFQ 版本，标识增删改项、待人工匹配的歧义项及受影响的报价。每份报价保留计算时采用的需求、供应商条件和费用。业务复核员审核、管理员批准时，服务端同时检查角色与预期版本。
+
+另一次独立公网验收中，客户需求从 **100 件改成 500 件**。原已审批报价仍为 **1,378.00 元**；新需求重新核价并经两种角色签核，生成 **6,880.00 元**的新报价。采购团队可查到两份报价各自依据的数量和批准记录，继续处理变更时也能向客户解释差额。[版本变更验收报告](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/acceptance/)
+
+## 架构与数据职责
+
+| 系统层 | 技术与工程职责 |
+| --- | --- |
+| 原件与交互 | 原生 JavaScript、Python 邮件解析、PyMuPDF、openpyxl 处理 EML、文字 PDF 和多工作表 Excel；保留原件、正文片段、页码或工作表行号供复核。 |
+| 业务服务 | Python 3.12、FastAPI、Pydantic、Uvicorn；服务端执行会话鉴权、字段校验、状态转换和角色审批。Docker 部署于独立的 Render 演示服务。 |
+| 模型与规则 | MOI v3 在平台内编排 Genesis 与 MatrixOne SQL。模型负责从非结构化文字提出候选，确定性规则负责资格检查、成本与交期排序、金额舍入。 |
+| 主库与查询 | SQLite 保存来件、字段修订、报价及审批事件。分析查询经 SQLGlot 校验语法树和表列范围，在独立只读连接中执行。 |
+| 文件与云端复核 | 已批准版本生成 PDF 和 Excel。应用以「报价编号、版本」为键写入 MatrixOne 快照，读回完整载荷并重算 SHA-256；连接恢复后可按原键重试。 |
+
+四节点工作流处理**询价字段**。签核完成后的应用同步处理**已批准报价**。两条路径各有回执，下表可分别核对。
+
+## 公网验收与原始证据
+
+2026 年 11 月 10 日，两个独立浏览器会话使用合成数据，经过真实公网工作台、Genesis 和 MatrixOne，完成同一笔三件订单。下列执行编号和报价编号属于这次存档；演示录屏使用同型样例独立运行，编号随运行生成。
+
+| 要核对的问题 | 这次运行的结果 | 原始材料 |
 | --- | --- | --- |
-| 交互与服务 | 原生 JavaScript、Python 3.12、FastAPI、Uvicorn | 浏览器展示原件和候选值。服务端校验会话与角色，受理文件上传、复核和审批。Docker 镜像部署于独立 Render Web Service。 |
-| 原件解析 | Python 邮件解析、PyMuPDF、openpyxl | 读取 EML 正文与附件、PDF 文字层及多工作表 Excel。保留原始文件，按来源记录正文片段、页码或工作表行号，供字段复核。 |
-| 模型与编排 | MOI 原生工作流 v3、Genesis、Pydantic | 在平台内执行 SQL 和模型节点。应用端校验输出结构、字段约束和原文证据，将合格候选交给业务人员确认。 |
-| 业务数据与查询 | SQLite、SQLGlot | SQLite 保存来件、字段修订、报价状态和审批事件。分析查询使用独立只读连接，执行前检查 SQL 语法树、表和列的允许范围。 |
-| 价格与文件 | Python Decimal、PyMuPDF、openpyxl | 以十进制定点舍入规则核价；从同一已批准版本生成 PDF 和 Excel，分别记录导出格式、版本与文件摘要。 |
-| 云端记录 | MatrixOne SQL、SHA-256 | 为原生工作流保存输入及提取结果；另以报价编号和版本保存已审批快照，支持对整份载荷的独立读回。 |
+| 工作流是否在 MOI 上执行？ | 执行 `61191015-edc2-4005-a5c7-6d6f8372d413`，4 个节点全部完成，应用独立读回匹配。 | [执行回执](https://quotepilot-matrixnext-final.onrender.com/guide/evidence/native.json) |
+| 业务流程是否连通？ | 上传询价后，复核 1 条需求、确认 3 家供应商，生成 3 种方案，由两种角色完成签核和下载。记录含 101 条 HTTP 响应。 | [逐步验收记录](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/result.json) |
+| 客户收到的两个文件是否一致？ | 报价 `CQ-57F5B5C4DD5240BF`，v3，已批准。两份文件均为 PN-0001、3 EA、单价 14.58 元、合计 43.74 元，交期 20 天。 | [正式 PDF](https://quotepilot-matrixnext-final.onrender.com/guide/evidence/approved.pdf) · [同版 Excel](https://quotepilot-matrixnext-final.onrender.com/guide/evidence/approved.xlsx) |
+| 云端是否保留了同一批准版本？ | 读回完整载荷并校验摘要，回执标记 verified；可按报价号、版本和查询编号对应原单。 | [快照回执](https://quotepilot-matrixnext-final.onrender.com/guide/evidence/matrixone-user-receipt.json) |
 
-## MOI 原生工作流与候选字段校验
+该次发布通过 **281 项 Python 回归测试、31 条 DOM 断言**。匿名业务请求返回 401，业务复核员访问管理员指标返回 403。历史固定格式文件验收为 **19/20**，无文字层的扫描 PDF 保留原件，由人工补录和复核。测试数描述工程覆盖范围；生产语料准确率与实际人工作时收益有待现场测量。
 
-FastAPI 为每次询价处理生成独立运行引用（run_ref），对输入文本计算 SHA-256，将原文写入 MatrixOne 并校验读回内容。相同的运行引用贯穿以下四个原生节点，应用由此把模型输出对应回具体来件。
-
-| 节点 | 执行内容 |
-| --- | --- |
-| load_rfq · SQL | 按本次运行引用读取询价原文。 |
-| extract_rfq · Genesis | 读取原文，提取件号、数量、单位、件状和证据片段。 |
-| persist_suggestions · SQL | 把模型输出写回本次询价对应的记录。 |
-| read_back · SQL | 读取已写入的候选结果，形成平台节点回执。 |
-
-工作流完成后，应用另外发起 SQL 查询，核对输入、模型输出和读回记录。字段结构按契约校验，数量须为正整数，引用片段须能在输入中定位。复核人对照原件修订并确认后，候选才进入业务需求表。这道复核处理的是字段关系：同一段原文可能包含多个件号和数量，仅匹配到字面引用仍可能配错行。
-
-遇到启动响应丢失时，应用保留本地运行引用。恢复操作会检查平台执行的 run_ref，匹配后才将执行 ID 关联到原询价，避免把其他作业的结果带入复核。
-
-## 确定性核价与版本控制
-
-报价引擎先检查供应商原件的确认状态，以及规格、单位、件状、起订量、有效期和交期。符合条件的候选分别按成本、交期和两者的综合得分排序；界面同时给出排除原因。价格计算直接使用已核对的需求、供应商条件及费用。
-
-Decimal 对成本项按分执行 ROUND_HALF_UP。系统按采购金额权重分摊整票运费并处理尾差，再以“总成本 ÷ 数量 ÷（1 − 目标毛利率）”求销售单价。单价舍入至分后乘数量，导出文件使用该版本保存的金额。
-
-客户更新询价时，系统冻结新的 RFQ 版本，逐行识别新增、删除、修改及歧义项，并列出关联报价。报价记录保留计算时采用的需求、供应商条件和成本明细。审批更新需匹配预期版本，由业务复核员和管理员分别签核。
-
-## 审批快照与独立核验
-
-SQLite 承担演示实例的业务主库。完成双角色签核后，FastAPI 可另行将报价快照同步到 MatrixOne。该操作由应用发起，与上文用于提取字段的四节点工作流分别记录。
-
-服务端对快照使用固定键序的 JSON 序列化，计算 SHA-256，以（报价编号，版本）为组合主键写入。重复同步沿用同一主键。随后读取完整载荷与摘要，比较载荷并重新计算摘要；三项一致才记录核验成功及 SQL 查询编号。
-
-签核、文件导出与云端同步分别留痕。云端暂不可达时，已完成的本地审批和文件导出仍可使用；待连接恢复，可对同一批准版本重试同步。
-
-## 公网验收与原始记录
-
-2026 年 11 月 10 日，两名演示角色在独立 Chrome 会话中访问公网服务。验收使用合成询价、真实 Genesis 推理与 MatrixOne 查询，覆盖导入、复核、核价、审批和导出。以下数据来自该次执行。
-
-| 验证对象 | 观测结果 |
-| --- | --- |
-| 原生执行 | 执行 61191015-edc2-4005-a5c7-6d6f8372d413 的四个节点均完成；该次 Genesis 提取节点记录为 6 秒。 |
-| 字段写入与读回 | 写入 1 条候选记录。应用独立查询 01a1c4d2-affd-73ce-9f81-948fac2a01bd 返回匹配结果。 |
-| 批准版本与文件 | 报价 CQ-57F5B5C4DD5240BF，版本 3。独立读取导出的 PDF 和 Excel，两份文件的数量、单价和总额一致。 |
-| 快照一致性 | 同一批准版本的完整载荷与 SHA-256 通过读回校验。回执列出写入与查询编号，并标注业务主库为 SQLite。 |
-| 发布验证 | 公网浏览器记录 101 条 HTTP 响应；匿名业务请求返回 401，复核员访问管理员指标返回 403。该次发布另有 281 项 Python 回归测试与 31 条 DOM 断言通过。 |
-
-[原生执行回执 · JSON](https://quotepilot-matrixnext-final.onrender.com/guide/evidence/native.json) · [审批快照回执 · JSON](https://quotepilot-matrixnext-final.onrender.com/guide/evidence/matrixone-user-receipt.json) · [正式报价 · PDF](https://quotepilot-matrixnext-final.onrender.com/guide/evidence/approved.pdf) · [同版报价 · Excel](https://quotepilot-matrixnext-final.onrender.com/guide/evidence/approved.xlsx)
-
-适用范围为单团队、单实例的合成数据演示。无可用文字层的扫描件保留原件后转人工补录。上述测试用于验证实现与数据一致性；模型在真实采购语料上的准确率和业务收益仍需独立测量。
-
-## 演示访问与操作手册
-
-评审工作台提供管理员与业务复核员两种演示身份。访问码、合成样例与分步图解见快速上手指南。
-
-[查看访问码与快速上手](https://quotepilot-matrixnext-final.onrender.com/guide/#login) · [打开评审工作台](https://quotepilot-matrixnext-final.onrender.com/login)
+演示环境面向单团队，使用合成数据。实例重置后临时业务数据可能清除，本文所引的报价与回执已独立存档。评委可用合成样例自行复演，两个角色的访问码和上传顺序见操作指南。[打开工作台](https://quotepilot-matrixnext-final.onrender.com/login) · [访问码与操作指南](https://quotepilot-matrixnext-final.onrender.com/guide/#login)
