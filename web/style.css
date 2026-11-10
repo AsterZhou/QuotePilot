@@ -18,3 +18,16 @@
   .panel-body details,.panel-body summary{min-width:0;max-width:100%;overflow-wrap:anywhere}
   .panel-body pre{max-inline-size:100%;overflow-x:auto}
 }
+
+/* The six steps summarize this team's working queue. */
+.steps-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;padding:0;gap:1px;overflow:hidden;background:#d7dfd6}
+.steps-grid li {display:flex;flex-direction:column;align-items:flex-start;gap:.45rem;background:#fbfcf8;padding:18px}
+.steps-grid h3,.steps-grid p {margin:0}
+.steps-grid .btn {margin-top:auto}
+.main-nav .side-section-label {margin:12px 0 3px;padding:0 10px}
+.sidebar {overflow-y:auto}
+#offer-form fieldset {border:1px solid #c9d4ca;margin:14px 0;padding:16px;border-radius:8px;min-width:0}
+#offer-form legend {font-weight:700;color:#245742;padding:0 6px}
+.panel details > summary,.detail-drawer details > summary {cursor:pointer}
+@media(max-width:760px){.steps-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:440px){.steps-grid{grid-template-columns:1fr}}

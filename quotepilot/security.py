@@ -90,7 +90,7 @@ def deployment_notice():
             '<strong>免费临时演示 · 仅限赛事/合成测试文件</strong>：SQLite与上传附件存于临时磁盘，休眠、重启或重新部署后会丢失；请及时下载报价和审计记录。'
             +ai+'；核价、审批与导出由真实规则和数据库执行。管理员密码访问，无公众注册。</div>')
 
-LOGIN='''<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>QuotePilot · 登录</title><style>body{font:16px system-ui;background:#f5f6f8;color:#172032;max-width:420px;margin:15vh auto;padding:28px}form{background:white;padding:32px;border:1px solid #e0e3e8;border-radius:12px}input,button{box-sizing:border-box;width:100%;padding:13px;margin:14px 0;border:1px solid #cbd0d9;border-radius:6px}button{background:#173f37;color:white}small{color:#667085}</style><form id="login"><h1>QuotePilot</h1><p>参赛演示工作台</p><label>访问密码<input type="password" id="password" autocomplete="current-password" required></label><button>进入工作台</button><p id="result" role="alert"></p><small>此为共享演示空间。请仅使用赛事素材或合成测试文件。</small></form><script src="/auth/login.js"></script></html>'''
+LOGIN='''<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>QuotePilot · 登录</title><style>body{font:16px system-ui;background:#f5f6f8;color:#172032;max-width:420px;margin:15vh auto;padding:28px}form{background:white;padding:32px;border:1px solid #e0e3e8;border-radius:12px}input,button{box-sizing:border-box;width:100%;padding:13px;margin:14px 0;border:1px solid #cbd0d9;border-radius:6px}button{background:#173f37;color:white}small{color:#667085}</style><form id="login"><h1>QuotePilot</h1><p>参赛演示工作台 · <a href="/guide/">快速上手与角色访问码</a></p><label>访问密码<input type="password" id="password" autocomplete="current-password" required></label><button>进入工作台</button><p id="result" role="alert"></p><small>此为共享演示空间。请仅使用赛事素材或合成测试文件。</small></form><script src="/auth/login.js"></script></html>'''
 LOGIN_JS="""document.querySelector('#login').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;try{const r=await fetch('/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:document.querySelector('#password').value})});if(!r.ok)throw Error(r.status===429?'尝试过于频繁，请稍后再试':'登录未成功，请核对访问密码');location.href='/'}catch(e){document.querySelector('#result').textContent=e.message}finally{b.disabled=false}});"""
 
 class DemoAccessMiddleware(BaseHTTPMiddleware):
@@ -100,6 +100,8 @@ class DemoAccessMiddleware(BaseHTTPMiddleware):
         path=request.url.path;ip=request.client.host if request.client else 'unknown'
         response=None
         if path=='/healthz' and request.method=='GET':response=JSONResponse({'ok':True,'service':'QuotePilot'})
+        elif path.startswith('/guide/') and request.method in ('GET','HEAD'):
+            response=await call_next(request)
         elif path=='/auth/login.js' and request.method=='GET':
             from starlette.responses import Response
             response=Response(LOGIN_JS,media_type='application/javascript')

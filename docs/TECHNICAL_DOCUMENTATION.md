@@ -1,5 +1,7 @@
 # QuotePilot 报价室
 
+[第一次使用：图解快速上手指南](https://quotepilot-matrixnext-final.onrender.com/guide/)
+
 **企业采购 RFQ 询价分析与报价智能体 · MatrixNEXT 2026 命题赛道**
 
 ## 公网报价验收 · 2026 年 11 月 10 日

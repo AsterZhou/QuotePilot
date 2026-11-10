@@ -43,6 +43,7 @@ async def lifespan(app):
 app = FastAPI(title='QuotePilot — 报价室',version='0.7.0',docs_url='/api/docs',lifespan=lifespan)
 from quotepilot.security import DemoAccessMiddleware
 app.add_middleware(DemoAccessMiddleware)
+app.mount('/guide', StaticFiles(directory=WEB / 'guide', html=True), name='guide')
 app.mount('/assets',StaticFiles(directory=WEB),name='assets')
 
 @contextmanager
