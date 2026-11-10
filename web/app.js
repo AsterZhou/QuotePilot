@@ -22,7 +22,7 @@ async function render(){const main=$('#main');main.innerHTML=loading();if(state.
 async function getEmails(){if(!state.emails.length)state.emails=await api('/api/emails');return state.emails}
 async function getAllLines(){if(!state.allLines.length)state.allLines=(await api('/api/lines?limit=500')).rows;return state.allLines}
 
-async function renderOverview(){const s=await api('/api/overview');state.overview=s;$('#nav-emails').textContent=s.mails;const kinds=s.source_kinds;const max=Math.max(...kinds.map(x=>x.count),1);
+async function renderOverview(){const s=await api('/api/overview');if(state.page!=='overview')return;state.overview=s;$('#nav-emails').textContent=s.mails;const kinds=s.source_kinds;const max=Math.max(...kinds.map(x=>x.count),1);
  $('#main').innerHTML=`<section class="page">
  <div class="hero"><div class="hero-left"><div class="overline">RFQ OPERATIONS / 2026</div><h1>每份报价，<br><em>都要有据可查。</em></h1><p>一封邮件、一张成本表、一条价格记录。把散落在附件里的询价信息，变成可以核对、可以追溯、可以交付的报价草案。</p><div class="hero-buttons"><button data-go="inbox" class="btn primary">查看询价来件 <span aria-hidden>↗</span></button><button data-go="commercial" class="btn ghost">打开报价与审批 <span aria-hidden>→</span></button></div></div><div class="hero-right"><div><div class="hero-right-top">RFQ / 已收来件</div><div class="manifest-num">${String(s.mails).padStart(2,'0')}<sup>封邮件</sup></div></div><div><div class="hero-rule"></div><div class="hero-right-bottom"><span>${fmt(s.mail_lines)} 行来源可查</span><span>需求明细</span></div></div></div></div>
  <div class="metric-row">
