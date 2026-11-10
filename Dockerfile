@@ -7,9 +7,11 @@ COPY --chown=quote:quote quotepilot/ /app/quotepilot/
 COPY --chown=quote:quote web/ /app/web/
 COPY --chown=quote:quote workspace/samples/ /app/workspace/samples/
 COPY --chown=quote:quote server.py /app/
-COPY --chown=quote:quote deploy/entrypoint.py /app/entrypoint.py
+COPY --chown=quote:quote deploy/ /app/deploy/
+COPY --chown=quote:quote scripts/business_cycle.py /app/scripts/business_cycle.py
+RUN python deploy/release_seed.py /app/release-demo.sqlite
 ENV QUOTEPILOT_DB=/data/quotepilot.db
 USER quote
 EXPOSE 8765
 HEALTHCHECK --interval=30s --timeout=5s --start-period=45s CMD python -c "import os,urllib.request;urllib.request.urlopen('http://127.0.0.1:'+os.environ.get('PORT','8765')+'/healthz',timeout=4)"
-CMD ["python", "entrypoint.py"]
+CMD ["python", "-m", "deploy.entrypoint"]

@@ -33,7 +33,9 @@ async def lifespan(app):
     from quotepilot.security import validate_production
     validate_production()
     con=open_db(DB)
-    try:seed_official(con,SAMPLES)
+    try:
+        if os.environ.get("QUOTEPILOT_RELEASE_DEMO") != "1":
+            seed_official(con,SAMPLES)
     finally:con.close()
     yield
 

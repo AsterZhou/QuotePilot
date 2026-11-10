@@ -19,6 +19,9 @@ def main():
     port=load_runtime_environment()
     from quotepilot.security import validate_production
     validate_production()
+    if os.environ.get('QUOTEPILOT_RELEASE_DEMO') == '1':
+        from deploy.release_seed import install_seed
+        install_seed(Path('/app/release-demo.sqlite'), Path(os.environ['QUOTEPILOT_DB']))
     import uvicorn
     uvicorn.run('server:app',host='0.0.0.0',port=port,workers=1,proxy_headers=True,forwarded_allow_ips=os.environ.get('FORWARDED_ALLOW_IPS','*'),timeout_keep_alive=10)
 
