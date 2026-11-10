@@ -123,9 +123,13 @@ MatrixOne 同步只接受已有两个不同账户完成签核的报价。服务�
 
 ## 八、演示环境与使用
 
+**评委工作台**　[打开 QuotePilot](https://quotepilot-matrixnext-final.onrender.com/)。登录页仅需填入一个角色访问码。管理员使用 `QP-Judge-Admin-26M`，业务复核员使用 `QP-Judge-Review-26M`。可以在两个独立浏览器会话中分别登录，或使用工作台右上角的「切换角色」。这两组公开访问码仅适用于本赛事合成演示空间。
+
 评审样例可直接下载。自然语言邮件用来检查模型建议，结构化邮件用于复演数量变更，供应商 PDF 包含三家合成报价。
 
 [自然语言询价 EML](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/rfq-natural.eml) · [原始 100 件 EML](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/rfq-v1.eml) · [更新 500 件 EML](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/rfq-v2.eml) · [三家供应商报价 PDF](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/suppliers.pdf)
+
+**复演 10 元差额。** 先导入自然语言询价，确认件号 PN-0001、100 EA、件状 FN。登记来源询价号 `BROWSER-RFQ`，技术描述填写 `Synthetic valve spec A`。对同一客户的 500 件更新登记同一询价号，再比较两个版本。两次核价均填写加工费每件 1 元、其他费用合计 2 元、目标毛利率 20%，选择最低成本方案。工作台预置三家经核对的合成供应商。
 
 1. 管理员从「询价来件」上传合成 EML，或选择独立 PDF、XLSX 并填写所属客户邮箱。先预览，再导入。
 2. 选择目标邮件，检查来源。对自然语言来件触发 Genesis 补充提取，对照原文确认；在「证据与复核」处理缺项。
