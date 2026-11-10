@@ -1,0 +1,279 @@
+{
+  "sql_deploy": {
+    "time": "2026-11-10T07:35:10.574300+00:00",
+    "method": "POST",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-deployments",
+    "http": 200,
+    "trace": "4ca70ae9-4282-474d-8ec8-81dd54b506d7",
+    "request_id": "4ca70ae9-4282-474d-8ec8-81dd54b506d7",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "workflow": {
+          "id": "7e9e856c-2f0f-5241-b69a-555cdc3586b1",
+          "name": "QuotePilot-SQL-Proof-1fa8239",
+          "source_type": "manual_dsl",
+          "execution_mode": "one_shot",
+          "draft_id": "",
+          "status": "ready"
+        },
+        "deployment": {
+          "workflow_app_id": "7e9e856c-2f0f-5241-b69a-555cdc3586b1",
+          "workflow_def_id": "9f0017d9-7c06-4fc9-8860-af9d63885516",
+          "workflow_version_id": "ae67f346-2c54-4dc7-b777-e9438656be64",
+          "workflow_name": "QuotePilot-SQL-Proof-1fa8239",
+          "version": 1,
+          "execution_mode": "one_shot"
+        }
+      }
+    },
+    "request_body": {
+      "name": "QuotePilot-SQL-Proof-1fa8239",
+      "source_type": "manual_dsl",
+      "execution_mode": "one_shot",
+      "dsl_yaml": "workflow:\n  name: qp-sql-proof\n  root: root\nroot:\n  chain:\n  - work_item:\n      name: write_synthetic\n      id: moi:data.sql.process\n      version: v1\n      input:\n        sql: INSERT INTO quotepilot.rfq_workflow_runs_v1 (run_ref,input_sha256,input_base64,review_status)\n          VALUES ('QS-fa82d7f34cca4d30a0697abc81fa8239','956568d8dd7a20d8a77fee49dc2a8c7cb1006251a9d3a2b29be4b46fbed380a1','eyJjb25kaXRpb24iOiJGTiIsInBhcnRfbnVtYmVyIjoiUE4tMDAwMSIsInF1YW50aXR5IjozLCJ1bml0IjoiRUEifQ==','pending')\n  - work_item:\n      name: read_synthetic\n      id: moi:data.sql.process\n      version: v1\n      input:\n        sql: SELECT run_ref,input_sha256,input_base64 FROM quotepilot.rfq_workflow_runs_v1\n          WHERE run_ref='QS-fa82d7f34cca4d30a0697abc81fa8239'\n"
+    }
+  },
+  "sql_start": {
+    "time": "2026-11-10T07:35:17.553737+00:00",
+    "method": "POST",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-apps/7e9e856c-2f0f-5241-b69a-555cdc3586b1/executions",
+    "http": 200,
+    "trace": "6fe4a2d6-2125-4843-8e68-4b7c612e7536",
+    "request_id": "6fe4a2d6-2125-4843-8e68-4b7c612e7536",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "workflow_run": {
+          "execution_id": "c5d7856c-90d5-43aa-8417-456e1ee8cd01",
+          "workflow_id": "7e9e856c-2f0f-5241-b69a-555cdc3586b1",
+          "status": "triggered",
+          "available_actions": [
+            "refresh",
+            "result",
+            "delete",
+            "pause",
+            "cancel"
+          ],
+          "execution_mode": "one_shot",
+          "moi_task_id": "01a1c461-f846-7373-975a-7aaaf557ab4b",
+          "moi_case_id": "01a1c461-f846-7377-ba8f-ca6235ae091b",
+          "moi_workflow_def_id": "9f0017d9-7c06-4fc9-8860-af9d63885516",
+          "moi_workflow_version_id": "ae67f346-2c54-4dc7-b777-e9438656be64"
+        }
+      }
+    },
+    "request_body": {
+      "trigger_now": true
+    }
+  },
+  "sql_status": {
+    "time": "2026-11-10T07:35:27.688539+00:00",
+    "method": "GET",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-apps/7e9e856c-2f0f-5241-b69a-555cdc3586b1/executions/c5d7856c-90d5-43aa-8417-456e1ee8cd01",
+    "http": 200,
+    "trace": "6a62c97c-c532-48f6-bc76-cff3906dcfd9",
+    "request_id": "6a62c97c-c532-48f6-bc76-cff3906dcfd9",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "execution": {
+          "execution_id": "c5d7856c-90d5-43aa-8417-456e1ee8cd01",
+          "workflow_id": "7e9e856c-2f0f-5241-b69a-555cdc3586b1",
+          "status": "completed",
+          "available_actions": [
+            "refresh",
+            "result",
+            "delete",
+            "retry"
+          ],
+          "execution_mode": "one_shot",
+          "moi_task_id": "01a1c461-f846-7373-975a-7aaaf557ab4b",
+          "moi_case_id": "01a1c461-f846-7377-ba8f-ca6235ae091b",
+          "moi_workflow_def_id": "9f0017d9-7c06-4fc9-8860-af9d63885516",
+          "moi_workflow_version_id": "ae67f346-2c54-4dc7-b777-e9438656be64",
+          "started_at": "2026-11-10T07:35:17Z",
+          "ended_at": "2026-11-10T07:35:19Z",
+          "created_at": "2026-11-10T07:35:17Z",
+          "updated_at": "2026-11-10T07:35:19Z"
+        }
+      }
+    }
+  },
+  "sql_write": {
+    "time": "2026-11-10T07:35:28.333965+00:00",
+    "method": "GET",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-apps/7e9e856c-2f0f-5241-b69a-555cdc3586b1/executions/c5d7856c-90d5-43aa-8417-456e1ee8cd01/nodes/root.write_synthetic",
+    "http": 200,
+    "trace": "c84531b5-b3ea-42ba-a646-772e4c6732fd",
+    "request_id": "c84531b5-b3ea-42ba-a646-772e4c6732fd",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "node": {
+          "flow_id": "root",
+          "name": "write_synthetic",
+          "node_key": "root.write_synthetic",
+          "node_type": "data.sql.process",
+          "display_name": "write_synthetic",
+          "workitem_id": "74ede08e-1ce2-56fe-a16f-d87acce89978",
+          "node_execution_id": "3f04a6c0-05b6-5f4a-91f8-5b435b3c7c11"
+        },
+        "run": {
+          "status": "COMPLETED",
+          "started_at": "2026-11-10T07:35:18Z",
+          "ended_at": "2026-11-10T07:35:18Z",
+          "duration_ms": 0,
+          "runtime_input": {
+            "sql": "INSERT INTO quotepilot.rfq_workflow_runs_v1 (run_ref,input_sha256,input_base64,review_status) VALUES ('QS-fa82d7f34cca4d30a0697abc81fa8239','956568d8dd7a20d8a77fee49dc2a8c7cb1006251a9d3a2b29be4b46fbed380a1','eyJjb25kaXRpb24iOiJGTiIsInBhcnRfbnVtYmVyIjoiUE4tMDAwMSIsInF1YW50aXR5IjozLCJ1bml0IjoiRUEifQ==','pending')"
+          },
+          "runtime_output": {
+            "affected_rows": 1,
+            "elapsed_ms": 163,
+            "rows": [],
+            "sql": "INSERT INTO quotepilot.rfq_workflow_runs_v1 (run_ref,input_sha256,input_base64,review_status) VALUES ('QS-fa82d7f34cca4d30a0697abc81fa8239','956568d8dd7a20d8a77fee49dc2a8c7cb1006251a9d3a2b29be4b46fbed380a1','eyJjb25kaXRpb24iOiJGTiIsInBhcnRfbnVtYmVyIjoiUE4tMDAwMSIsInF1YW50aXR5IjozLCJ1bml0IjoiRUEifQ==','pending')",
+            "truncated": false
+          },
+          "runtime_vars": {
+            "__input__": "{\"sql\":\"INSERT INTO quotepilot.rfq_workflow_runs_v1 (run_ref,input_sha256,input_base64,review_status) VALUES ('QS-fa82d7f34cca4d30a0697abc81fa8239','956568d8dd7a20d8a77fee49dc2a8c7cb1006251a9d3a2b29be4b46fbed380a1','eyJjb25kaXRpb24iOiJGTiIsInBhcnRfbnVtYmVyIjoiUE4tMDAwMSIsInF1YW50aXR5IjozLCJ1bml0IjoiRUEifQ==','pending')\"}"
+          },
+          "config": {
+            "id": "moi:data.sql.process",
+            "inConnector": {
+              "nodes": [
+                "__start"
+              ],
+              "type": "simple"
+            },
+            "outConnector": {
+              "nodes": [
+                "read_synthetic"
+              ],
+              "type": "simple"
+            },
+            "varMap": {
+              "__input__": "{\"sql\":\"INSERT INTO quotepilot.rfq_workflow_runs_v1 (run_ref,input_sha256,input_base64,review_status) VALUES ('QS-fa82d7f34cca4d30a0697abc81fa8239','956568d8dd7a20d8a77fee49dc2a8c7cb1006251a9d3a2b29be4b46fbed380a1','eyJjb25kaXRpb24iOiJGTiIsInBhcnRfbnVtYmVyIjoiUE4tMDAwMSIsInF1YW50aXR5IjozLCJ1bml0IjoiRUEifQ==','pending')\"}"
+            },
+            "version": "v1"
+          }
+        }
+      }
+    }
+  },
+  "sql_read": {
+    "time": "2026-11-10T07:35:27.785976+00:00",
+    "method": "GET",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-apps/7e9e856c-2f0f-5241-b69a-555cdc3586b1/executions/c5d7856c-90d5-43aa-8417-456e1ee8cd01/nodes/root.read_synthetic",
+    "http": 200,
+    "trace": "712cf023-f99b-4d6a-bf4c-03c3989c70b8",
+    "request_id": "712cf023-f99b-4d6a-bf4c-03c3989c70b8",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "node": {
+          "flow_id": "root",
+          "name": "read_synthetic",
+          "node_key": "root.read_synthetic",
+          "node_type": "data.sql.process",
+          "display_name": "read_synthetic",
+          "workitem_id": "db674bf2-e315-5c64-9140-6ddebc4cf197",
+          "node_execution_id": "99729295-20fd-5c97-8ed3-8caaa7f41e0f"
+        },
+        "run": {
+          "status": "COMPLETED",
+          "started_at": "2026-11-10T07:35:18Z",
+          "ended_at": "2026-11-10T07:35:19Z",
+          "duration_ms": 1000,
+          "runtime_input": {
+            "sql": "SELECT run_ref,input_sha256,input_base64 FROM quotepilot.rfq_workflow_runs_v1 WHERE run_ref='QS-fa82d7f34cca4d30a0697abc81fa8239'"
+          },
+          "runtime_output": {
+            "affected_rows": 0,
+            "elapsed_ms": 53,
+            "rows": [
+              {
+                "input_base64": "eyJjb25kaXRpb24iOiJGTiIsInBhcnRfbnVtYmVyIjoiUE4tMDAwMSIsInF1YW50aXR5IjozLCJ1bml0IjoiRUEifQ==",
+                "input_sha256": "956568d8dd7a20d8a77fee49dc2a8c7cb1006251a9d3a2b29be4b46fbed380a1",
+                "run_ref": "QS-fa82d7f34cca4d30a0697abc81fa8239"
+              }
+            ],
+            "sql": "SELECT run_ref,input_sha256,input_base64 FROM quotepilot.rfq_workflow_runs_v1 WHERE run_ref='QS-fa82d7f34cca4d30a0697abc81fa8239'",
+            "truncated": false
+          },
+          "runtime_vars": {
+            "__input__": "{\"sql\":\"SELECT run_ref,input_sha256,input_base64 FROM quotepilot.rfq_workflow_runs_v1 WHERE run_ref='QS-fa82d7f34cca4d30a0697abc81fa8239'\"}"
+          },
+          "config": {
+            "id": "moi:data.sql.process",
+            "inConnector": {
+              "nodes": [
+                "write_synthetic"
+              ],
+              "type": "simple"
+            },
+            "outConnector": {
+              "nodes": [
+                "__end"
+              ],
+              "type": "simple"
+            },
+            "varMap": {
+              "__input__": "{\"sql\":\"SELECT run_ref,input_sha256,input_base64 FROM quotepilot.rfq_workflow_runs_v1 WHERE run_ref='QS-fa82d7f34cca4d30a0697abc81fa8239'\"}"
+            },
+            "version": "v1"
+          }
+        }
+      }
+    }
+  },
+  "sql_independent": {
+    "query_id": "01a1c462-c3e3-71e5-8dc3-f39f459adc3f",
+    "statement_id": "01a1c462-c463-71f6-bfa8-7de6cb1dd94a",
+    "data": {
+      "query_id": "01a1c462-c3e3-71e5-8dc3-f39f459adc3f",
+      "db_name": "",
+      "statement_id": "01a1c462-c463-71f6-bfa8-7de6cb1dd94a",
+      "status": "success",
+      "offset": 0,
+      "limit": 10,
+      "total": 1,
+      "rows_affected": 0,
+      "truncated": false,
+      "columns": [
+        {
+          "name": "run_ref",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "input_sha256",
+          "type": "CHAR"
+        },
+        {
+          "name": "input_base64",
+          "type": "TEXT"
+        }
+      ],
+      "result": [
+        [
+          {
+            "String": "QS-fa82d7f34cca4d30a0697abc81fa8239",
+            "Valid": true
+          },
+          {
+            "String": "956568d8dd7a20d8a77fee49dc2a8c7cb1006251a9d3a2b29be4b46fbed380a1",
+            "Valid": true
+          },
+          {
+            "String": "eyJjb25kaXRpb24iOiJGTiIsInBhcnRfbnVtYmVyIjoiUE4tMDAwMSIsInF1YW50aXR5IjozLCJ1bml0IjoiRUEifQ==",
+            "Valid": true
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "initial_compute": {
+    "time": "2026-11-10T07:34:20.483835+00:00",
+    "method": "GET",
+    "path": "https://api.moi.matrixorigin.cn/v5/compute-resources",
+    "http": 200,
+    "trace": "75fb82af-cb67-4d81-ac14-56625e2d6746",
+    "request_id": "75fb82af-cb67-4d81-ac14-56625e2d6746",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": []
+    }
+  },
+  "final_compute": {
+    "time": "2026-11-10T07:51:41.670159+00:00",
+    "method": "GET",
+    "path": "https://api.moi.matrixorigin.cn/v5/compute-resources",
+    "http": 200,
+    "trace": "293de0d1-3a70-478d-9ec9-2221ac3419d2",
+    "request_id": "293de0d1-3a70-478d-9ec9-2221ac3419d2",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": []
+    }
+  },
+  "sql_pause": {
+    "time": "2026-11-10T07:51:37.945935+00:00",
+    "method": "POST",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-apps/7e9e856c-2f0f-5241-b69a-555cdc3586b1/pause",
+    "http": 200,
+    "trace": "5133488e-332a-474d-867a-723b12d7c600",
+    "request_id": "5133488e-332a-474d-867a-723b12d7c600",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "workflow": {
+          "id": "7e9e856c-2f0f-5241-b69a-555cdc3586b1",
+          "name": "QuotePilot-SQL-Proof-1fa8239",
+          "source_type": "manual_dsl",
+          "status": "paused",
+          "available_actions": [
+            "update",
+            "delete",
+            "resume",
+            "list_executions"
+          ],
+          "execution_mode": "one_shot",
+          "latest_workflow_version_id": "ae67f346-2c54-4dc7-b777-e9438656be64",
+          "execution_summary": {
+            "total_executions": 1,
+            "active_executions": 0,
+            "latest_execution_id": "c5d7856c-90d5-43aa-8417-456e1ee8cd01",
+            "latest_execution_status": "completed",
+            "latest_execution_at": "2026-11-10 07:35:19"
+          },
+          "trigger_summary": {
+            "mode": "one_shot",
+            "configured": true,
+            "enabled": false
+          },
+          "created_at": "2026-11-10T07:35:10Z",
+          "updated_at": "2026-11-10T07:51:38Z",
+          "dsl_yaml": "workflow:\n  name: qp-sql-proof\n  root: root\nroot:\n  chain:\n  - work_item:\n      name: write_synthetic\n      id: moi:data.sql.process\n      version: v1\n      input:\n        sql: INSERT INTO quotepilot.rfq_workflow_runs_v1 (run_ref,input_sha256,input_base64,review_status)\n          VALUES ('QS-fa82d7f34cca4d30a0697abc81fa8239','956568d8dd7a20d8a77fee49dc2a8c7cb1006251a9d3a2b29be4b46fbed380a1','eyJjb25kaXRpb24iOiJGTiIsInBhcnRfbnVtYmVyIjoiUE4tMDAwMSIsInF1YW50aXR5IjozLCJ1bml0IjoiRUEifQ==','pending')\n  - work_item:\n      name: read_synthetic\n      id: moi:data.sql.process\n      version: v1\n      input:\n        sql: SELECT run_ref,input_sha256,input_base64 FROM quotepilot.rfq_workflow_runs_v1\n          WHERE run_ref='QS-fa82d7f34cca4d30a0697abc81fa8239'",
+          "definition_format": "dsl",
+          "moi_workflow_def_id": "9f0017d9-7c06-4fc9-8860-af9d63885516"
+        }
+      }
+    },
+    "request_body": {}
+  },
+  "sql_final": {
+    "time": "2026-11-10T07:51:41.817999+00:00",
+    "method": "GET",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-apps/7e9e856c-2f0f-5241-b69a-555cdc3586b1",
+    "http": 200,
+    "trace": "1a0f7100-727f-49a0-8f50-7cbf4fdaa579",
+    "request_id": "1a0f7100-727f-49a0-8f50-7cbf4fdaa579",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "workflow": {
+          "id": "7e9e856c-2f0f-5241-b69a-555cdc3586b1",
+          "name": "QuotePilot-SQL-Proof-1fa8239",
+          "source_type": "manual_dsl",
+          "status": "paused",
+          "available_actions": [
+            "update",
+            "delete",
+            "resume",
+            "list_executions"
+          ],
+          "execution_mode": "one_shot",
+          "latest_workflow_version_id": "ae67f346-2c54-4dc7-b777-e9438656be64",
+          "execution_summary": {
+            "total_executions": 1,
+            "active_executions": 0,
+            "latest_execution_id": "c5d7856c-90d5-43aa-8417-456e1ee8cd01",
+            "latest_execution_status": "completed",
+            "latest_execution_at": "2026-11-10 07:35:19"
+          },
+          "trigger_summary": {
+            "mode": "one_shot",
+            "configured": true,
+            "enabled": false
+          },
+          "created_at": "2026-11-10T07:35:10Z",
+          "updated_at": "2026-11-10T07:51:38Z",
+          "dsl_yaml": "workflow:\n  name: qp-sql-proof\n  root: root\nroot:\n  chain:\n  - work_item:\n      name: write_synthetic\n      id: moi:data.sql.process\n      version: v1\n      input:\n        sql: INSERT INTO quotepilot.rfq_workflow_runs_v1 (run_ref,input_sha256,input_base64,review_status)\n          VALUES ('QS-fa82d7f34cca4d30a0697abc81fa8239','956568d8dd7a20d8a77fee49dc2a8c7cb1006251a9d3a2b29be4b46fbed380a1','eyJjb25kaXRpb24iOiJGTiIsInBhcnRfbnVtYmVyIjoiUE4tMDAwMSIsInF1YW50aXR5IjozLCJ1bml0IjoiRUEifQ==','pending')\n  - work_item:\n      name: read_synthetic\n      id: moi:data.sql.process\n      version: v1\n      input:\n        sql: SELECT run_ref,input_sha256,input_base64 FROM quotepilot.rfq_workflow_runs_v1\n          WHERE run_ref='QS-fa82d7f34cca4d30a0697abc81fa8239'",
+          "definition_format": "dsl",
+          "moi_workflow_def_id": "9f0017d9-7c06-4fc9-8860-af9d63885516"
+        }
+      }
+    }
+  },
+  "minimal_final": {
+    "time": "2026-11-10T07:51:41.998402+00:00",
+    "method": "GET",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-apps/a1f75c37-eb9d-57ce-bfe3-6debdf2142c3",
+    "http": 200,
+    "trace": "5ca4437c-82d2-4b8a-ac3d-f758d526cdfa",
+    "request_id": "5ca4437c-82d2-4b8a-ac3d-f758d526cdfa",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "workflow": {
+          "id": "a1f75c37-eb9d-57ce-bfe3-6debdf2142c3",
+          "name": "QuotePilot-MinExtract-20261110-A",
+          "description": "Isolated one-shot synthetic RFQ. Derived from built-in template 8; no SQL, external files, schedules or service.",
+          "source_type": "manual_dsl",
+          "status": "ready",
+          "available_actions": [
+            "update",
+            "delete",
+            "run",
+            "pause",
+            "list_executions"
+          ],
+          "execution_mode": "one_shot",
+          "latest_workflow_version_id": "774142a5-6e06-434f-9786-6301d73b2823",
+          "execution_summary": {
+            "total_executions": 1,
+            "active_executions": 0,
+            "latest_execution_id": "9ea0945a-ec8b-4131-a000-35df3d3adbd0",
+            "latest_execution_status": "completed",
+            "latest_execution_at": "2026-11-10 07:34:10"
+          },
+          "trigger_summary": {
+            "mode": "one_shot",
+            "configured": true,
+            "enabled": true
+          },
+          "created_at": "2026-11-10T07:14:29Z",
+          "updated_at": "2026-11-10T07:14:29Z",
+          "dsl_yaml": "workflow:\n  name: quotepilot-min-extract-20261110\n  root: root\nroot:\n  chain:\n  - work_item:\n      name: extract_fields\n      id: moi:extract\n      input:\n        documents:\n        - id: qp-synthetic-rfq\n          content: Please quote 3 EA of PN-0001, condition FN, synthetic valve spec\n            A.\n        json_schema:\n          type: object\n          properties:\n            part_number:\n              type: string\n              description: Exact part number\n            quantity:\n              type: integer\n            unit:\n              type: string\n            condition:\n              type: string\n          required:\n          - part_number\n          - quantity\n          - unit\n          - condition\n        mode: n_to_1\n        instruction: Extract only explicit RFQ values. Preserve literal part number,\n          unit and condition.\n      save:\n        extract_result: .result\n        extracted_documents: .documents\n      version: v1",
+          "definition_format": "dsl",
+          "moi_workflow_def_id": "c838d9bc-2c52-4ffc-8156-2d5811983c8e"
+        }
+      }
+    }
+  }
+}

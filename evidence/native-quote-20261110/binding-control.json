@@ -1,0 +1,158 @@
+{
+  "control_deploy_missing": {
+    "time": "2026-11-10T07:15:19.983467+00:00",
+    "method": "POST",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-deployments",
+    "http": 200,
+    "trace": "85ec2b9a-f7bb-441d-8a80-e4dd1742450e",
+    "request_id": "85ec2b9a-f7bb-441d-8a80-e4dd1742450e",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "workflow": {
+          "id": "0776b8fc-2041-5693-91ed-c9167e75a5d0",
+          "name": "QuotePilot-MinExtract-BindingControl-20261110",
+          "source_type": "manual_dsl",
+          "execution_mode": "one_shot",
+          "draft_id": "",
+          "status": "disabled"
+        },
+        "deployment": {
+          "workflow_app_id": "0776b8fc-2041-5693-91ed-c9167e75a5d0",
+          "workflow_def_id": "",
+          "workflow_version_id": "",
+          "workflow_name": "QuotePilot-MinExtract-BindingControl-20261110",
+          "version": 0,
+          "execution_mode": "one_shot"
+        }
+      }
+    },
+    "request_body": {
+      "name": "QuotePilot-MinExtract-BindingControl-20261110",
+      "description": "Isolated form binding control; never execute.",
+      "execution_mode": "one_shot",
+      "source_type": "manual_dsl",
+      "dsl_yaml": "workflow:\n  name: quotepilot-min-extract-20261110\n  root: root\nroot:\n  chain:\n  - work_item:\n      name: extract_fields\n      id: moi:extract\n      input:\n        documents:\n        - id: '{{ .vars.run_ref }}'\n          content: Please quote 3 EA of PN-0001, condition FN, synthetic valve spec\n            A.\n        json_schema:\n          type: object\n          properties:\n            part_number:\n              type: string\n              description: Exact part number\n            quantity:\n              type: integer\n            unit:\n              type: string\n            condition:\n              type: string\n          required:\n          - part_number\n          - quantity\n          - unit\n          - condition\n        mode: n_to_1\n        instruction: Extract only explicit RFQ values. Preserve literal part number,\n          unit and condition.\n      save:\n        extract_result: .result\n        extracted_documents: .documents\n      version: v1\n",
+      "runtime_fields": {
+        "fields": [
+          {
+            "field_id": "run_ref",
+            "label": "RFQ run reference",
+            "widget": "text",
+            "json_type": "string",
+            "required": true
+          }
+        ]
+      },
+      "default_values": {
+        "run_ref": "QP-MIN-BIND-20261110"
+      }
+    }
+  },
+  "control_deploy_aligned": {
+    "time": "2026-11-10T07:16:07.715961+00:00",
+    "method": "POST",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-deployments",
+    "http": 200,
+    "trace": "e2f35901-0ca5-4c92-b00c-c5ac9dd7aca0",
+    "request_id": "e2f35901-0ca5-4c92-b00c-c5ac9dd7aca0",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "workflow": {
+          "id": "0776b8fc-2041-5693-91ed-c9167e75a5d0",
+          "name": "QuotePilot-MinExtract-BindingControl-20261110",
+          "source_type": "manual_dsl",
+          "execution_mode": "one_shot",
+          "draft_id": "",
+          "status": "ready"
+        },
+        "deployment": {
+          "workflow_app_id": "0776b8fc-2041-5693-91ed-c9167e75a5d0",
+          "workflow_def_id": "32405888-faa4-4235-8b6f-718f88def8d0",
+          "workflow_version_id": "a3d42a63-3a83-430b-bb4c-23fbc0c048cf",
+          "workflow_name": "QuotePilot-MinExtract-BindingControl-20261110",
+          "version": 1,
+          "execution_mode": "one_shot"
+        }
+      }
+    },
+    "request_body": {
+      "name": "QuotePilot-MinExtract-BindingControl-20261110",
+      "description": "Isolated form binding control; never execute.",
+      "execution_mode": "one_shot",
+      "source_type": "manual_dsl",
+      "dsl_yaml": "workflow:\n  name: quotepilot-min-extract-20261110\n  root: root\nroot:\n  chain:\n  - work_item:\n      name: extract_fields\n      id: moi:extract\n      input:\n        documents:\n        - id: '{{ .vars.run_ref }}'\n          content: Please quote 3 EA of PN-0001, condition FN, synthetic valve spec\n            A.\n        json_schema:\n          type: object\n          properties:\n            part_number:\n              type: string\n              description: Exact part number\n            quantity:\n              type: integer\n            unit:\n              type: string\n            condition:\n              type: string\n          required:\n          - part_number\n          - quantity\n          - unit\n          - condition\n        mode: n_to_1\n        instruction: Extract only explicit RFQ values. Preserve literal part number,\n          unit and condition.\n      save:\n        extract_result: .result\n        extracted_documents: .documents\n      version: v1\n",
+      "runtime_fields": {
+        "fields": [
+          {
+            "field_id": "run_ref",
+            "label": "RFQ run reference",
+            "widget": "text",
+            "json_type": "string",
+            "required": true
+          }
+        ]
+      },
+      "default_values": {
+        "run_ref": "QP-MIN-BIND-20261110",
+        "vars_run_ref": "QP-MIN-BIND-20261110"
+      },
+      "workflow_id": "0776b8fc-2041-5693-91ed-c9167e75a5d0"
+    }
+  },
+  "aligned_first_save": {
+    "time": "2026-11-10T07:19:14.380147+00:00",
+    "method": "POST",
+    "path": "https://api.moi.matrixorigin.cn/v5/workflow/v2/workflow-deployments",
+    "http": 200,
+    "trace": "0f33605c-de19-48e4-8bcc-3196b2a52e78",
+    "request_id": "0f33605c-de19-48e4-8bcc-3196b2a52e78",
+    "response": {
+      "code": "OK",
+      "msg": "OK",
+      "data": {
+        "workflow": {
+          "id": "a6f498d2-f79f-5c85-aa92-0bb469564635",
+          "name": "QuotePilot-MinExtract-BindingFirstSave-20261110",
+          "source_type": "manual_dsl",
+          "execution_mode": "one_shot",
+          "draft_id": "",
+          "status": "ready"
+        },
+        "deployment": {
+          "workflow_app_id": "a6f498d2-f79f-5c85-aa92-0bb469564635",
+          "workflow_def_id": "7eaea4fb-7097-4252-9837-c242494dbe81",
+          "workflow_version_id": "c9343f43-d69b-4978-bb01-eefef4fea442",
+          "workflow_name": "QuotePilot-MinExtract-BindingFirstSave-20261110",
+          "version": 1,
+          "execution_mode": "one_shot"
+        }
+      }
+    },
+    "request_body": {
+      "name": "QuotePilot-MinExtract-BindingFirstSave-20261110",
+      "description": "Isolated form binding control; never execute.",
+      "execution_mode": "one_shot",
+      "source_type": "manual_dsl",
+      "dsl_yaml": "workflow:\n  name: quotepilot-min-extract-20261110\n  root: root\nroot:\n  chain:\n  - work_item:\n      name: extract_fields\n      id: moi:extract\n      input:\n        documents:\n        - id: '{{ .vars.run_ref }}'\n          content: Please quote 3 EA of PN-0001, condition FN, synthetic valve spec\n            A.\n        json_schema:\n          type: object\n          properties:\n            part_number:\n              type: string\n              description: Exact part number\n            quantity:\n              type: integer\n            unit:\n              type: string\n            condition:\n              type: string\n          required:\n          - part_number\n          - quantity\n          - unit\n          - condition\n        mode: n_to_1\n        instruction: Extract only explicit RFQ values. Preserve literal part number,\n          unit and condition.\n      save:\n        extract_result: .result\n        extracted_documents: .documents\n      version: v1\n",
+      "runtime_fields": {
+        "fields": [
+          {
+            "field_id": "run_ref",
+            "label": "RFQ run reference",
+            "widget": "text",
+            "json_type": "string",
+            "required": true
+          }
+        ]
+      },
+      "default_values": {
+        "run_ref": "QP-MIN-BIND-20261110",
+        "vars_run_ref": "QP-MIN-BIND-20261110"
+      }
+    }
+  }
+}

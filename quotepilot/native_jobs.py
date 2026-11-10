@@ -159,8 +159,14 @@ def verify_output(row, nodes, sql, text):
     if len(back) != 1 or any(back[0].get(k) != v for k, v in
         {'run_ref': ref, 'input_sha256': digest, 'review_status': status, 'model_text_base64': encoded}.items()):
         raise ValueError('原生 SQL 节点读回与独立查询不一致')
-    if nodes['load_rfq']['runtime_output'].get('rows') != [{'rfq_text': text}]:
+    source_rows = nodes['load_rfq']['runtime_output'].get('rows')
+    expected_source = base64.b64encode(text.encode()).decode()
+    # Earlier workflow versions selected decoded text; the current version reads exact base64 bytes.
+    if source_rows not in ([{'input_base64': expected_source}], [{'rfq_text': text}]):
         raise ValueError('原生输入节点与上传内容不一致')
+    model_input = nodes['extract_rfq'].get('runtime_input') or {}
+    if model_input.get('text') != text:
+        raise ValueError('原生模型实际收到的文本与上传内容不一致')
     if nodes['persist_suggestions']['runtime_output'].get('affected_rows') != 1:
         raise ValueError('原生写入节点未确认唯一一行')
     parsed = Extraction.model_validate_json(raw)

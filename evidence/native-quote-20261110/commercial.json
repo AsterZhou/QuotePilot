@@ -1,0 +1,222 @@
+{
+  "ui_import-3": {
+    "ok": true,
+    "status": "needs_review",
+    "subject": "Synthetic QuotePilot native 3",
+    "parsed_count": 0,
+    "new_lines": 0,
+    "duplicate_lines": 0,
+    "notes": [
+      "没有可靠提取的需求行；请人工录入或使用提取 Provider"
+    ]
+  },
+  "ui_fields-3": [
+    {
+      "part": "PN-0001",
+      "qty": "3",
+      "unit": "EA",
+      "condition": "FN"
+    }
+  ],
+  "ui_confirm-3": {
+    "run_id": "EX-96A91A2CB901",
+    "line_ids": [
+      1
+    ],
+    "new_lines": 1,
+    "actor": "Synthetic QA operator",
+    "reason": "合成验收，已逐项核对原件",
+    "selected_indices": [
+      0
+    ],
+    "unselected_indices": [],
+    "idempotent": false
+  },
+  "commerce": {
+    "native_job": {
+      "ref": "QN-91b5abc03a1642429b776e3d7bce3d0c",
+      "workflow_id": "45e246b6-9a6f-5331-82cd-44c00f67cb18",
+      "execution_id": "84f79f23-01ac-4d3f-a5e8-4ef600f677c8",
+      "phase": "review_ready",
+      "review_id": "EX-96A91A2CB901",
+      "input_sha256": "c2515df282dd4a82e3778083a388422971112ff8cc6b35090b383b253f066231",
+      "receipt": {
+        "stage_query_id": "01a1c46b-b687-781e-b5fa-0770a290e80b",
+        "platform_status": "completed",
+        "task_id": "01a1c46b-eb99-7193-9c94-e8dc150391c1",
+        "workflow_version_id": "86cb0c56-bd12-40b4-888b-a9ac35f3eb12",
+        "nodes": {
+          "load_rfq": {
+            "status": "COMPLETED",
+            "duration_ms": 1000
+          },
+          "extract_rfq": {
+            "status": "COMPLETED",
+            "duration_ms": 15000
+          },
+          "persist_suggestions": {
+            "status": "COMPLETED",
+            "duration_ms": 1000
+          },
+          "read_back": {
+            "status": "COMPLETED",
+            "duration_ms": 0
+          }
+        },
+        "readback_query_id": "01a1c46c-b590-7bf0-ab50-094681cc4c8e",
+        "model_output_sha256": "432cf09c4197174d67fe9037774a7b175dcb166bbf982bbe7dbe6af35aedf6a7",
+        "write_affected_rows": 1,
+        "readback_matched": true
+      },
+      "error": ""
+    },
+    "approved_quote_id": "CQ-A5C5C0B2D211457E",
+    "version": 3,
+    "reviewer_account": "reviewer",
+    "approver_account": "admin",
+    "line_id": 1,
+    "offer_ids": [
+      "OFFER-2e9f4d1029f14eb9",
+      "OFFER-05c8ba0d1c69454e"
+    ],
+    "source": "simulated staff actions on synthetic data; actual API, rules, documents",
+    "selected_supplier": "SYN-Cheap",
+    "cost_cny": "35.00",
+    "exports": {
+      "pdf": {
+        "readback_cny": "43.74",
+        "sha256": "ef41f03f015a79d702f36c2e143b82fe46e77c075b976a406b71861bf1ebe46c"
+      },
+      "xlsx": {
+        "readback_cny": "43.74",
+        "sha256": "5d1d4457ed9ae5c3113ef845545752a123e0b54e753675fc159dca0604ef7e88"
+      }
+    },
+    "audit": {
+      "valid": true,
+      "checked": 28,
+      "head_hash": "d68f66c7223bd2bdb01afa039a44775c058abf0832e6e901a915354a6520eb4d",
+      "scope": "本地追加日志校验；有文件系统管理员权限者仍可重写整个库，未使用外部时间戳锚点"
+    },
+    "calls": [
+      {
+        "method": "GET",
+        "path": "/api/lines/1/field-evidence",
+        "http": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/lines/1/review-fields",
+        "http": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/supplier-offers/sources",
+        "http": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/supplier-offers/sources/SUPSRC-7285b7b6d982b811d3b099b9fb4d7fd5a4f0e19f152b3a59ddd3e4c752a2a6a0/extract",
+        "http": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/supplier-offers",
+        "http": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/supplier-offers/OFFER-2e9f4d1029f14eb9/confirm",
+        "http": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/supplier-offers/sources",
+        "http": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/supplier-offers/sources/SUPSRC-b632bc5b164b1bff9449d0669d2d140c2e3d526f0a4c703c079b4a6783ef8493/extract",
+        "http": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/supplier-offers",
+        "http": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/supplier-offers/OFFER-05c8ba0d1c69454e/confirm",
+        "http": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/commercial-quotes",
+        "http": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/commercial-quotes/CQ-A5C5C0B2D211457E/review",
+        "http": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/commercial-quotes/CQ-A5C5C0B2D211457E/approve",
+        "http": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/commercial-quotes/CQ-A5C5C0B2D211457E/export/pdf",
+        "http": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/commercial-quotes/CQ-A5C5C0B2D211457E/export/xlsx",
+        "http": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/audit/verify",
+        "http": 200
+      }
+    ]
+  },
+  "quote_mirror": {
+    "sync_http": 200,
+    "sync": {
+      "verified": true,
+      "quote_id": "CQ-A5C5C0B2D211457E",
+      "version": 3,
+      "payload_sha256": "61a68e69169c064e4e58741748c9676607dee44a397a1214432516fede01bbbc",
+      "table": "quotepilot_sprint.commercial_quote_snapshots_v1",
+      "query_ids": [
+        "01a1c470-eab8-7370-b616-3b04b4f1aa6f",
+        "01a1c471-0e6b-7261-b7b9-402b53efc3ed",
+        "01a1c471-2f26-7385-b237-c37fb795760f",
+        "01a1c471-5009-713b-9560-9fd9920fe77b"
+      ],
+      "scope": "application_orchestrated_approved_commercial_snapshot",
+      "native_workflow_execution": false,
+      "primary_store": "SQLite"
+    },
+    "read_http": 200,
+    "saved_receipt": {
+      "verified": true,
+      "quote_id": "CQ-A5C5C0B2D211457E",
+      "version": 3,
+      "payload_sha256": "61a68e69169c064e4e58741748c9676607dee44a397a1214432516fede01bbbc",
+      "table": "quotepilot_sprint.commercial_quote_snapshots_v1",
+      "query_ids": [
+        "01a1c470-eab8-7370-b616-3b04b4f1aa6f",
+        "01a1c471-0e6b-7261-b7b9-402b53efc3ed",
+        "01a1c471-2f26-7385-b237-c37fb795760f",
+        "01a1c471-5009-713b-9560-9fd9920fe77b"
+      ],
+      "scope": "application_orchestrated_approved_commercial_snapshot",
+      "native_workflow_execution": false,
+      "primary_store": "SQLite",
+      "verified_at": "2026-11-10 07:52:10",
+      "evidence_type": "saved_successful_readback_not_live_ping"
+    }
+  }
+}

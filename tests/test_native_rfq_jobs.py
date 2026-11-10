@@ -27,6 +27,7 @@ class ContractService:
     read_failure = False
     evidence = 'Please quote 3 EA of PN-0001.'
     other_ref = False
+    override_model_input = None
 
     def execute(self, query):
         if query.startswith('INSERT IGNORE'):
@@ -65,12 +66,17 @@ class ContractService:
             data = {'workflow_run':{'execution_id':self.eid,'workflow_id':self.wid,'status':'queued'}}
         elif '/nodes/' in path:
             key = path.rsplit('.',1)[1]
-            outputs = {'load_rfq':{'rows':[{'rfq_text':base64.b64decode(self.encoded).decode()}]},
+            outputs = {'load_rfq':{'rows':[{'input_base64':self.encoded}]},
                        'extract_rfq':{'text':self.output(),'model':'contract-model'},
                        'persist_suggestions':{'affected_rows':1},
                        'read_back':{'rows':[{'run_ref':self.ref,'input_sha256':self.digest,
                             'model_text_base64':self.output64(),'review_status':'pending'}]}}
-            data = {'node':{'node_key':'root.'+key},'run':{'status':self.status.upper(),'runtime_output':outputs[key]}}
+            inputs = {}
+            if key == 'extract_rfq':
+                source = base64.b64decode(self.encoded).decode()
+                inputs['text'] = source if self.override_model_input is None else self.override_model_input
+            data = {'node':{'node_key':'root.'+key},'run':{'status':self.status.upper(),
+                    'runtime_input':inputs,'runtime_output':outputs[key]}}
         else:
             run = {'execution_id':self.eid,'workflow_id':self.wid,'status':self.status,
                    'vars_payload':{'run_ref':'wrong' if self.other_ref else self.ref}}
@@ -133,6 +139,15 @@ def test_inbox_to_verified_review_retry_and_confirmation(inbox):
     assert confirmed['new_lines']==1
     q=admin.post('/api/quote',json={'line_ids':confirmed['line_ids'],'asof':'2026-09-20'}).json()
     assert q['total_cny']=='49.89'
+
+
+def test_model_receives_exact_staged_text(inbox):
+    admin, _, platform = inbox
+    job = start(admin)
+    platform.override_model_input = base64.b64decode(platform.encoded).decode() + '\x00'
+    state = refresh(admin, job)
+    assert state['phase'] == 'verification_pending'
+    assert not state['review_id']
 
 
 def test_start_write_failure_retries_same_reference(inbox):

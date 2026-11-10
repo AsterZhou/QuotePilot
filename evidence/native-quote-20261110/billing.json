@@ -1,0 +1,176 @@
+{
+  "min_accounting": {
+    "http": 200,
+    "request_id": "e2b6891e-bfc3-423b-875c-297919c20959",
+    "period": {
+      "start_time": 1794296043,
+      "end_time": 1794296052,
+      "page_size": 100,
+      "requested_model": "kimi-k3"
+    },
+    "keys": [
+      "items",
+      "next_page_token",
+      "total"
+    ],
+    "record_keys": [
+      "ai_service_pricing",
+      "ai_service_scenario",
+      "billing_credit_available",
+      "billing_credit_balance",
+      "billing_rated_credit",
+      "billing_report_status",
+      "cache_creation_tokens",
+      "cache_read_tokens",
+      "called_at",
+      "caller_ip",
+      "cost",
+      "created_at",
+      "credential",
+      "first_token_latency_ms",
+      "id",
+      "input_tokens",
+      "latency_ms",
+      "meter_code",
+      "model_id",
+      "model_name",
+      "original_cost",
+      "output_tokens",
+      "pricing_mode",
+      "pricing_snapshot",
+      "reasoning_tokens",
+      "request_body_bytes",
+      "request_body_ref_id",
+      "request_body_sha256",
+      "request_id",
+      "requested_model",
+      "response_body_bytes",
+      "response_body_ref_id",
+      "response_body_sha256",
+      "settlement_method",
+      "status",
+      "user_id"
+    ],
+    "items": [
+      {
+        "id": "usage-df0f543c-9aae-492d-a4e4-d7a8c6a1b369",
+        "model_id": "model-f6bd3907-b0af-4c3c-bc27-a2cb4cfd6fe6",
+        "model_name": "kimi-k3",
+        "requested_model": "kimi-k3",
+        "called_at": 1794296048,
+        "input_tokens": 436,
+        "output_tokens": 92,
+        "cost": "0.00000000",
+        "status": "success",
+        "request_id": "request-f8b5cbe8-94ce-41a1-a02f-acd4fdc0a807",
+        "meter_code": "taas_token",
+        "settlement_method": "ai_service",
+        "ai_service_scenario": "system_operator_extraction",
+        "ai_service_pricing": "{\"v\":\"1\",\"billing_scenario\":\"system_operator_extraction\",\"model\":\"kimi-k3\",\"pricing_mode\":\"fixed\",\"currency\":\"CREDIT\",\"price_item_id\":\"ai-service-fixed-1789064589683\",\"resolved_at\":1794296045,\"expires_at\":1794296345,\"unit_price_credit\":\"120.000000000000\"}",
+        "billing_report_status": "skipped",
+        "billing_rated_credit": "0.000000000000000000",
+        "created_at": 1794296048
+      }
+    ]
+  },
+  "four_accounting": {
+    "http": 200,
+    "request_id": "2009f7a8-eed2-43fc-92f0-969f07076c56",
+    "period": {
+      "start_time": 1794296771,
+      "end_time": 1794296789,
+      "page_size": 100,
+      "requested_model": "kimi-k3"
+    },
+    "keys": [
+      "items",
+      "next_page_token",
+      "total"
+    ],
+    "record_keys": [
+      "ai_service_pricing",
+      "ai_service_scenario",
+      "billing_credit_available",
+      "billing_credit_balance",
+      "billing_rated_credit",
+      "billing_report_status",
+      "cache_creation_tokens",
+      "cache_read_tokens",
+      "called_at",
+      "caller_ip",
+      "cost",
+      "created_at",
+      "credential",
+      "first_token_latency_ms",
+      "id",
+      "input_tokens",
+      "latency_ms",
+      "meter_code",
+      "model_id",
+      "model_name",
+      "original_cost",
+      "output_tokens",
+      "pricing_mode",
+      "pricing_snapshot",
+      "reasoning_tokens",
+      "request_body_bytes",
+      "request_body_ref_id",
+      "request_body_sha256",
+      "request_id",
+      "requested_model",
+      "response_body_bytes",
+      "response_body_ref_id",
+      "response_body_sha256",
+      "settlement_method",
+      "status",
+      "user_id"
+    ],
+    "items": [
+      {
+        "id": "usage-47977a1b-1b9d-4f37-ba0c-a3e7824ea297",
+        "model_id": "model-f6bd3907-b0af-4c3c-bc27-a2cb4cfd6fe6",
+        "model_name": "kimi-k3",
+        "requested_model": "kimi-k3",
+        "called_at": 1794296786,
+        "input_tokens": 179,
+        "output_tokens": 215,
+        "cost": "0.00000000",
+        "status": "success",
+        "request_id": "request-ee2d5aeb-8e91-4803-94e9-cc312c6b55e4",
+        "meter_code": "taas_token",
+        "settlement_method": "ai_service",
+        "ai_service_scenario": "system_operator_dataset_generation",
+        "ai_service_pricing": "{\"v\":\"1\",\"billing_scenario\":\"system_operator_dataset_generation\",\"model\":\"kimi-k3\",\"pricing_mode\":\"fixed\",\"currency\":\"CREDIT\",\"price_item_id\":\"ai-service-fixed-1789064589683\",\"resolved_at\":1794296772,\"expires_at\":1794297072,\"unit_price_credit\":\"120.000000000000\"}",
+        "billing_report_status": "skipped",
+        "billing_rated_credit": "0.000000000000000000",
+        "created_at": 1794296786
+      }
+    ]
+  },
+  "billing-account": {
+    "time": "2026-11-10T07:41:37.201796+00:00",
+    "method": "GET",
+    "path": "https://billing.moi.matrixorigin.cn/api/v1/billing/accounts/current",
+    "http": 401,
+    "trace": "449d7054-1078-4819-a072-fc97ea0cba8f",
+    "request_id": "449d7054-1078-4819-a072-fc97ea0cba8f",
+    "response": {
+      "code": "invalid_producer_api_key",
+      "message": "invalid producer api key",
+      "error": "invalid producer api key"
+    }
+  },
+  "billing_usage": {
+    "time": "2026-11-10T07:41:40.882398+00:00",
+    "method": "GET",
+    "path": "https://billing.moi.matrixorigin.cn/api/v1/billing/usage?workspace_id=ec94c942-2d64-c6be-c968-e793caaef007&from=2026-11-10T07%3A33%3A00Z&page_size=100",
+    "http": 401,
+    "trace": "c6a6430f-ea3e-41e9-8290-0c6501f3582f",
+    "request_id": "c6a6430f-ea3e-41e9-8290-0c6501f3582f",
+    "response": {
+      "code": "invalid_producer_api_key",
+      "message": "invalid producer api key",
+      "error": "invalid producer api key"
+    }
+  }
+}
