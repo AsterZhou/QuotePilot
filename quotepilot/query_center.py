@@ -109,6 +109,7 @@ def plan(provider,question,reference_date,schema,context,correction=None):
       '参数数组必须严格对应每一个?出现的位置；同一个日期出现两次就提供两个值。SQL中写死的值不放参数数组。LIMIT使用整数常量。'
       '禁止DDL/DML、多语句、PRAGMA、系统表、文件函数、网络函数、未列出的字段和表。不要生成不存在的业务数据。'
       '产品默认口径：未明确说新邮件/导入需求时，询价统计使用historical按inquiry_date；无需为历史表与邮件表反复追问。询价份数按RFQ去重，明确说询价明细次数则COUNT(*)。最近三个月为基准日前推三个月。'
+      '客户询价最多、前几名等排名，先按客户分组，再按所问的聚合指标降序；客户名仅用于同分排序。explanation与SQL的ORDER BY保持一致。'
       '先理解任务，再选择表及关联；绝不把报价草案、已审批报价或采购价说成真实成交价、订单或收入。'
       '问题缺少决定性口径，或要求不存在的事实字段时，action=clarify，给出一个具体问题和最多3项可选口径，不执行SQL。'
       '例如“分析最值得优先处理的询价”需追问按紧急程度、截止期还是金额；“订单即将截止”需询问是否按RFQ截止日期；“历史成交价”需说明没有成交订单并询问是否改用已审批报价或供应商报价。'
@@ -179,6 +180,41 @@ def analyze(provider,question,intent,result):
 
 
 
+def recent_customer_ranking(db, question, reference_date, owner, sid):
+    from calendar import monthrange
+    from datetime import date
+
+    asof = date.fromisoformat(reference_date)
+    month_index = asof.year * 12 + asof.month - 1 - 3
+    year, month = divmod(month_index, 12)
+    start = date(year, month + 1, min(asof.day, monthrange(year, month + 1)[1]))
+    sid, _ = session(db, owner, sid)
+    sql = """SELECT COALESCE(NULLIF(airline, ''), '未提供') AS 客户,
+                    COUNT(DISTINCT rfq_no) AS 询价份数
+             FROM historical
+             WHERE inquiry_date >= ? AND substr(inquiry_date, 1, 10) <= ?
+                   AND rfq_no IS NOT NULL AND rfq_no <> ''
+             GROUP BY 1 ORDER BY 询价份数 DESC, 客户 ASC"""
+    result = execute(db, sql, [start.isoformat(), reference_date])
+    scope = f"历史询价 · {start.isoformat()} 至 {reference_date} · 每个客户按询价号去重，按询价份数从多到少排列。"
+    rows = result['rows']
+    summary = '所选期间没有匹配的历史询价，无法确定排名。'
+    if rows:
+        count = rows[0]['询价份数']
+        leaders = [row['客户'] for row in rows if row['询价份数'] == count]
+        names = '、'.join(leaders)
+        if result['truncated'] and len(leaders) == len(rows):
+            summary = f"已显示的客户均有 {count} 份询价，更多并列客户请缩小查询范围。"
+        else:
+            summary = f"{names}{'并列第一，各有' if len(leaders)>1 else '询价最多，共'} {count} 份询价。"
+    return save(db, sid, question, {
+        **result, 'question':question, 'reference_date':reference_date, 'status':'completed',
+        'title':'最近三个月客户询价排名', 'chart':'ranking', 'interpretation':scope,
+        'statistics_scope':scope, 'method':'fixed_sql', 'answer':summary,
+        'analysis':{'status':'deterministic' if rows else 'no_rows', 'summary':summary, 'findings':[], 'caveats':[]},
+    })
+
+
 def run(db,provider,question,reference_date,owner,sid=None):
     started=time.monotonic();sid,context=session(db,owner,sid);schema=retrieve_schema(discover(db),question,context)
     base={'question':question,'reference_date':reference_date,'sample_data_notice':'初始数据为赛事模拟素材；上传记录不代表成交订单。'}
@@ -186,6 +222,14 @@ def run(db,provider,question,reference_date,owner,sid=None):
         intent,receipt=plan(provider,question,reference_date,schema,context)
     except Exception as error:
         receipt=getattr(error,'receipt',{})
+        if '成交价' in question and not schema.get('orders_table_available') and not re.search('对比|比较|差额|差异|还是|价差|和|与', question):
+            return save(db, sid, question, {
+                **base, 'status':'clarify', 'method':'dataset_capability',
+                'message':'当前数据库没有成交订单，无法查询实际成交价。可以继续查已审批报价或供应商报价。',
+                'clarification_options':['查已审批报价', '查供应商报价'],
+                'failure_stage':'planning', 'failure_type':type(error).__name__,
+                'response_id':receipt.get('response_id'), 'usage':receipt.get('usage',{}),
+            })
         return save(db,sid,question,{**base,'status':'failed','message':'AI意图识别未完成，未执行SQL。请稍后重试。','failure_stage':'planning','failure_type':type(error).__name__,'response_id':receipt.get('response_id'),'usage':receipt.get('usage',{})})
     base.update(model=receipt['model'],response_id=receipt['response_id'],usage=receipt.get('usage',{}),interpretation=intent.explanation)
     if intent.action!='query':
