@@ -1,165 +1,212 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>QuotePilot 技术白皮书 · 询价决策与工程验证</title><meta name="description" content="从三家供应商的原始报价，复算成本与交期选择，核对 MOI 执行与已批准文件。"><style>
-:root{color-scheme:light;--ink:#18372f;--soft:#53675d;--line:#d4dcd2;--accent:#0c604a;--paper:#fafaf6}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:18px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.85 "Source Sans 3","PingFang SC","Microsoft YaHei",system-ui,sans-serif}header{border-bottom:1px solid var(--line);background:#fff}header nav{max-width:1080px;margin:auto;padding:14px 26px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;font-size:.88rem}header strong{margin-right:auto;letter-spacing:-.03em;font-size:1.2rem}a{color:var(--accent);text-underline-offset:.23em}a:hover{color:#0a362b}main{width:min(100% - 48px,930px);margin:40px auto 80px}h1,h2{line-height:1.28;text-wrap:balance}h1{font-size:clamp(2rem,4.7vw,3.45rem);margin:.2em 0 .4em;letter-spacing:-.035em}h2{font-size:clamp(1.35rem,2.65vw,1.83rem);border-top:1px solid var(--line);margin:2em 0 .7em;padding-top:1em}p{margin:.85em 0}h1+p{max-width:52em;font-size:1.1rem}.meta{font-size:.85rem;font-weight:600;color:var(--soft)}.table-wrap{overflow-x:auto;border-top:2px solid #8a9d8a;margin:16px 0}table{border-collapse:collapse;width:100%;font-size:.94rem}td,th{border-bottom:1px solid var(--line);text-align:left;vertical-align:top;padding:11px 12px;overflow-wrap:anywhere}thead{background:#e9eee5}td:first-child{font-weight:600}.decision-table{border-color:var(--ink)}.decision-table thead{background:#143f33;color:white}.decision-table td:nth-child(3){font-variant-numeric:tabular-nums;font-weight:700}code{font-size:.88em;overflow-wrap:anywhere;color:#345a4a}a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.table-wrap p{margin:0}#decision{margin-top:1em}@media(max-width:640px){main{width:calc(100% - 32px);margin-top:24px}header nav{padding:12px 16px;gap:6px 14px}body{font-size:15px}th,td{padding:8px 6px}.table-wrap:not(.decision-table) table{min-width:32em}.table-wrap{max-width:100%}.decision-table th{white-space:normal}}@media print{header{display:none}main{width:auto;margin:0}body{font-size:10pt;background:white}h2{break-after:avoid}tr{break-inside:avoid}.table-wrap{overflow:visible}a{color:inherit}}
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>QuotePilot 技术白皮书 · 系统架构、核价规则与工程验证</title><meta name="description" content="QuotePilot 系统架构、模型输出约束、确定性核价、审批状态与公网验收。"><style>
+:root{color-scheme:light;--ink:#18372f;--soft:#53675d;--line:#d4dcd2;--accent:#0c604a;--paper:#fafaf6}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:18px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.85 "Source Sans 3","PingFang SC","Microsoft YaHei",system-ui,sans-serif}header{border-bottom:1px solid var(--line);background:#fff}header nav{max-width:1080px;margin:auto;padding:14px 26px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;font-size:.88rem}header strong{margin-right:auto;letter-spacing:-.03em;font-size:1.2rem}a{color:var(--accent);text-underline-offset:.23em}a:hover{color:#0a362b}main{width:min(100% - 48px,930px);margin:40px auto 80px}h1,h2{line-height:1.28;text-wrap:balance}h1{font-size:clamp(2rem,4.7vw,3.45rem);margin:.2em 0 .4em;letter-spacing:-.035em}h2{font-size:clamp(1.35rem,2.65vw,1.83rem);border-top:1px solid var(--line);margin:2em 0 .7em;padding-top:1em}p{margin:.85em 0}h1+p{max-width:52em;font-size:1.1rem}.meta{font-size:.85rem;font-weight:600;color:var(--soft)}.table-wrap{overflow-x:auto;border-top:2px solid #8a9d8a;margin:16px 0}table{border-collapse:collapse;width:100%;font-size:.94rem}td,th{border-bottom:1px solid var(--line);text-align:left;vertical-align:top;padding:11px 12px;overflow-wrap:anywhere}thead{background:#e9eee5}td:first-child{font-weight:600}.decision-table{border-color:var(--ink)}.decision-table thead{background:#143f33;color:white}.decision-table td:first-child{white-space:nowrap}code{font-size:.88em;overflow-wrap:anywhere;color:#345a4a}a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.table-wrap p{margin:0}#architecture{margin-top:1em}@media(max-width:640px){main{width:calc(100% - 32px);margin-top:24px}header nav{padding:12px 16px;gap:6px 14px}body{font-size:15px}th,td{padding:8px 6px}.table-wrap:not(.decision-table) table{min-width:32em}.table-wrap{max-width:100%}.decision-table th{white-space:normal}}@media print{header{display:none}main{width:auto;margin:0}body{font-size:10pt;background:white}h2{break-after:avoid}tr{break-inside:avoid}.table-wrap{overflow:visible}a{color:inherit}}
 </style></head><body>
-<header><nav aria-label="白皮书导航"><strong>QuotePilot</strong><a href="#decision">报价决策</a><a href="#architecture">系统架构</a><a href="#verification">验收证据</a><a href="/guide/#login">演示访问码</a><a href="/login">工作台</a></nav></header>
-<main><p class="meta">MatrixNEXT 2026 · 企业命题「RFQ 询价分析与报价智能体」</p><h1 id="quotepilot-技术白皮书">QuotePilot 技术白皮书</h1>
-<p>工业零部件报价员收到一封询价邮件和三家供应商的报价，需要同时答复客户两个问题：多少钱，何时能交？QuotePilot 用 Genesis 从来件中提取带出处的需求，经人工确认后，按供应商条件计算可交付的报价方案。每个售价都能追到供应商原件，每次批准都对应一个可独立核验的版本。</p>
-<h2 id="decision">一笔报价，两个交付选择</h2>
-<p>客户询购 3 件 PN-0001 阀件，规格为 Synthetic valve spec A，件状 FN。三家合成供应商分别承诺 20 天、2 天、7 天交货。在相同数量、费用和目标毛利率下，报价员可向客户说明：<strong>三件总价从 43.74 元提高到 62.49 元，承诺交期从 20 天缩短到 2 天。提前 18 天的报价差额是 18.75 元。</strong></p>
+<header><nav aria-label="白皮书导航"><strong>QuotePilot</strong><a href="#architecture">系统架构</a><a href="#native">原生工作流</a><a href="#pricing">核价规则</a><a href="#verification">工程验证</a><a href="#decision">复算附录</a><a href="/guide/#login">演示访问码</a><a href="/login">工作台</a></nav></header>
+<main><p class="meta">MatrixNEXT 2026 · 企业命题赛道 · RFQ 询价分析与报价智能体 · 2026 年 11 月 10 日</p><h1 id="quotepilot-技术白皮书">QuotePilot 技术白皮书</h1>
+<p><strong>摘要</strong>　QuotePilot 面向工业零部件询价，将客户来件、供应商报价和审批记录关联到可追溯的正式报价。系统通过 MOI 原生工作流编排 Genesis 字段提取与 MatrixOne 读写，由业务人员核对原件，再由确定性引擎执行供应商筛选、成本分摊与售价计算。模型输出、人工确认值和已批准金额分别保留，支持按报价版本核查来源、重算金额并验证导出文件。</p>
+<p><strong>验证范围</strong>　2026 年 11 月 10 日的公网验收覆盖原件导入、真实模型调用、三家供应商复核、跨账户签核、双格式导出及云端快照读回。该次发布通过 281 项 Python 回归测试及 31 条 DOM 断言。验收数据为合成采购资料。<a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/result.json">公网验收记录</a></p>
+<h2 id="architecture">系统架构与职责边界</h2>
+<p>架构划分以数据的确认状态为依据。来件原文可触发模型提取，候选字段经复核后方可参与核价。商业报价取得批准状态后，系统按批准版本生成正式文件。</p>
 <div class="table-wrap decision-table"><table>
 <thead>
 <tr class="header">
-<th>选择依据</th>
-<th>选中的供应商</th>
-<th>三件客户报价</th>
-<th>供应商承诺交期</th>
+<th>子系统</th>
+<th>实现与职责</th>
+<th>主要输出</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>原件接入</td>
+<td>Python 邮件解析、PyMuPDF 和 openpyxl 读取 EML、文字 PDF 与多工作表 Excel，保留原文件及可定位的正文片段、页码或工作表行号。</td>
+<td>原件、需求行及字段出处</td>
+</tr>
+<tr class="even">
+<td>模型编排</td>
+<td>FastAPI 创建运行引用。MOI 编排 Genesis 与 MatrixOne SQL，应用校验返回结构、字段约束和证据片段。</td>
+<td>关联原文的字段候选、执行回执</td>
+</tr>
+<tr class="odd">
+<td>核价与审批</td>
+<td>确定性规则检查供应商条件，Decimal 计算成本与售价。服务端约束角色、状态及版本转换。</td>
+<td>报价方案、排除原因、签核记录</td>
+</tr>
+<tr class="even">
+<td>业务存储与查询</td>
+<td>SQLite 保存业务主记录。分析查询使用独立只读连接，SQLGlot 校验语法树和可访问表列。</td>
+<td>业务状态、修订历史、受限查询结果</td>
+</tr>
+<tr class="odd">
+<td>导出与归档</td>
+<td>从同一批准版本生成 PDF 和 Excel。应用另行将批准快照写入 MatrixOne，读回完整载荷并重算 SHA-256。</td>
+<td>正式报价单、云端查询编号及校验结果</td>
+</tr>
+</tbody>
+</table></div>
+<p>评审实例使用 Python 3.12、FastAPI、Uvicorn 和原生 JavaScript，以 Docker 部署在独立 Render 服务。浏览器负责展示与输入，服务端执行鉴权、核价和状态写入。</p>
+<h2 id="native">原生工作流与字段采纳契约</h2>
+<p>每次处理以 <code>run_ref</code> 关联原文和模型输出，以 <code>execution_id</code> 标识平台执行。应用计算输入摘要，在启动前写入并读回输入。四个原生节点共享同一运行引用。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th>顺序</th>
+<th>节点</th>
+<th>输入与输出</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><code>load_rfq</code> · SQL</td>
+<td>按运行引用读取该笔询价的原文。</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><code>extract_rfq</code> · Genesis</td>
+<td>从原文提取件号、数量、单位、件状及引用片段。</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><code>persist_suggestions</code> · SQL</td>
+<td>将候选结果写入本次运行对应的记录。</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><code>read_back</code> · SQL</td>
+<td>读回已写入的候选，产生平台节点回执。</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>采纳条件。</strong> 工作流结束后，应用独立查询云端记录，校验运行引用、输入摘要及候选输出。Pydantic 约束字段结构，业务校验要求数量为正整数、引用可在输入中定位。多行来件中，片段匹配只确认文字来源，件号与数量的对应关系由复核人确认。系统保留模型建议、修订值与复核依据。</p>
+<p><strong>异常恢复。</strong> 启动请求的响应丢失时，保留本地运行引用。恢复操作先核对平台执行的运行引用，再关联执行编号，以免把其他询价的结果写入当前记录。<a href="/guide/evidence/native.json">原生执行回执</a> · <a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/00-genesis-evidence.webp">字段复核记录</a></p>
+<h2 id="pricing">供应商筛选与确定性核价</h2>
+<p>供应商报价从原件按规则提取，经人工确认后进入候选集。筛选条件包括件号、已复核规格、单位、件状、起订量、报价有效期及指定交付日期。系统保留排除原因。询价行缺少合格供应商时，该行形成审批阻断项。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th>规则</th>
+<th>计算口径</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>最低成本</td>
-<td>SYN-Cheap</td>
-<td>¥43.74</td>
-<td>20 天</td>
+<td>按合格候选总成本升序选择，成本相同时优先较短交期。</td>
 </tr>
 <tr class="even">
 <td>最快交付</td>
+<td>按候选交期升序选择，交期相同时优先较低成本。</td>
+</tr>
+<tr class="odd">
+<td>综合排序</td>
+<td>逐行取最低分。成本项为候选总成本与最低成本之比，交期项为候选交期与最短交期之比，两项权重各为 50%。实现中两个分母下限分别为 0.01 元和 1 天。</td>
+</tr>
+<tr class="even">
+<td>批次运费</td>
+<td>按供应商和运输批次归组，选定候选后按采购金额占比分摊至各行。同批次运费只计一次，分以下尾差按最大余数分配。</td>
+</tr>
+<tr class="odd">
+<td>售价与舍入</td>
+<td>总成本按采购、加工、运费、税费及其他明确费用归集。单件售价＝总成本 ÷ 数量 ÷（1－目标毛利率）。单价按 ROUND_HALF_UP 舍入到分后乘数量，形成行金额。</td>
+</tr>
+</tbody>
+</table></div>
+<p>综合排序的计算范围为单行合格候选；跨行共享运费在选定后分摊。因此，多行结果的适用范围是给定排序与分摊规则下的报价。</p>
+<span id="integrity"></span><h2 id="versions">版本控制、审批与交付一致性</h2>
+<p>需求变更生成新的 RFQ 版本。系统记录行级差异、待人工匹配的歧义项和受影响的报价。报价保留计算时引用的需求版本、供应商条件及费用，支持后续核查原审批依据。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th>操作及其前置状态</th>
+<th>服务端检查</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>草稿 → 业务复核通过</td>
+<td>检查复核权限、预期报价版本、字段复核版本、有效期及审批阻断项，记录操作者和原因。</td>
+</tr>
+<tr class="even">
+<td>业务复核通过 → 已批准</td>
+<td>检查管理员权限及签核账户差异，重新校验报价与供应商有效期。存在风险提示时，管理员须显式确认。</td>
+</tr>
+<tr class="odd">
+<td>基于已批准版本导出与归档</td>
+<td>PDF 与 Excel 读取同一批准版本。归档以报价编号和版本为组合键，比较完整载荷并重新计算摘要。</td>
+</tr>
+</tbody>
+</table></div>
+<p>状态转换在 SQLite 写事务内完成。重复审批、跳过复核或从过期版本提交的操作会被拒绝。云端快照同步与本地审批分别记录，网络恢复后可对同一批准版本重试。<a href="/guide/evidence/matrixone-user-receipt.json">批准快照回执</a></p>
+<h2 id="verification">工程验证与适用范围</h2>
+<p>下表记录 2026 年 11 月 10 日一次公网运行。两个独立浏览器会话分别执行复核和批准操作。演示录屏与本次验收分别运行，同型样例可产生不同的报价编号。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th>验证项</th>
+<th>实测结果</th>
+<th>证据</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>平台执行</td>
+<td>执行 <code>61191015-edc2-4005-a5c7-6d6f8372d413</code> 的四个节点均完成。Genesis 提取节点耗时 6 秒，候选写入 1 条，应用独立读回匹配。</td>
+<td><a href="/guide/evidence/native.json">MOI 执行回执</a></td>
+</tr>
+<tr class="even">
+<td>公网操作与权限</td>
+<td>浏览器记录 101 条 HTTP 响应，覆盖上传、复核、三种方案、签核及下载。匿名业务请求返回 401，复核员访问管理员指标返回 403。</td>
+<td><a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/result.json">公网操作记录</a></td>
+</tr>
+<tr class="odd">
+<td>文件与快照一致性</td>
+<td>报价 <code>CQ-57F5B5C4DD5240BF</code>，v3。PDF 和 Excel 均为 3 EA × 14.58 元，合计 43.74 元。云端读回载荷与摘要校验通过。</td>
+<td><a href="/guide/evidence/approved.pdf">PDF</a> · <a href="/guide/evidence/approved.xlsx">Excel</a> · <a href="/guide/evidence/matrixone-user-receipt.json">快照回执</a></td>
+</tr>
+<tr class="even">
+<td>变更隔离</td>
+<td>另一次公网验收将需求由 100 件调整为 500 件。原批准报价保留为 1,378.00 元，重新签核的报价为 6,880.00 元。</td>
+<td><a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/acceptance/">版本变更验收报告</a></td>
+</tr>
+</tbody>
+</table></div>
+<p><span id="access"></span><strong>适用范围。</strong> 发布回归与 DOM 断言覆盖软件行为。历史固定格式验收通过 19/20，无可用文字层的扫描件进入人工补录。公开实例用于单团队合成数据演示，实例重置后恢复预置样例。真实企业语料上的字段准确率、人工复核工时和部署收益尚待现场测量。<a href="/guide/#login">演示访问码及操作指南</a></p>
+<h2 id="decision">附录 A　核价复算</h2>
+<p>输入为同一规格的 3 件 PN-0001 阀件，币种 CNY，目标毛利率 20%。三家供应商采购单价分别为 10、15、12 元，承诺交期分别为 20、2、7 天。每件加工费为 1 元，整单其他费用为 2 元，样例运费和税率均为零。<a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/rfq-native.eml">询价原件</a> · <a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/suppliers.pdf">供应商原件</a></p>
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th>合格候选</th>
+<th>三件总成本</th>
+<th>交期</th>
+<th>综合得分，取两位小数</th>
+<th>规则选择</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SYN-Cheap</td>
+<td>35.00 元</td>
+<td>20 天</td>
+<td>5.50</td>
+<td>最低成本</td>
+</tr>
+<tr class="even">
 <td>SYN-Fast</td>
-<td>¥62.49</td>
+<td>50.00 元</td>
 <td>2 天</td>
+<td>1.21</td>
+<td>最快交付、综合排序</td>
 </tr>
 <tr class="odd">
-<td>成本与交期各占 50%</td>
-<td>SYN-Fast</td>
-<td>¥62.49</td>
-<td>2 天</td>
+<td>SYN-Balanced</td>
+<td>41.00 元</td>
+<td>7 天</td>
+<td>2.34</td>
+<td>合格候选</td>
 </tr>
 </tbody>
 </table></div>
-<p>同一供应商可以满足两种选择依据。本次批准了最低成本方案。下文用这笔合成订单说明原件如何进入模型、规则如何产生报价，以及第三方如何复核交付结果。<a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/rfq-native.eml">询价原件</a> · <a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/suppliers.pdf">供应商原件（PDF）</a> · <a href="/guide/evidence/approved.pdf">已批准报价（PDF）</a></p>
-<h2 id="native">从询价原文到可采纳的需求</h2>
-<p>一封邮件可能同时包含多个件号、数量和件状。即使模型正确摘录了“3 EA”，这段引用也可能属于另一行。QuotePilot 把原文位置、模型建议和人工确认值分别保存，报价使用已确认的需求。</p>
-<div class="table-wrap"><table>
-<thead>
-<tr class="header">
-<th>MOI 原生工作流 v3</th>
-<th>本笔询价的数据</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>读取原文 · MatrixOne SQL</td>
-<td>FastAPI 为来件生成独立的 run_ref，保存原文及 SHA-256。SQL 按该引用读取本次输入。</td>
-</tr>
-<tr class="even">
-<td>提取字段 · Genesis</td>
-<td>从原文提取件号、数量、单位、件状及引用片段；本次模型节点耗时 6 秒。</td>
-</tr>
-<tr class="odd">
-<td>写入候选 · MatrixOne SQL</td>
-<td>将模型输出写回同一引用下的记录。本次写入 1 条候选。</td>
-</tr>
-<tr class="even">
-<td>读回结果 · MatrixOne SQL</td>
-<td>原生节点读回候选。应用随后独立查询并比对结果，形成可供复核的字段建议。</td>
-</tr>
-</tbody>
-</table></div>
-<p>FastAPI 使用 Pydantic 校验结构，并检查数量及引用片段。业务人员对照原件确认字段关系，记录修订和依据。遇到启动响应丢失时，服务端按原来的 run_ref 核对平台执行，再恢复对应作业。<a href="/guide/evidence/native.json">四节点执行回执</a> · <a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/00-genesis-evidence.webp">字段复核画面</a></p>
-<h2 id="pricing">为什么最终报价是 43.74 元</h2>
-<p>供应商 PDF 由规则解析，业务复核员确认原件。系统检查件号、规格、单位、件状、起订量、有效期、汇率及指定交期，保留候选被排除的原因。合格供应商进入排序，金额由 Python Decimal 计算。</p>
-<div class="table-wrap"><table>
-<thead>
-<tr class="header">
-<th>可复算步骤</th>
-<th>最低成本方案</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>采购与费用</td>
-<td>3 件 × 10.00 元采购单价 ＋ 3.00 元加工费 ＋ 2.00 元其他费用 ＝ <strong>35.00 元总成本</strong>。样例运费与税率均为零。</td>
-</tr>
-<tr class="even">
-<td>单件售价</td>
-<td>35.00 ÷ 3 ÷（1 − 20% 目标毛利率）＝ 14.5833… 元；按 ROUND_HALF_UP 舍入到分，得 <strong>14.58 元</strong>。</td>
-</tr>
-<tr class="odd">
-<td>正式报价</td>
-<td>3 件 × 14.58 元 ＝ <strong>43.74 元</strong>。PDF 与 Excel 均取已批准版本的单价与数量，报价单各行可直接加总。</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>综合方案为何也选择 SYN-Fast？</strong> 引擎逐行计算「0.5 × 候选总成本 / 最低总成本 ＋ 0.5 × 候选交期 / 最短交期」，取较低分。本例最快供应商的成本为 50 元，评分约 1.21；7 天供应商成本为 41 元，评分约 2.34；20 天供应商成本为 35 元，评分为 5.50。三份原件都参与了选择。多行订单在选定候选后按采购金额权重分摊批次运费，并以分为单位处理尾差。<a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/suppliers.pdf">供应商条件</a> · <a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/03-cost-plans.webp">方案核价画面</a></p>
-<h2 id="versions">客户改量后，原审批依据如何保留</h2>
-<p>客户更新询价时，系统保存新的 RFQ 版本，标识增删改项、待人工匹配的歧义项及受影响的报价。每份报价保留计算时采用的需求、供应商条件和费用。业务复核员审核、管理员批准时，服务端同时检查角色与预期版本。</p>
-<p>另一次独立公网验收中，客户需求从 <strong>100 件改成 500 件</strong>。原已审批报价仍为 <strong>1,378.00 元</strong>；新需求重新核价并经两种角色签核，生成 <strong>6,880.00 元</strong>的新报价。采购团队可查到两份报价各自依据的数量和批准记录，继续处理变更时也能向客户解释差额。<a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/acceptance/">版本变更验收报告</a></p>
-<h2 id="architecture">架构与数据职责</h2>
-<div class="table-wrap"><table>
-<thead>
-<tr class="header">
-<th>系统层</th>
-<th>技术与工程职责</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>原件与交互</td>
-<td>原生 JavaScript、Python 邮件解析、PyMuPDF、openpyxl 处理 EML、文字 PDF 和多工作表 Excel；保留原件、正文片段、页码或工作表行号供复核。</td>
-</tr>
-<tr class="even">
-<td>业务服务</td>
-<td>Python 3.12、FastAPI、Pydantic、Uvicorn；服务端执行会话鉴权、字段校验、状态转换和角色审批。Docker 部署于独立的 Render 演示服务。</td>
-</tr>
-<tr class="odd">
-<td>模型与规则</td>
-<td>MOI v3 在平台内编排 Genesis 与 MatrixOne SQL。模型负责从非结构化文字提出候选，确定性规则负责资格检查、成本与交期排序、金额舍入。</td>
-</tr>
-<tr class="even">
-<td>主库与查询</td>
-<td>SQLite 保存来件、字段修订、报价及审批事件。分析查询经 SQLGlot 校验语法树和表列范围，在独立只读连接中执行。</td>
-</tr>
-<tr class="odd">
-<td>文件与云端复核</td>
-<td>已批准版本生成 PDF 和 Excel。应用以「报价编号、版本」为键写入 MatrixOne 快照，读回完整载荷并重算 SHA-256；连接恢复后可按原键重试。</td>
-</tr>
-</tbody>
-</table></div>
-<p>四节点工作流处理<strong>询价字段</strong>。签核完成后的应用同步处理<strong>已批准报价</strong>。两条路径各有回执，下表可分别核对。</p>
-<span id="integrity"></span><h2 id="verification">公网验收与原始证据</h2>
-<p>2026 年 11 月 10 日，两个独立浏览器会话使用合成数据，经过真实公网工作台、Genesis 和 MatrixOne，完成同一笔三件订单。下列执行编号和报价编号属于这次存档；演示录屏使用同型样例独立运行，编号随运行生成。</p>
-<div class="table-wrap"><table>
-<thead>
-<tr class="header">
-<th>要核对的问题</th>
-<th>这次运行的结果</th>
-<th>原始材料</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>工作流是否在 MOI 上执行？</td>
-<td>执行 <code>61191015-edc2-4005-a5c7-6d6f8372d413</code>，4 个节点全部完成，应用独立读回匹配。</td>
-<td><a href="/guide/evidence/native.json">执行回执</a></td>
-</tr>
-<tr class="even">
-<td>业务流程是否连通？</td>
-<td>上传询价后，复核 1 条需求、确认 3 家供应商，生成 3 种方案，由两种角色完成签核和下载。记录含 101 条 HTTP 响应。</td>
-<td><a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/result.json">逐步验收记录</a></td>
-</tr>
-<tr class="odd">
-<td>客户收到的两个文件是否一致？</td>
-<td>报价 <code>CQ-57F5B5C4DD5240BF</code>，v3，已批准。两份文件均为 PN-0001、3 EA、单价 14.58 元、合计 43.74 元，交期 20 天。</td>
-<td><a href="/guide/evidence/approved.pdf">正式 PDF</a> · <a href="/guide/evidence/approved.xlsx">同版 Excel</a></td>
-</tr>
-<tr class="even">
-<td>云端是否保留了同一批准版本？</td>
-<td>读回完整载荷并校验摘要，回执标记 verified；可按报价号、版本和查询编号对应原单。</td>
-<td><a href="/guide/evidence/matrixone-user-receipt.json">快照回执</a></td>
-</tr>
-</tbody>
-</table></div>
-<p>该次发布通过 <strong>281 项 Python 回归测试、31 条 DOM 断言</strong>。匿名业务请求返回 401，业务复核员访问管理员指标返回 403。历史固定格式文件验收为 <strong>19/20</strong>，无文字层的扫描 PDF 保留原件，由人工补录和复核。测试数描述工程覆盖范围；生产语料准确率与实际人工作时收益有待现场测量。</p>
-<p><span id="access"></span>演示环境面向单团队，使用合成数据。实例重置后临时业务数据可能清除，本文所引的报价与回执已独立存档。评委可用合成样例自行复演，两个角色的访问码和上传顺序见操作指南。<a href="/login">打开工作台</a> · <a href="/guide/#login">访问码与操作指南</a></p>
+<p>最低成本方案的单件售价为 35.00 ÷ 3 ÷ 0.80，舍入后为 14.58 元，三件合计 <strong>43.74 元</strong>。最快交付方案按同一规则核得单价 20.83 元，三件合计 <strong>62.49 元</strong>。两个方案的客户报价相差 <strong>18.75 元</strong>，供应商承诺交期相差 <strong>18 天</strong>。这些数值用于复核算法与业务取舍。<a href="https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/03-cost-plans.webp">方案核价记录</a></p>
 </main></body></html>
