@@ -2,27 +2,22 @@
 
 面向企业采购和工业零部件报价团队的 RFQ 询价分析与报价智能体。上传客户来件与供应商报价，从原文核对、成本核算、版本对比一路走到双角色审批和 PDF、Excel 正式交付。
 
-## 公网报价验收 · 2026 年 11 月 10 日
+## 技术架构
 
-独立 Render 服务在合成订单上完成整笔报价。管理员上传三件阀件的询价，MOI v3 读取原文、调用 Genesis、写入候选并读回。业务复核员逐项核对原件并确认三家供应商报价，从三个方案中选择最低成本方案。另一账户完成审批。每件采购价 10 元，加工成本共 3 元，其他费用共 2 元。成本合计 **35.00 元**，三件正式报价 **43.74 元**。
+| 系统层 | 技术栈 | 在 QuotePilot 中承担的职责 |
+| --- | --- | --- |
+| 交互与服务 | 原生 JavaScript、Python 3.12、FastAPI、Uvicorn | 浏览器展示原件和候选值。服务端校验会话与角色，受理文件上传、复核和审批。Docker 镜像部署于独立 Render Web Service。 |
+| 原件解析 | Python 邮件解析、PyMuPDF、openpyxl | 读取 EML 正文与附件、PDF 文字层及多工作表 Excel。保留原始文件，按来源记录正文片段、页码或工作表行号，供字段复核。 |
+| 模型与编排 | MOI 原生工作流 v3、Genesis、Pydantic | 在平台内执行 SQL 和模型节点。应用端校验输出结构、字段约束和原文证据，将合格候选交给业务人员确认。 |
+| 业务数据与查询 | SQLite、SQLGlot | SQLite 保存来件、字段修订、报价状态和审批事件。分析查询使用独立只读连接，执行前检查 SQL 语法树、表和列的允许范围。 |
+| 价格与文件 | Python Decimal、PyMuPDF、openpyxl | 以十进制定点舍入规则核价；从同一已批准版本生成 PDF 和 Excel，分别记录导出格式、版本与文件摘要。 |
+| 云端记录 | MatrixOne SQL、SHA-256 | 为原生工作流保存输入及提取结果；另以报价编号和版本保存已审批快照，支持对整份载荷的独立读回。 |
 
-| 评委可核对的记录 | 本笔公网交易 |
-|---|---|
-| 原生执行 | `61191015-edc2-4005-a5c7-6d6f8372d413`，四节点 completed，模型提取用时 6 秒 |
-| 独立查询与复核 | MatrixOne 查询 `01a1c4d2-affd-73ce-9f81-948fac2a01bd`，字段建议 `EX-F4342754A7C6`，对照邮件后采纳 |
-| 已审批报价 | `CQ-57F5B5C4DD5240BF`，v3，PDF 与 Excel 独立解析均为 3 EA × 14.58 元 |
-| 已审批快照 | MatrixOne 完整载荷读回一致，最后查询 `01a1c4d3-26f7-74ea-8d8a-b588d807c0ac` |
-| 验收范围 | 两个真实浏览器会话完成上传、原生作业、复核、比价、审批、同步和下载。页面记录 101 条 HTTP 回执。匿名 API 返回 401，复核员访问管理指标返回 403。281 项 Python 回归与 31 条 DOM 断言通过。 |
-
-[下载同型合成询价](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/rfq-native.eml) · [供应商报价原件](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/samples/suppliers.pdf) · [查看原生执行](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/native.json) · [复核界面](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/00-genesis-evidence.webp) · [正式 PDF](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/approved.pdf) · [报价 Excel](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/approved.xlsx) · [审批快照回执](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/docs/native-v3/matrixone-user-receipt.json)
-
-
-
-**客户把 100 件改成 500 件时，原报价还能发吗？** 合成案例 PN-0001 中，旧单价直接放大得到 6,890 元，重新分摊固定费用后的正式金额为 6,880 元。报价室可以定位变更、保留旧单，并将新金额追溯到供应商原件与审批记录。
+[技术说明与原始运行回执](https://quotepilot-matrixnext-final.onrender.com/guide/technical.html#verification)
 
 | 评审材料 | 入口 |
 |---|---|
-| 评委工作台 | [登录合成演示环境](https://quotepilot-matrixnext-final.onrender.com/) · 角色访问码见技术白皮书第八节 |
+| 评委工作台 | [登录合成演示环境](https://quotepilot-matrixnext-final.onrender.com/) · [角色访问码](https://quotepilot-matrixnext-final.onrender.com/guide/#login) |
 | 产品演示 | [真实操作录屏与中文字幕](https://quotepilot-matrixnext-2026.bracedcake5.chatgpt.site/video/) |
 | 技术白皮书 | [网页阅读](https://quotepilot-matrixnext-final.onrender.com/guide/technical.html) · [仓库版本](docs/TECHNICAL_DOCUMENTATION.md) |
 | 验收依据 | [最终测试报告](docs/submission/ACCEPTANCE.md) |
