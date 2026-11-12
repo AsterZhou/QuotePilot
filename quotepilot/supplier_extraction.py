@@ -42,7 +42,7 @@ def normalized(field,value):
             except InvalidOperation:return s
     return s
 
-def text_records(text,locator):
+def text_records(text,locator, *, single_pdf_offer=False):
     records=[];values={};evidence={}
     def flush():
         nonlocal values,evidence
@@ -50,7 +50,7 @@ def text_records(text,locator):
         values={};evidence={}
     for n,line in enumerate(text.splitlines(),1):
         if not line.strip():
-            if 'part_number' in values:flush()
+            if 'part_number' in values and not single_pdf_offer:flush()
             continue
         match=re.match(r'^\s*([^:：]{1,60})\s*[:：]\s*(.*?)\s*$',line)
         if not match:continue
@@ -61,6 +61,19 @@ def text_records(text,locator):
         if value is None:continue
         values[field]=value;evidence[field]={'locator':f'{locator} / line {n}','raw_text':line,'extracted_value':value}
     flush();return records
+
+def single_labelled_pdf_offer(text):
+    # PDF text reconstruction can insert a blank line between every label.
+    # Relax separation only when this page explicitly names ONE supplier and
+    # ONE part, and none of its recognized business fields repeats.
+    fields=[]
+    for line in text.splitlines():
+        pair=re.fullmatch(r'\s*([^:：]{1,60})\s*[:：]\s*(.*?)\s*',line)
+        if pair and pair[2].strip():
+            field=KEYS.get(key(pair[1]))
+            if field:
+                fields.append(field)
+    return 'supplier' in fields and 'part_number' in fields and len(fields)==len(set(fields))
 
 def xlsx_records(raw,label):
     import zipfile
@@ -100,7 +113,7 @@ def parse(raw,name):
             for n,page in enumerate(doc,1):
                 text=page.get_text(sort=True)
                 if not text.strip():notes.append(f'{name}第{n}页无文字层；未运行OCR，转人工录入')
-                rows+=text_records(text,f'{name} / page {n}')
+                rows+=text_records(text,f'{name} / page {n}',single_pdf_offer=single_labelled_pdf_offer(text))
     elif suffix=='.eml':
         from email import policy
         from email.parser import BytesParser

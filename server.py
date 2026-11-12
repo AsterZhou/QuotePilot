@@ -55,7 +55,10 @@ def database():
 @app.get('/', response_class=HTMLResponse)
 def index():
     from quotepilot.security import deployment_notice
-    return (WEB / 'index.html').read_text(encoding='utf-8').replace('<body>','<body>'+deployment_notice(),1)
+    notice = deployment_notice()
+    if os.environ.get('QUOTEPILOT_PORTABLE') == '1':
+        notice += '<nav style="padding:10px 24px;background:#e9f6f2"><a href="/desk/">← 回到本机演示向导</a> · 合成演练库</nav>'
+    return (WEB / 'index.html').read_text(encoding='utf-8').replace('<body>','<body>'+notice,1)
 
 @app.get('/healthz')
 def readiness():return {'ok':True,'service':'QuotePilot'}
@@ -809,7 +812,7 @@ def commercial_quote_action(qid:str,action:Literal['review','approve'],req:Comme
 def confirm_rfq_matches(req:MatchRequest,request:Request):
     from quotepilot.rfq_versions import record_matches
     with database() as con:
-        try:return record_matches(con,req.left,req.right,req.matches,'admin_session:'+center_owner(request)[:12]+' / '+req.actor,req.reason)
+        try:return record_matches(con,req.left,req.right,req.matches,session_actor(request)+' / '+req.actor,req.reason)
         except KeyError:raise HTTPException(404,'版本不存在')
         except ValueError as ex:raise HTTPException(409,str(ex))
 
@@ -818,7 +821,7 @@ def confirm_rfq_matches(req:MatchRequest,request:Request):
 def register_rfq_version(req:VersionRequest,request:Request):
     from quotepilot.rfq_versions import register
     with database() as con:
-        try:return register(con,req.email_id,req.rfq_no,'admin_session:'+center_owner(request)[:12]+' / '+req.actor,req.reason,req.terms)
+        try:return register(con,req.email_id,req.rfq_no,session_actor(request)+' / '+req.actor,req.reason,req.terms)
         except ValueError as ex:raise HTTPException(409,str(ex))
 
 
@@ -871,7 +874,7 @@ def field_evidence_detail(line_id:int):
 @app.post('/api/lines/{line_id}/review-fields')
 def review_fields(line_id:int,req:FieldReviewRequest,request:Request):
     from quotepilot.provenance import review
-    identity='admin_session:'+center_owner(request)[:12]
+    identity=session_actor(request)
     with database() as con:
         try:return review(con,line_id,req.version,req.changes,identity+' / '+req.actor,req.reason,req.confirm_source)
         except KeyError:raise HTTPException(404,'询价行不存在')
@@ -893,6 +896,12 @@ class PublicSearch(CenterQuestion):
 
 class JointQuestion(CenterQuestion):
     public_query:str=Field(min_length=2,max_length=500)
+
+
+def session_actor(request):
+    from quotepilot.security import COOKIE, production, session_role
+    role = session_role(request.cookies.get(COOKIE, '')) if production() else 'admin'
+    return f'{role}_session:{center_owner(request)[:12]}'
 
 
 def center_owner(request):

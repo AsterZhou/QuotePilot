@@ -9,7 +9,14 @@ COOKIE='qp_session'
 def production():return os.environ.get('QUOTEPILOT_ENV')=='production'
 
 def local_interactive_preview():
-    # Only the owned cloud-browser preview origin; never an arbitrary HTTP public host.
+    # The portable launcher only binds an IPv4 loopback socket with a fresh local DB.
+    public = urlsplit(os.environ.get('QUOTEPILOT_PUBLIC_URL', ''))
+    if (os.environ.get('QUOTEPILOT_PORTABLE') == '1' and public.scheme == 'http'
+            and public.hostname == '127.0.0.1' and public.port
+            and not any((public.username, public.password, public.query, public.fragment))
+            and public.path in ('', '/')):
+        return True
+    # Preserve the original private preview exception.
     return os.environ.get('QUOTEPILOT_LOCAL_PREVIEW')=='1' and os.environ.get('QUOTEPILOT_PUBLIC_URL')=='http://terminal.local:4173'
 
 def login_digest(role):
