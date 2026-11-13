@@ -56,7 +56,7 @@ def valid_session(value):
         remaining=int(expiry)-int(time.time())
         if not 0<remaining<=8*3600 or len(nonce)!=32:return False
         expected=hmac.new(os.environ['QUOTEPILOT_SESSION_SECRET'].encode(),body.encode(),hashlib.sha256).hexdigest()
-        return hmac.compare_digest(sig,expected)
+        return sig.isascii() and hmac.compare_digest(sig,expected)
     except (ValueError,KeyError,AttributeError):return False
 
 def session_role(value):
@@ -68,7 +68,7 @@ def reviewer_allowed(path,method):
     if method in ('GET','HEAD'):
         return not path.startswith(('/api/admin/','/api/query-center/','/api/audit','/api/operations','/api/integration','/api/native-workflow'))
     if method=='POST':
-        return path in ('/api/emails/import','/api/emails/preview','/api/supplier-offers/sources','/api/supplier-offers','/api/commercial-quotes','/api/rfq-versions','/api/rfq-versions/matches') or bool(__import__('re').fullmatch(r'/api/(lines/\d+/review-fields|supplier-offers/[^/]+/confirm|supplier-offers/sources/[^/]+/extract|commercial-quotes/[^/]+/review)',path))
+        return path in ('/api/emails/import','/api/emails/preview','/api/supplier-offers/sources','/api/supplier-offers','/api/commercial-quotes','/api/rfq-versions','/api/rfq-versions/matches') or bool(__import__('re').fullmatch(r'/api/(catalog/prices/[^/]+/review|lines/\d+/review-fields|supplier-offers/[^/]+/confirm|supplier-offers/sources/[^/]+/extract|commercial-quotes/[^/]+/review)',path))
     return False
 
 class RateLimiter:

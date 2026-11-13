@@ -202,14 +202,16 @@ def ingest_eml(con, raw, filename, dataset='user_upload'):
     from email import policy
     from email.parser import BytesParser
     o = parse_eml(raw, filename)
-    existing=con.execute('SELECT * FROM emails WHERE file_hash=? OR email_id=?',
-                         (o['sha256'],o['message_id'])).fetchone()
-    if existing:
-        if existing['file_hash'] != o['sha256']:
-            raise ValueError('Message-ID 冲突：内容不同，已拒绝覆盖；请核对原邮件')
-        audit(con,'import_duplicate',existing['email_id'],{'sha256':o['sha256']});con.commit()
-        return {**o, 'already_imported': True}
     with con:
+        if not con.in_transaction:
+            con.execute('BEGIN IMMEDIATE')
+        existing=con.execute('SELECT * FROM emails WHERE file_hash=? OR email_id=?',
+                             (o['sha256'],o['message_id'])).fetchone()
+        if existing:
+            if existing['file_hash'] != o['sha256']:
+                raise ValueError('Message-ID 冲突：内容不同，已拒绝覆盖；请核对原邮件')
+            audit(con,'import_duplicate',existing['email_id'],{'sha256':o['sha256']})
+            return {**o, 'already_imported': True}
         con.execute('INSERT INTO emails(email_id,file_hash,filename,subject,sender,mail_date) VALUES(?,?,?,?,?,?)',
                     (o['message_id'],o['sha256'],filename,o['subject'],o['sender'],o['date']))
         def save_blob(data,name,kind,parent=None):

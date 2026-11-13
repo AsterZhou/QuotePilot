@@ -17,10 +17,14 @@ def read_xlsx(source):
     try:
         if len(wb.worksheets)>20:raise ValueError('工作表超过20个，请拆分或人工选择')
         for ws in wb.worksheets:
-            if ws.max_row is None or ws.max_column is None:ws.calculate_dimension(force=True)
-            if ws.max_row>10000 or ws.max_column>150:raise ValueError('工作表超过10000行/150列，请拆分')
+            if (ws.max_row or 0)>10000 or (ws.max_column or 0)>150:
+                raise ValueError('工作表超过10000行/150列，请拆分')
+            # Excel producers can understate the used range. Bound the actual XML rows too.
+            ws.reset_dimensions()
             rows=[]
-            for row in ws:
+            for row_number, row in enumerate(ws, 1):
+                if row_number > 10000 or len(row) > 150:
+                    raise ValueError('工作表超过10000行/150列，请拆分')
                 cells={c.column_letter:('' if c.value is None else str(c.value)) for c in row if c.value is not None}
                 if cells:rows.append((next(c.row for c in row if c.value is not None),cells,row))
             if not rows:continue

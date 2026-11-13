@@ -28,7 +28,7 @@ def supplier_issues(p,asof,condition,quantity):
     errors=[]
     if p['status'] not in ('有效','VALID','valid'):errors.append('价格状态无效；请更新供应商状态')
     if not p['condition']:errors.append('供应商件状缺失；请重新确认')
-    if condition and p['condition'].upper()!=condition:errors.append('件状不符；请核对件状')
+    if condition and (p['condition'] or '').upper()!=condition:errors.append('件状不符；请核对件状')
     valid_dates=True
     for key,label in [('quote_date','报价日期'),('valid_until','价格有效期')]:
         try:date.fromisoformat(p[key][:10])
@@ -64,9 +64,9 @@ def quote_line(con,part,quantity,unit='EA',condition='',asof='2026-09-20',rate=D
     cost=con.execute('SELECT * FROM costs WHERE part_number=?',(part,)).fetchone()
     if cost:
         errors=[]
-        if cost['unit'].upper()!=unit:errors.append(f'库存单位 {cost["unit"]} 与需求 {unit} 不一致；请核对单位，不自动换算')
+        if (cost['unit'] or '').upper()!=unit:errors.append(f'库存单位 {cost["unit"]} 与需求 {unit} 不一致；请核对单位，不自动换算')
         if not cost['part_condition']:errors.append('库存件状缺失')
-        if condition and cost['part_condition'].upper()!=condition:errors.append('库存件状不符；请核对件状')
+        if condition and (cost['part_condition'] or '').upper()!=condition:errors.append('库存件状不符；请核对件状')
         try:
             inv=strict_decimal(cost['inventory'])
             if inv<q:errors.append(f'库存不足：可用 {inv}，需求 {q}，差额 {q-inv} {unit}；请补货或选择供应商')
@@ -98,9 +98,9 @@ def quote_line(con,part,quantity,unit='EA',condition='',asof='2026-09-20',rate=D
     r['audit']=[best['audit'],f'{method} {rate}；单价 {money(rounded)} × {q} = {r["line_total_cny"]} CNY；ROUND_HALF_UP 两位',f'规则版本 {RULE_VERSION}；税费运费未计']
     return r
 
-def batch_quote(con,lines,asof='2026-09-20',rate='0.20',method='markup'):
+def batch_quote(con,lines,asof='2026-09-20',rate='0.20',method='markup',*,inventory_used=None):
     items=[quote_line(con,l['part_number'],l['quantity'],l.get('unit',''),l.get('condition',''),asof,strict_decimal(rate),method) for l in lines]
-    used={}
+    used = inventory_used if inventory_used is not None else {}
     for item in items:
         if not item.get('price_basis') or item['price_basis']['table']!='costs':continue
         ref=item['price_ref'];qty=Decimal(str(item['quantity']))
@@ -110,4 +110,7 @@ def batch_quote(con,lines,asof='2026-09-20',rate='0.20',method='markup'):
             item['issues'].append(f'同份报价累计库存不足：剩余 {available}，需求 {qty}，差额 {qty-available} {item["unit"]}；请补货或拆分报价')
             item.update(status='待核价',decision_state='待核价',unit_quote_cny='',line_total_cny='')
         else:used[ref]=used.get(ref,Decimal(0))+qty
+    return summarize(items,asof,rate,method)
+
+def summarize(items,asof,rate,method):
     return dict(asof=asof,method=method,rate=rate,lines=items,total_cny=money(sum((D(x['line_total_cny']) for x in items),Decimal(0))),quoted_count=sum(bool(x['unit_quote_cny']) for x in items),pending_count=sum(not x['unit_quote_cny'] for x in items),review_count=sum(x['decision_state']=='待人工确认' for x in items),rule_version=RULE_VERSION,note='仅为建议金额小计；缺价行不计入；人工确认后生效。币种 CNY；税费与运费未计。')

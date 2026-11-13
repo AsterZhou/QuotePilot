@@ -21,7 +21,7 @@ def metrics(con):
     tables={r[0] for r in con.execute("SELECT name FROM sqlite_master WHERE type='table'")}
     receipts={};invalid=0;statuses={};durations=[];timed_ids=set();extractions=0;confirmed=0;scanned={}
     def add(rid,usage,source):
-        if not rid or str(rid).lower().startswith(('test','contract','mock')):return
+        if not isinstance(rid,str) or not rid or rid.lower().startswith(('test','contract','mock')):return
         count=usage.get('total_tokens') if isinstance(usage,dict) else None
         receipts.setdefault(rid,{'response_id':rid,'total_tokens':count if type(count) is int and count>=0 else None,'source':source})
         if receipts[rid]['total_tokens'] is None and type(count) is int and count>=0:receipts[rid]['total_tokens']=count
@@ -34,13 +34,31 @@ def metrics(con):
             except (ValueError,TypeError):invalid+=1;continue
             status=r.get('status','unknown');statuses[status]=statuses.get(status,0)+1
             add(r.get('response_id'),r.get('usage'),'query_plan')
-            add(r.get('analysis',{}).get('response_id'),r.get('analysis_usage'),'query_analysis')
-            for attempt in r.get('validation_attempts',[]):add(attempt.get('response_id'),attempt.get('usage'),'sql_repair_original')
+            analysis = r.get('analysis', {})
+            if isinstance(analysis, dict):
+                add(analysis.get('response_id'),r.get('analysis_usage'),'query_analysis')
+            else:
+                invalid += 1
+            attempts = r.get('validation_attempts', [])
+            if isinstance(attempts, list) and all(isinstance(a, dict) for a in attempts):
+                for attempt in attempts:
+                    add(attempt.get('response_id'),attempt.get('usage'),'sql_repair_original')
+            else:
+                invalid += 1
             add(r.get('repair_response_id'),r.get('repair_usage'),'sql_repair')
             add(r.get('public_extraction_response_id'),None,'public_extraction_usage_unrecorded')
             timing_id=r.get('response_id') or row['id']
             if timing_id not in timed_ids and isinstance(r.get('elapsed_seconds'),(int,float)) and r['elapsed_seconds']>=0:
                 durations.append(r['elapsed_seconds']);timed_ids.add(timing_id)
+    for row in con.execute("SELECT detail_json FROM audit_events WHERE action='analytics_genesis_query' ORDER BY id DESC LIMIT 10000"):
+        try:
+            receipt = json.loads(row[0])
+            if not isinstance(receipt, dict):
+                raise ValueError()
+        except (ValueError, TypeError):
+            invalid += 1
+            continue
+        add(receipt.get('response_id'), receipt.get('usage'), 'business_analytics')
     if 'extraction_runs' in tables:
         scanned['extraction_runs']=con.execute('SELECT COUNT(*) FROM extraction_runs').fetchone()[0]
         for row in con.execute('SELECT result_json,status FROM extraction_runs ORDER BY rowid DESC LIMIT 10000'):
@@ -64,7 +82,7 @@ def metrics(con):
       'extraction_runs':extractions,'confirmed_extraction_runs':confirmed,'line_review_counts':reviews,'rfq_line_count':count,'confirmed_line_fraction':reviews.get('confirmed',0)/count if count else None,'untracked_legacy_lines':count-sum(reviews.values()),
       'changed_field_revisions':con.execute('SELECT COUNT(*) FROM field_revisions WHERE before_json!=after_json').fetchone()[0],'parse_imports_by_dataset':datasets,
       'recorded_quote_calculation_failures':con.execute("SELECT COUNT(*) FROM audit_events WHERE action='commercial_quote_calculation_failed'").fetchone()[0],'invalid_json_records':invalid,'scan_scope':scanned,'receipt_scope_limit':10000,
-      'scope_note':'查询/提取各最多最近10000条，响应ID去重；合成与官方示例不代表客户业务效果。没有准确率指标。'}
+      'scope_note':'查询、业务分析回执和提取各最多最近10000条，响应ID去重；合成与官方示例不代表客户业务效果。没有准确率指标。'}
 
 def health(con):
     return {'database':'SQLite','integrity':con.execute('PRAGMA quick_check').fetchone()[0],'audit':verify_audit(con),'schema_migrations':[dict(r) for r in con.execute('SELECT * FROM schema_migrations ORDER BY version')],
