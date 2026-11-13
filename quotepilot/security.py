@@ -68,7 +68,7 @@ def reviewer_allowed(path,method):
     if method in ('GET','HEAD'):
         return not path.startswith(('/api/admin/','/api/query-center/','/api/audit','/api/operations','/api/integration','/api/native-workflow'))
     if method=='POST':
-        return path in ('/api/emails/import','/api/emails/preview','/api/supplier-offers/sources','/api/supplier-offers','/api/commercial-quotes','/api/rfq-versions','/api/rfq-versions/matches') or bool(__import__('re').fullmatch(r'/api/(lines/\d+/review-fields|supplier-offers/[^/]+/confirm|supplier-offers/sources/[^/]+/extract|commercial-quotes/[^/]+/review)',path))
+        return path in ('/api/emails/import','/api/emails/preview','/api/supplier-offers/sources','/api/supplier-offers','/api/commercial-quotes','/api/rfq-versions','/api/rfq-versions/matches') or bool(__import__('re').fullmatch(r'/api/(catalog/prices/[^/]+/review|lines/\d+/review-fields|supplier-offers/[^/]+/confirm|supplier-offers/sources/[^/]+/extract|commercial-quotes/[^/]+/review)',path))
     return False
 
 class RateLimiter:

@@ -98,9 +98,9 @@ def quote_line(con,part,quantity,unit='EA',condition='',asof='2026-09-20',rate=D
     r['audit']=[best['audit'],f'{method} {rate}；单价 {money(rounded)} × {q} = {r["line_total_cny"]} CNY；ROUND_HALF_UP 两位',f'规则版本 {RULE_VERSION}；税费运费未计']
     return r
 
-def batch_quote(con,lines,asof='2026-09-20',rate='0.20',method='markup'):
+def batch_quote(con,lines,asof='2026-09-20',rate='0.20',method='markup',*,inventory_used=None):
     items=[quote_line(con,l['part_number'],l['quantity'],l.get('unit',''),l.get('condition',''),asof,strict_decimal(rate),method) for l in lines]
-    used={}
+    used = inventory_used if inventory_used is not None else {}
     for item in items:
         if not item.get('price_basis') or item['price_basis']['table']!='costs':continue
         ref=item['price_ref'];qty=Decimal(str(item['quantity']))
@@ -110,4 +110,7 @@ def batch_quote(con,lines,asof='2026-09-20',rate='0.20',method='markup'):
             item['issues'].append(f'同份报价累计库存不足：剩余 {available}，需求 {qty}，差额 {qty-available} {item["unit"]}；请补货或拆分报价')
             item.update(status='待核价',decision_state='待核价',unit_quote_cny='',line_total_cny='')
         else:used[ref]=used.get(ref,Decimal(0))+qty
+    return summarize(items,asof,rate,method)
+
+def summarize(items,asof,rate,method):
     return dict(asof=asof,method=method,rate=rate,lines=items,total_cny=money(sum((D(x['line_total_cny']) for x in items),Decimal(0))),quoted_count=sum(bool(x['unit_quote_cny']) for x in items),pending_count=sum(not x['unit_quote_cny'] for x in items),review_count=sum(x['decision_state']=='待人工确认' for x in items),rule_version=RULE_VERSION,note='仅为建议金额小计；缺价行不计入；人工确认后生效。币种 CNY；税费与运费未计。')

@@ -162,11 +162,10 @@ async def import_email(file:UploadFile=File(...), customer_email:str=Form("")):
     raw, filename = await read_rfq(file, customer_email)
     try:
         with database() as con:
-            before=con.execute('SELECT COUNT(*) FROM rfq_lines').fetchone()[0]
             obj=ingest_eml(con,raw,filename)
-            after=con.execute('SELECT COUNT(*) FROM rfq_lines').fetchone()[0]
+            added = 0 if obj.get('already_imported') else len(obj['lines'])
         return {'ok':True,'email_id':obj['message_id'],'status':'needs_review' if obj['parse_notes'] or not obj['lines'] else 'imported','subject':obj['subject'],'parsed_count':len(obj['lines']),
-                'new_lines':after-before,'duplicate_lines':len(obj['lines'])-(after-before),
+                'new_lines':added,'duplicate_lines':len(obj['lines'])-added,
                 'already_imported':obj.get('already_imported',False),
                 'notes':obj['parse_notes']}
     except Exception as e: raise HTTPException(422, f'导入失败：{e}')
@@ -180,13 +179,27 @@ class QuoteRequest(BaseModel):
 
 def make_quote(con, req:QuoteRequest)->dict:
     ids=list(dict.fromkeys(req.line_ids))
-    if len(ids)>100: raise HTTPException(422,'每次最多核价100行')
-    values=','.join('?' for _ in ids)
-    found={r['id']:dict(r) for r in con.execute('SELECT * FROM rfq_lines WHERE id IN ('+values+')',ids)}
-    if len(found)!=len(ids):raise HTTPException(404,'有询价记录不存在，请重新选择')
-    source=[found[i] for i in ids]
-    feed=[{'part_number':r['part_number'],'quantity':r['quantity'],'unit':r['unit'],'condition':r['part_condition'] or ''} for r in source]
-    report=batch_quote(con,feed,req.asof.isoformat(),str(Decimal(str(req.rate))/100),req.method)
+    source, batches, priced = [], [], []
+    inventory_used = {}
+    from quotepilot.pricing import summarize
+    for start in range(0,len(ids),100):
+        chunk = ids[start:start+100]
+        placeholders = ','.join('?' for _ in chunk)
+        found = {r['id']:dict(r) for r in con.execute(
+            f'SELECT * FROM rfq_lines WHERE id IN ({placeholders})', chunk)}
+        missing = [i for i in chunk if i not in found]
+        if missing:
+            raise HTTPException(404,f'第{start//100+1}批询价行不存在：{missing}。整份草案未保存，请核对后重试')
+        rows = [found[i] for i in chunk]
+        feed = [{'part_number':r['part_number'],'quantity':r['quantity'],'unit':r['unit'],
+                 'condition':r['part_condition'] or ''} for r in rows]
+        rate = str(req.rate / 100)
+        part = batch_quote(con,feed,req.asof.isoformat(),rate,req.method,inventory_used=inventory_used)
+        priced.extend(part['lines'])
+        source.extend(rows)
+        batches.append({'number':len(batches)+1,'count':len(chunk),'status':'complete'})
+    report = summarize(priced,req.asof.isoformat(),rate,req.method)
+    report['batches'] = batches
     for x,orig in zip(report['lines'],source):
         from quotepilot.provenance import quote_review_snapshot
         x['field_review_version']=quote_review_snapshot(con,orig['id'])
@@ -204,6 +217,8 @@ def make_quote(con, req:QuoteRequest)->dict:
     report['dataset']='原始文件及其数据集标签见来源追溯；预置为官方模拟素材，上传为用户数据'
     customers={str(r['customer'] or '').strip().casefold() for r in source if str(r['customer'] or '').strip()}
     report['approval_blockers']=['跨客户明细不得确认为同一份报价，请按客户拆分草案'] if len(customers)>1 else []
+    if len({(r['email_id'],r['source_rfq_no']) for r in source}) > 1:
+        report['approval_blockers'].append('多询价编号或来件的汇总仅供参考，请按原询价分别生成正式报价')
     report['review_required']=True
     report['currency']='CNY'
     return report
@@ -622,6 +637,7 @@ class SupplierOfferRequest(BaseModel):
     shipping_group:str=Field(default='',max_length=100)
     extraction_run_id:str|None=None
     extraction_candidate:int|None=None
+    supplement_basis:str=Field(default='',max_length=2000)
     shipping_total:Decimal=Field(ge=0,le=1000000000000)
     tax_rate:Decimal=Field(ge=0,lt=1)
     quote_date:date
@@ -630,7 +646,7 @@ class SupplierOfferRequest(BaseModel):
 
 
 class CommercialQuoteRequest(BaseModel):
-    line_ids:list[int]=Field(min_length=1,max_length=100)
+    line_ids:list[int]=Field(min_length=1,max_length=300)
     scheme:Literal['lowest_cost','fastest','balanced']='balanced'
     asof:date=Field(default_factory=center_today)
     valid_until:date
@@ -686,7 +702,11 @@ async def supplier_source(file:UploadFile=File(...)):
 def add_supplier_offer(req:SupplierOfferRequest):
     from quotepilot.commercial import add_offer
     with database() as con:
-        try:return add_offer(con,req.model_dump(mode='json'))
+        try:
+            payload=req.model_dump(mode='json')
+            if req.extraction_run_id and req.extraction_run_id.startswith('SUPX-W1-') and 'shipping_scope' not in req.model_fields_set and con.execute("SELECT 1 FROM supplier_extraction_runs WHERE id=? AND json_extract(result_json,'$.price_resource')=1",(req.extraction_run_id,)).fetchone():
+                raise ValueError('工作簿候选须明确确认运费范围')
+            return add_offer(con,payload)
         except ValueError as ex:raise HTTPException(409,str(ex))
 
 
@@ -1011,3 +1031,27 @@ def extract_supplier_source(sid:str):
         except Exception as ex:
             audit(con,'supplier_extraction_failed',sid,{'error_type':type(ex).__name__});con.commit()
             raise HTTPException(422,'原件解析失败；请人工核对或更换可读文字版文件')
+
+
+@app.get('/api/supplier-extractions/{rid}/pages/{page}')
+def supplier_candidate_page(rid:str,page:int):
+    from quotepilot.supplier_extraction import candidate_page
+    with database() as con:
+        try:return candidate_page(con,rid,page)
+        except ValueError as ex:raise HTTPException(404,str(ex))
+
+@app.post('/api/catalog/prices/{source_id}/review')
+def catalog_price_review(source_id:str):
+    # Re-read the immutable source workbook, never manufacture a supplier offer
+    # from the flattened historical table (which lacks unit, terms and cells).
+    with database() as con:
+        source = con.execute("""SELECT * FROM source_files WHERE id=? AND kind='workbook'
+                AND dataset='official_sample' AND filename='价格资源表_演示数据.xlsx'""",(source_id,)).fetchone()
+        if not source:
+            raise HTTPException(404,'未找到此价格资源的原始工作簿')
+        sid = 'SUPSRC-' + source['sha256']
+        with con:
+            con.execute("""INSERT OR IGNORE INTO source_files(id,parent_id,filename,sha256,content,kind,dataset)
+                        VALUES(?,?,?,?,?,'supplier_quote','official_sample')""",
+                        (sid,source['id'],source['filename'],source['sha256'],source['content']))
+        return {'source_id':sid,'workbook_id':source_id,'sha256':source['sha256']}

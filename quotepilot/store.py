@@ -184,6 +184,8 @@ def ingest_eml(con, raw, filename, dataset='user_upload'):
     from email import policy
     from email.parser import BytesParser
     o = parse_eml(raw, filename)
+    if not con.in_transaction:
+        con.execute('BEGIN IMMEDIATE')
     existing=con.execute('SELECT * FROM emails WHERE file_hash=? OR email_id=?',
                          (o['sha256'],o['message_id'])).fetchone()
     if existing:
