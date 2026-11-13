@@ -15,7 +15,7 @@ from fastapi.responses import HTMLResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from quotepilot.store import open_db, seed_official, ingest_eml, audit
+from quotepilot.store import open_db, seed_official, seed_price_catalog, ingest_eml, audit
 from quotepilot.reviews import create_quote,load_quote,change_quote
 from quotepilot.pricing import supplier_issues
 from quotepilot.analytics import summary, run_query, QUESTIONS
@@ -40,6 +40,7 @@ async def lifespan(app):
         else:
             from deploy.release_seed import seed_demo_history
             seed_demo_history(con)
+            seed_price_catalog(con, SAMPLES)
     finally:con.close()
     yield
 

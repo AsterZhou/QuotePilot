@@ -76,12 +76,39 @@ def _num(s:str) -> int:
     except (ValueError,TypeError):return 0
 
 
+def seed_price_catalog(con: sqlite3.Connection, sample_dir: Path) -> None:
+    """Load the official reference prices and their source in one transaction."""
+    import hashlib
+
+    workbook = sample_dir / '价格资源表_演示数据.xlsx'
+    raw = workbook.read_bytes()
+    digest = hashlib.sha256(raw).hexdigest()
+    with con:
+        con.execute(
+            "INSERT OR IGNORE INTO source_files(id,filename,sha256,content,kind,dataset) "
+            "VALUES(?,?,?,?,'workbook','official_sample')",
+            (digest, workbook.name, digest, raw),
+        )
+        prices=read_xlsx(raw)
+        for r in prices:
+            con.execute('''INSERT OR IGNORE INTO prices
+               (resource_id,part_number,supplier_code,supplier,condition,unit_price,currency,fx_to_cny,
+                moq,lead_days,in_stock,certificate,quote_date,valid_until,status,source_row)
+               VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
+              (_g(r,'价格资源编号'),_g(r,'Part Number').upper(),_g(r,'供应商编码'),_g(r,'供应商名称'),
+               _g(r,'件状条件').upper(),_g(r,'单价'),_g(r,'币种').upper(),_g(r,'汇率到CNY'),
+               _num(_g(r,'最小起订量')),_num(_g(r,'交期天数')),_g(r,'是否现货'),_g(r,'证书类型'),
+               date_value(_g(r,'报价日期')),date_value(_g(r,'有效期至')),_g(r,'价格状态'),_g(r,'_source_row')))
+
+
 def seed_official(con:sqlite3.Connection, sample_dir:Path) -> dict:
     sample_dir=Path(sample_dir)
     for path in sorted(sample_dir.rglob('*.eml')):
         ingest_eml(con,path.read_bytes(),path.name,dataset='official_sample')
     import hashlib
     for workbook in sample_dir.glob('*.xlsx'):
+        if workbook.name == '价格资源表_演示数据.xlsx':
+            continue  # seed_price_catalog archives this file together with its rows.
         data=workbook.read_bytes();digest=hashlib.sha256(data).hexdigest()
         con.execute('INSERT OR IGNORE INTO source_files(id,filename,sha256,content,kind,dataset) VALUES(?,?,?,?,?,?)',(digest,workbook.name,digest,data,'workbook','official_sample'))
     historical=read_xlsx(sample_dir/'询价报价清单_看板演示数据.xlsx')
@@ -103,16 +130,7 @@ def seed_official(con:sqlite3.Connection, sample_dir:Path) -> dict:
            _num(_g(r,'库存数量')),_g(r,'仓库'),_g(r,'库存件状').upper(),_g(r,'标准成本'),
            _g(r,'平均成本'),_g(r,'最近采购价'),_g(r,'币种').upper(),
            date_value(_g(r,'成本更新日期')),_g(r,'_source_row')))
-    prices=read_xlsx(sample_dir/'价格资源表_演示数据.xlsx')
-    for r in prices:
-        con.execute('''INSERT OR IGNORE INTO prices
-           (resource_id,part_number,supplier_code,supplier,condition,unit_price,currency,fx_to_cny,
-            moq,lead_days,in_stock,certificate,quote_date,valid_until,status,source_row)
-           VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
-          (_g(r,'价格资源编号'),_g(r,'Part Number').upper(),_g(r,'供应商编码'),_g(r,'供应商名称'),
-           _g(r,'件状条件').upper(),_g(r,'单价'),_g(r,'币种').upper(),_g(r,'汇率到CNY'),
-           _num(_g(r,'最小起订量')),_num(_g(r,'交期天数')),_g(r,'是否现货'),_g(r,'证书类型'),
-           date_value(_g(r,'报价日期')),date_value(_g(r,'有效期至')),_g(r,'价格状态'),_g(r,'_source_row')))
+    seed_price_catalog(con, sample_dir)
     con.commit()
     return {name:con.execute(f'SELECT COUNT(*) FROM {name}').fetchone()[0]
             for name in ('emails','rfq_lines','historical','costs','prices')}
