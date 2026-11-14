@@ -67,6 +67,19 @@ def add_offer(con,payload):
     oid='OFFER-'+uuid4().hex[:16]
     from .store import audit
     with con:
+        run_id = payload.get('extraction_run_id') or ''
+        if run_id.startswith(('SUPX-W1-', 'SUPX-W2-')):
+            claim = con.execute('INSERT OR IGNORE INTO supplier_candidate_offers VALUES(?,?,?)',
+                                (run_id,payload['extraction_candidate'],oid))
+            if not claim.rowcount:
+                prior = con.execute("""SELECT o.id,o.payload_json,EXISTS(
+                        SELECT 1 FROM offer_reviews r WHERE r.offer_id=o.id) AS reviewed
+                        FROM supplier_candidate_offers c JOIN supplier_offers o ON o.id=c.offer_id
+                        WHERE c.run_id=? AND c.candidate=?""",(run_id,payload['extraction_candidate'])).fetchone()
+                saved = json.loads(prior['payload_json'])
+                if any(saved.get(k) != v for k,v in payload.items()):
+                    raise ValueError('该候选已保存，不能用重试覆盖原报价；更新条件请提供新原件')
+                return {'id':prior['id'],**saved,'review_status':'confirmed' if prior['reviewed'] else 'pending'}
         con.execute('INSERT INTO supplier_offers VALUES(?,?,?,?)',(oid,encoded(obj),payload['source_id'],stamp()))
         keys=('supplier','part_number','specification','unit','condition','unit_price','currency','fx_to_cny','moq','lead_days','quote_date','valid_until','source_id')
         con.execute('INSERT INTO supplier_offer_catalog VALUES('+','.join('?' for _ in range(14))+')',[oid]+[str(payload[k]) if k not in ('moq','lead_days') else payload[k] for k in keys])
@@ -78,12 +91,21 @@ def confirm_offer(con,oid,actor,reason):
     if not con.execute('SELECT 1 FROM supplier_offers WHERE id=?',(oid,)).fetchone():raise KeyError('供应商报价不存在')
     from .store import audit
     with con:
-        con.execute('INSERT INTO offer_reviews(offer_id,actor,reason,at) VALUES(?,?,?,?)',(oid,actor,reason,stamp()))
-        audit(con,'supplier_offer_confirmed',oid,{'reason':reason},actor)
+        inserted = con.execute(
+            'INSERT INTO offer_reviews(offer_id,actor,reason,at) SELECT ?,?,?,? '
+            'WHERE NOT EXISTS (SELECT 1 FROM offer_reviews WHERE offer_id=?)',
+            (oid, actor, reason, stamp(), oid))
+        if inserted.rowcount:
+            audit(con,'supplier_offer_confirmed',oid,{'reason':reason},actor)
     return {'id':oid,'review_status':'confirmed'}
 
-def offers(con):
-    return [{'id':r['id'],**json.loads(r['payload_json']),'review_status':'confirmed' if con.execute('SELECT 1 FROM offer_reviews WHERE offer_id=?',(r['id'],)).fetchone() else 'pending'} for r in con.execute('SELECT * FROM supplier_offers ORDER BY created_at DESC,id')]
+def offers(con, part_number=None):
+    sql = 'SELECT o.* FROM supplier_offers o'
+    args = ()
+    if part_number is not None:
+        sql += ' JOIN supplier_offer_catalog c ON c.offer_id=o.id WHERE c.part_number=?'
+        args = (part_number.upper(),)
+    return [{'id':r['id'],**json.loads(r['payload_json']),'review_status':'confirmed' if con.execute('SELECT 1 FROM offer_reviews WHERE offer_id=?',(r['id'],)).fetchone() else 'pending'} for r in con.execute(sql+' ORDER BY o.created_at DESC,o.id',args)]
 
 def calculate(offer,quantity,processing_per_unit,other_total,margin,freight_cny=None):
     if type(quantity) is not int or not 0<quantity<=9007199254740991:raise ValueError('数量无效')
@@ -112,13 +134,24 @@ def _calculate(offer,quantity,processing_per_unit,other_total,margin,freight_cny
         'risks':(['舍入后销售单价为0，必须调整价格精度并重新核价'] if unit_sale<=0 else [])+(['舍入后毛利率低于目标，审批前须复核'] if actual<target else [])}
 
 def create_draft(con,request):
-    if not request['line_ids'] or len(set(request['line_ids']))!=len(request['line_ids']) or len(request['line_ids'])>100:raise ValueError('选择1到100条不重复的询价行')
+    if not request['line_ids'] or len(set(request['line_ids']))!=len(request['line_ids']) or len(request['line_ids'])>300:raise ValueError('选择1到300条不重复的询价行')
     if request['scheme'] not in ('lowest_cost','fastest','balanced'):raise ValueError('未知报价方案')
-    available=offers(con);results=[];blockers=[];reference=date.fromisoformat(request['asof'])
+    results=[];blockers=[];reference=date.fromisoformat(request['asof'])
     customers=set()
-    for lid in request['line_ids']:
-        row=con.execute('SELECT * FROM rfq_lines WHERE id=?',(lid,)).fetchone()
-        if not row:raise KeyError('询价行不存在')
+    rfqs=set()
+    batches=[]
+    def demand_rows():
+        for start in range(0,len(request['line_ids']),100):
+            ids = request['line_ids'][start:start+100]
+            params = ','.join('?' for _ in ids)
+            rows = {r['id']:r for r in con.execute(f'SELECT * FROM rfq_lines WHERE id IN ({params})',ids)}
+            if len(rows) != len(ids):
+                raise KeyError(f'第{start//100+1}批询价行不存在，请核对后重试')
+            batches.append({'number':len(batches)+1,'count':len(ids),'status':'complete'})
+            for lid in ids:
+                yield lid,rows[lid]
+    for lid,row in demand_rows():
+        rfqs.add((row['email_id'],row['source_rfq_no']))
         from email.utils import parseaddr
         mail=con.execute('SELECT sender FROM emails WHERE email_id=?',(row['email_id'],)).fetchone()
         customer_key=parseaddr(mail['sender'] or '')[1].lower()
@@ -127,8 +160,7 @@ def create_draft(con,request):
         candidates=[];rejected=[]
         extra=request.get('line_costs',{}).get(str(lid),{})
         if not all(k in extra for k in ('processing_per_unit_cny','other_total_cny')):blockers.append(f'询价行{lid}缺少加工/其他成本；确无费用时也须明确填0')
-        for offer in available:
-            if offer['part_number'].upper()!=row['part_number'].upper():continue
+        for offer in offers(con,row['part_number']):
             reasons=[]
             if offer['review_status']!='confirmed':reasons.append('供应商报价尚未复核')
             if offer['unit'].upper()!=(row['unit'] or '').upper():reasons.append('单位不一致')
@@ -151,7 +183,7 @@ def create_draft(con,request):
                  'balanced':lambda x:(Decimal(x['balanced_score']),Decimal(x['calculation']['total_cost_cny']))}[request['scheme']]
             selected=min(candidates,key=key)
         else:selected=None;blockers.append(f'询价行{lid}无符合型号、规格、单位、件状、MOQ及有效期的已复核报价')
-        results.append({'line_id':lid,'part_number':row['part_number'],'specification':row['description'],'unit':row['unit'],'quantity':row['quantity'],
+        results.append({'line_id':lid,'source_rfq_no':row['source_rfq_no'],'source_ref':row['source_ref'],'email_id':row['email_id'],'part_number':row['part_number'],'specification':row['description'],'unit':row['unit'],'quantity':row['quantity'],
             'field_review_version':version,'selected':selected,'candidates':candidates,'rejected':rejected})
     # Allocate each explicitly declared shipment charge ONCE across selected lines.
     freight_groups={}
@@ -176,10 +208,11 @@ def create_draft(con,request):
         allocations.append({'supplier':supplier,'shipping_group':group,'total_cny':money(total),'basis':'采购成本占比；最大余数分摊至分，尾差按line_id稳定分配','lines':{str(k):money(v) for k,v in shares.items()}})
     for line in results:
         if line['selected'] and Decimal(line['selected']['calculation']['suggested_unit_price_cny'])<=0:blockers.append('销售单价舍入为0，需要重新核价')
+    if len(rfqs)>1:blockers.append('多询价编号或不同来件须分别生成正式报价')
     if len(customers)>1:blockers.append('跨客户询价不能合并为正式报价')
     for key in ('company_name','customer_name','payment_terms'):
         if not request.get(key,'').strip():blockers.append('报价抬头、客户及付款条件必须完整')
-    result={**request,'id':'CQ-'+uuid4().hex[:16].upper(),'lines':results,'approval_blockers':blockers,
+    result={**request,'batches':batches,'id':'CQ-'+uuid4().hex[:16].upper(),'lines':results,'approval_blockers':blockers,
         'total_cost_cny':money(sum((Decimal(x['selected']['calculation']['total_cost_cny']) for x in results if x['selected']),Decimal(0))),
         'suggested_total_cny':money(sum((Decimal(x['selected']['calculation']['suggested_total_cny']) for x in results if x['selected']),Decimal(0))),
         'freight_allocations':allocations,'currency':'CNY','decision_method':'确定性成本/交期规则，非AI凭空生成供应商数据','balanced_formula':'逐行评分0.5×成本/最低成本 + 0.5×交期/最短交期；运输批次在选定后分摊，不承诺组合全局最优',

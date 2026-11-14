@@ -201,7 +201,13 @@ def parse_eml(raw:bytes, filename:str) -> dict:
             except ValueError as ex:
                 email_record['parse_notes'].append(str(ex));email_record['rejected_rows'].append({'raw':{'headers':headers,'rows':tbl[1:]},'source':filename,'reason':str(ex)});continue
             for i,row in enumerate(tbl[1:],2):
-                record=dict(zip(headers,row));record['_source_row']=f'HTML part {html_idx} / table {table_idx} / row {i}'
+                locator = f'HTML part {html_idx} / table {table_idx} / row {i}'
+                if len(row) != len(headers):
+                    reason = f'{locator} 列数与表头不符，请核对原始行'
+                    email_record['parse_notes'].append(reason)
+                    email_record['rejected_rows'].append({'source': locator, 'raw': {'headers': headers, 'cells': row}, 'reason': reason})
+                    continue
+                record=dict(zip(headers,row));record['_source_row']=locator
                 if any(str(v).strip() for v in row):append_record(record,filename,'EML正文表格')
     if not htmls:
         for text_idx,part in enumerate((p for p in msg.walk() if p.get_content_type()=='text/plain' and not p.get_filename()),1):
@@ -222,9 +228,13 @@ def parse_eml(raw:bytes, filename:str) -> dict:
                     record={};raw_lines=[];break
                 record[key]=value;raw_lines.append(text_line)
             flush_plain()
+    attachment_counts = {}
     for part in msg.walk():
         if part.get_content_disposition()!='attachment' and not part.get_filename(): continue
         part_name=part.get_filename() or 'untitled'
+        occurrence = attachment_counts.get(part_name, 0) + 1
+        attachment_counts[part_name] = occurrence
+        label = part_name if occurrence == 1 else f'{part_name} [附件 {occurrence}]'
         data=part.get_payload(decode=True) or b''
         email_record['attachments'].append({'filename':part_name,'size':len(data),'sha256':hashlib.sha256(data).hexdigest()})
         try:
@@ -239,7 +249,7 @@ def parse_eml(raw:bytes, filename:str) -> dict:
                 continue
             for row in items:
                 row['_source_file']=part_name;row['_source_sha256']=hashlib.sha256(data).hexdigest()
-                if any(str(v).strip() for k,v in row.items() if not k.startswith('_')):append_record(row,f'{filename} / {part_name}',kind)
+                if any(str(v).strip() for k,v in row.items() if not k.startswith('_')):append_record(row,f'{filename} / {label}',kind)
         except Exception as ex:
             email_record['parse_notes'].append(f'{part_name}: {type(ex).__name__}: {ex}')
     if not email_record['lines']: email_record['parse_notes'].append('没有可靠提取的需求行；请人工录入或使用提取 Provider')
