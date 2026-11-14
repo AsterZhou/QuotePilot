@@ -33,6 +33,8 @@ WEB = ROOT / 'web'
 async def lifespan(app):
     from quotepilot.security import validate_production
     validate_production()
+    from quotepilot.persistent import check_configured_database
+    check_configured_database(DB)
     con=open_db(DB)
     try:
         if os.environ.get("QUOTEPILOT_RELEASE_DEMO") != "1":

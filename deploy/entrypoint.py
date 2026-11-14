@@ -22,7 +22,7 @@ def main():
         import secrets
         os.environ.setdefault('QUOTEPILOT_SESSION_SECRET', secrets.token_urlsafe(48))
     validate_production()
-    if os.environ.get('QUOTEPILOT_RELEASE_DEMO') == '1':
+    if os.environ.get('QUOTEPILOT_RELEASE_DEMO') == '1' and not os.environ.get('QUOTEPILOT_PERSISTENT_MOUNT'):
         from deploy.release_seed import install_seed
         install_seed(Path('/app/release-demo.sqlite'), Path(os.environ['QUOTEPILOT_DB']))
     import uvicorn
